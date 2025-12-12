@@ -279,7 +279,7 @@
 
         /* Product Hero Section */
         .product-hero {
-            padding: 120px 0 50px;
+            padding: 40px 0 30px;
             background: linear-gradient(135deg, var(--primary) 0%, #f5efe6 100%);
             width: 100%;
             margin-top: 70px;
@@ -288,7 +288,7 @@
         .product-hero-container {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 3rem;
+            gap: 2rem;
             align-items: start;
         }
 
@@ -730,6 +730,13 @@
             justify-content: center;
             font-size: 3rem;
             color: var(--accent);
+            overflow: hidden;
+        }
+
+        .product-card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         .product-card-content {
@@ -761,12 +768,6 @@
             text-decoration: line-through;
         }
 
-        .product-card-rating {
-            color: #FFD700;
-            margin: 8px 0;
-            font-size: 0.85rem;
-        }
-
         .product-card-btn {
             display: block;
             width: 100%;
@@ -788,38 +789,23 @@
             background: #3a5152;
         }
 
-        /* Product Hero Section - FIXED */
-.product-hero {
-    padding: 40px 0 30px; /* Reduced from 120px 0 50px */
-    background: linear-gradient(135deg, var(--primary) 0%, #f5efe6 100%);
-    width: 100%;
-    margin-top: 70px; /* This accounts for fixed header */
-}
+        /* Add this to reduce space further on mobile */
+        @media (max-width: 768px) {
+            .product-hero {
+                padding: 30px 0 20px;
+                margin-top: 65px;
+            }
+            
+            .product-hero-container {
+                gap: 1.5rem;
+            }
+        }
 
-.product-hero-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 2rem; /* Reduced from 3rem */
-    align-items: start;
-}
-
-/* Add this to reduce space further on mobile */
-@media (max-width: 768px) {
-    .product-hero {
-        padding: 30px 0 20px; /* Even smaller on mobile */
-        margin-top: 65px; /* Slightly less for mobile header */
-    }
-    
-    .product-hero-container {
-        gap: 1.5rem;
-    }
-}
-
-@media (max-width: 480px) {
-    .product-hero {
-        padding: 25px 0 15px;
-    }
-}
+        @media (max-width: 480px) {
+            .product-hero {
+                padding: 25px 0 15px;
+            }
+        }
 
         /* Reviews */
         .reviews-carousel {
@@ -1619,7 +1605,7 @@
         </div>
     </section>
 
-    <!-- Similar Products Section -->
+    <!-- Similar Products Section - NOW DYNAMIC -->
     <section class="section similar-products">
         <div class="container">
             <h2 class="section-title">You May Also Like</h2>
@@ -1627,84 +1613,8 @@
                 Discover more from our divine handmade soap collection
             </p>
             
-            <div class="similar-products-grid">
-                <!-- Product 1 -->
-                <div class="product-card" itemscope itemtype="https://schema.org/Product">
-                    <div class="product-card-image" style="background:#f0e6d6;">
-                        <i class="fas fa-leaf" style="color:#8db596;"></i>
-                    </div>
-                    <div class="product-card-content">
-                        <h3 itemprop="name">Neem & Tulsi</h3>
-                        <div class="product-card-rating">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star-half-alt"></i>
-                            4.8/5
-                        </div>
-                        <p itemprop="description">Purifying blend for acne-prone skin with antibacterial properties.</p>
-                        <div class="product-card-price-container">
-                            <div class="product-card-price">₹279</div>
-                            <div class="product-card-mrp">₹349</div>
-                        </div>
-                        <a href="product13.html" class="product-card-btn" itemprop="url">
-                            <i class="fas fa-shopping-bag"></i> View Details
-                        </a>
-                    </div>
-                </div>
-                
-                <!-- Product 2 -->
-                <div class="product-card" itemscope itemtype="https://schema.org/Product">
-                    <div class="product-card-image" style="background:#f5e8e8;">
-                        <i class="fas fa-seedling" style="color:#7d9d9c;"></i>
-                    </div>
-                    <div class="product-card-content">
-                        <h3 itemprop="name">Sandalwood & Saffron</h3>
-                        <div class="product-card-rating">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            5.0/5
-                        </div>
-                        <p itemprop="description">Luxurious anti-aging formula for radiant, youthful skin.</p>
-                        <div class="product-card-price-container">
-                            <div class="product-card-price">₹449</div>
-                            <div class="product-card-mrp">₹599</div>
-                        </div>
-                        <a href="product2.html" class="product-card-btn" itemprop="url">
-                            <i class="fas fa-shopping-bag"></i> View Details
-                        </a>
-                    </div>
-                </div>
-                
-                <!-- Product 3 -->
-                <div class="product-card" itemscope itemtype="https://schema.org/Product">
-                    <div class="product-card-image" style="background:#e6f0f8;">
-                        <i class="fas fa-lemon" style="color:#f4a261;"></i>
-                    </div>
-                    <div class="product-card-content">
-                        <h3 itemprop="name">Lemon & Honey</h3>
-                        <div class="product-card-rating">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star-half-alt"></i>
-                            4.6/5
-                        </div>
-                        <p itemprop="description">Brightening and exfoliating soap for glowing complexion.</p>
-                        <div class="product-card-price-container">
-                            <div class="product-card-price">₹329</div>
-                            <div class="product-card-mrp">₹419</div>
-                        </div>
-                        <a href="product3.html" class="product-card-btn" itemprop="url">
-                            <i class="fas fa-shopping-bag"></i> View Details
-                        </a>
-                    </div>
-                </div>
+            <div class="similar-products-grid" id="similarProductsGrid">
+                <!-- Dynamic content will be inserted here by JavaScript -->
             </div>
         </div>
     </section>
@@ -1899,6 +1809,8 @@
 
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+    <!-- Include the products data file -->
+    <script src="products-data.js"></script>
     <script>
         // Fixed white space issue
         document.body.style.width = '100%';
@@ -1925,7 +1837,72 @@
             }
         });
         
-        // Shared Cart System - FIXED for GitHub Pages
+        // Function to get random products (excluding current product)
+        function getRandomProducts(excludeProductId, count = 3) {
+            // Filter out current product
+            const otherProducts = allProducts.filter(product => product.id !== excludeProductId);
+            
+            // If we don't have enough products, return what we have
+            if (otherProducts.length <= count) {
+                return otherProducts;
+            }
+            
+            // Shuffle array using Fisher-Yates algorithm for true randomness
+            const shuffled = [...otherProducts];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            
+            // Return first 'count' items
+            return shuffled.slice(0, count);
+        }
+        
+        // Function to generate similar products section
+        function generateSimilarProducts() {
+            const currentProductId = 'product-1'; // For rose-petal.html
+            const similarProducts = getRandomProducts(currentProductId, 3);
+            const container = document.getElementById('similarProductsGrid');
+            
+            // Clear existing content
+            container.innerHTML = '';
+            
+            // Generate product cards
+            similarProducts.forEach(product => {
+                // Calculate discount percentage
+                const discountPercent = Math.round(((product.mrp - product.price) / product.mrp) * 100);
+                
+                // Create product card
+                const productCard = document.createElement('div');
+                productCard.className = 'product-card';
+                productCard.setAttribute('itemscope', '');
+                productCard.setAttribute('itemtype', 'https://schema.org/Product');
+                
+                productCard.innerHTML = `
+                    <div class="product-card-image">
+                        <img src="${product.image || 'soap.jpg'}" alt="${product.alt || product.name}" loading="lazy" itemprop="image">
+                    </div>
+                    <div class="product-card-content">
+                        <h3 itemprop="name">${product.name}</h3>
+                        <p itemprop="description" style="font-size: 0.85rem; color: #666; margin: 8px 0; line-height: 1.4;">${product.description}</p>
+                        <div class="product-card-price-container">
+                            <div class="product-card-price">₹${product.price}</div>
+                            <div class="product-card-mrp">₹${product.mrp}</div>
+                            <div style="font-size: 0.75rem; color: #27ae60; font-weight: 600; background-color: rgba(39, 174, 96, 0.1); padding: 2px 6px; border-radius: 4px;">
+                                ${discountPercent}% OFF
+                            </div>
+                        </div>
+                        <a href="${product.pageUrl}" class="product-card-btn" itemprop="url">
+                            <i class="fas fa-shopping-bag"></i> View Details
+                        </a>
+                    </div>
+                `;
+                
+                container.appendChild(productCard);
+            });
+        }
+        
+        // Shared Cart System
         let cart = [];
         const cartModal = document.getElementById('cartModal');
         const cartIcon = document.getElementById('cartIcon');
@@ -2004,7 +1981,7 @@
         function startSlideshow() {
             slideshowInterval = setInterval(() => {
                 navigateSlideshow(1);
-            }, 4000); // Change slide every 4 seconds
+            }, 4000);
         }
         
         // Navigate slideshow
@@ -2055,10 +2032,8 @@
             const savedCart = sessionStorage.getItem('auraCleanseCart');
             
             if (savedCart) {
-                // Always load cart from sessionStorage
                 cart = JSON.parse(savedCart);
             } else {
-                // If no cart exists, initialize empty array
                 cart = [];
             }
             
@@ -2070,7 +2045,6 @@
             sessionStorage.setItem('auraCleanseCart', JSON.stringify(cart));
             sessionStorage.setItem('auraCleanseCartTimestamp', Date.now());
             
-            // Notify other pages that cart was updated
             try {
                 localStorage.setItem('cartUpdated', Date.now().toString());
             } catch (e) {
@@ -2080,11 +2054,9 @@
         
         // Update cart UI
         function updateCart() {
-            // Update cart count
             const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
             cartCountElement.textContent = totalItems;
             
-            // Update cart items
             cartItemsContainer.innerHTML = '';
             
             if (cart.length === 0) {
@@ -2130,7 +2102,6 @@
                     cartItemsContainer.appendChild(cartItem);
                 });
                 
-                // Add event listeners to cart item buttons
                 document.querySelectorAll('.decrease-cart').forEach(button => {
                     button.addEventListener('click', function() {
                         const productId = this.getAttribute('data-id');
@@ -2152,7 +2123,6 @@
                     });
                 });
                 
-                // Update total with savings
                 const totalSavings = totalMrp - totalPrice;
                 cartTotalElement.innerHTML = `
                     <div>Total: ₹${totalPrice}</div>
@@ -2220,7 +2190,6 @@
         
         // Show notification
         function showNotification(message) {
-            // Create notification element
             const notification = document.createElement('div');
             notification.style.cssText = `
                 position: fixed;
@@ -2243,13 +2212,11 @@
             notification.textContent = message;
             document.body.appendChild(notification);
             
-            // Animate in
             setTimeout(() => {
                 notification.style.transform = 'translateY(0)';
                 notification.style.opacity = '1';
             }, 10);
             
-            // Remove after 3 seconds
             setTimeout(() => {
                 notification.style.transform = 'translateY(100px)';
                 notification.style.opacity = '0';
@@ -2289,10 +2256,10 @@
             document.getElementById('priceSavings').textContent = `Save ₹${savings}`;
         }
         
-        // Add to Cart Functionality - Shared with index.html
+        // Add to Cart Functionality
         function addToCartFromProductPage() {
             const product = {
-                id: productId, // SAME ID as in index.html
+                id: productId,
                 name: productName,
                 subtitle: productSubtitle,
                 price: productPrice,
@@ -2315,7 +2282,6 @@
             saveCartToStorage();
             updateCart();
             
-            // Show notification
             showNotification(`${quantity} × ${productName} added to cart!`);
         }
         
@@ -2346,7 +2312,6 @@ Please confirm my order and provide delivery details.`;
         // Cart icon click - OPEN CART ON SAME PAGE
         cartIcon.addEventListener('click', () => {
             cartModal.classList.add('open');
-            // Close mobile menu if open
             if (window.innerWidth <= 768) {
                 navLinks.classList.remove('active');
                 menuToggle.querySelector('i').classList.remove('fa-times');
@@ -2421,14 +2386,16 @@ Please confirm my order and provide delivery details.`;
         
         // Initialize
         document.addEventListener('DOMContentLoaded', () => {
-            loadCartFromStorage(); // Initialize cart system
-            initSlideshow(); // Initialize premium slideshow
+            loadCartFromStorage();
+            initSlideshow();
             updatePriceDisplay();
+            
+            // Generate similar products section
+            generateSimilarProducts();
             
             // Listen for cart updates from index.html
             window.addEventListener('storage', function(e) {
                 if (e.key === 'cartUpdated') {
-                    // Reload cart from storage when updated from index page
                     loadCartFromStorage();
                 }
             });
