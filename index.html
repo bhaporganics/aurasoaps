@@ -337,27 +337,32 @@
             align-items: center;
         }
 
-        .about-image {
-            background: linear-gradient(135deg, var(--primary), #d4c3a8);
-            height: 400px;
-            border-radius: var(--radius);
-            overflow: hidden;
-            box-shadow: var(--shadow);
-            position: relative;
-        }
+/* With this: */
+.about-video {
+    background: linear-gradient(135deg, var(--primary), #d4c3a8);
+    height: 400px;
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    position: relative;
+}
 
-        .about-image::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url('https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
-            background-size: cover;
-            background-position: center;
-            opacity: 0.9;
-        }
+.video-player {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: var(--radius);
+}@media (max-width: 992px) {
+    .about-video {
+        height: 350px;
+    }
+}
+
+@media (max-width: 480px) {
+    .about-video {
+        height: 280px;
+    }
+}
 
         .about-content h2 {
             font-size: 2.2rem;
@@ -1417,7 +1422,13 @@
     <section class="about-section" id="about" itemscope itemtype="https://schema.org/AboutPage">
         <div class="container">
             <div class="about-container">
-                <div class="about-image" role="img" aria-label="Aura-Cleanse handmade soap making process"></div>
+<div class="about-video">
+    <video autoplay muted loop playsinline class="video-player" poster="https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80">
+        <source src="aura-inro.mp4" type="video/mp4">
+        <!-- Fallback image if video doesn't load -->
+        <img src="https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80" alt="Aura-Cleanse handmade soap making process">
+    </video>
+</div>
                 <div class="about-content">
                     <h2>About Aura-Cleanse</h2>
                     <p>From the House of BHAP Organics, Aura-Cleanse brings you divine handmade soaps crafted with pure, natural ingredients and ancient Ayurvedic wisdom. Our journey began with a simple mission: to provide skin care that nourishes both body and soul.</p>
