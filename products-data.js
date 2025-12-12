@@ -18,7 +18,7 @@ const allProducts = [
         description: "Calming soap with red sandalwood known for its skin-soothing properties and ability to reduce inflammation.",
         price: 100,
         mrp: 180,
-        image: "soap.jpg",
+        image: "images/redsandal_soap_2.jpg",
         alt: "Aura-Cleanse Red Sandalwood Soap - Ayurvedic Soothing Soap for Skin Inflammation",
         pageUrl: "product-red-sandal.html"
     },
@@ -28,7 +28,7 @@ const allProducts = [
         description: "Ayurvedic formula that helps brighten skin tone, reduce pigmentation, and promote an even complexion.",
         price: 100,
         mrp: 180,
-        image: "soap.jpg",
+        image: "images/manjistha_soap_2.jpg",
         alt: "Aura-Cleanse Manjistha Soap - Natural Skin Brightening Soap for Even Complexion",
         pageUrl: "product-manjistha.html"
     },
@@ -58,7 +58,7 @@ const allProducts = [
         description: "Coffee grounds help tighten skin, reduce cellulite appearance, and provide antioxidant benefits.",
         price: 100,
         mrp: 180,
-        image: "https://images.unsplash.com/photo-1556228578-9c360e1d8d34?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+        image: "images/coffee_soap_2.jpg",
         alt: "Aura-Cleanse Coffee Soap - Skin Tightening Soap with Coffee Grounds",
         pageUrl: "product-coffee.html"
     },
@@ -78,7 +78,7 @@ const allProducts = [
         description: "Powerful antibacterial and antifungal properties help treat skin infections and promote clear skin.",
         price: 100,
         mrp: 180,
-        image: "https://images.unsplash.com/photo-1608248242905-5f2274e7d4d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+        image: "images/wildturmeric_soap_2.jpg",
         alt: "Aura-Cleanse Wild Turmeric Soap - Antibacterial Soap for Clear Skin",
         pageUrl: "product-wild-turmeric.html"
     },
