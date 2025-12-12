@@ -448,7 +448,7 @@
             box-shadow: var(--shadow);
             transition: var(--transition);
             position: relative;
-            cursor: pointer;
+            cursor: default;
         }
 
         .product-card:hover {
@@ -1103,6 +1103,15 @@
             font-size: 1.1rem;
             margin-bottom: 0.5rem;
             color: var(--secondary);
+        }
+
+        /* Product Link Content */
+        .product-link-content {
+            cursor: pointer;
+        }
+
+        .product-link-content:hover .product-title {
+            color: var(--accent);
         }
 
         /* Mobile Responsive */
@@ -1851,16 +1860,7 @@
             });
         }
 
-        // Navigate to product detail page
-        function goToProductDetail(productId) {
-            // Remove 'product-' prefix to get the number
-            const productNumber = productId.replace('product-', '');
-            
-            // Navigate to product detail page
-            window.location.href = `product${productNumber}.html`;
-        }
-
-        // Initialize products on page
+        // Update the product rendering function
         function renderProducts() {
             productsContainer.innerHTML = '';
             
@@ -1869,6 +1869,12 @@
                 productCard.className = 'product-card';
                 productCard.setAttribute('itemscope', '');
                 productCard.setAttribute('itemtype', 'https://schema.org/Product');
+                
+                // Create a URL-friendly name for the product page
+                const productUrlName = product.name.toLowerCase()
+                    .replace(/\s+/g, '-')           // Replace spaces with hyphens
+                    .replace(/[^\w-]/g, '')         // Remove special characters
+                    .replace(/-+/g, '-');           // Replace multiple hyphens with single
                 
                 // Determine badge
                 let badge = '';
@@ -1884,7 +1890,7 @@
                 productCard.innerHTML = `
                     ${badge}
                     <!-- Product content (clickable for navigation) -->
-                    <div class="product-link-content">
+                    <div class="product-link-content" data-product-id="${product.id}" data-product-url="${productUrlName}">
                         <div class="product-image">
                             <img src="${product.image}" alt="${product.alt}" loading="lazy" itemprop="image">
                         </div>
@@ -1923,12 +1929,23 @@
                 
                 productsContainer.appendChild(productCard);
                 
-                // Add click event to the entire card for navigation
-                productCard.addEventListener('click', function(e) {
-                    // If click came from inside quantity selector → DO NOT navigate
-                    if (e.target.closest('.quantity-selector')) return;
+                // Add click event to the product content area for navigation
+                const productContent = productCard.querySelector('.product-link-content');
+                productContent.style.cursor = 'pointer';
+                
+                productContent.addEventListener('click', function(e) {
+                    // Prevent navigation if clicking on buttons or quantity controls
+                    if (e.target.closest('.quantity-selector') || 
+                        e.target.closest('.quantity-btn') || 
+                        e.target.closest('.add-to-cart-btn')) {
+                        return;
+                    }
                     
-                    goToProductDetail(product.id);
+                    const productId = this.getAttribute('data-product-id');
+                    const productUrlName = this.getAttribute('data-product-url');
+                    
+                    // Navigate to product detail page
+                    window.location.href = `product-${productUrlName}.html?id=${productId}`;
                 });
             });
             
