@@ -788,6 +788,39 @@
             background: #3a5152;
         }
 
+        /* Product Hero Section - FIXED */
+.product-hero {
+    padding: 40px 0 30px; /* Reduced from 120px 0 50px */
+    background: linear-gradient(135deg, var(--primary) 0%, #f5efe6 100%);
+    width: 100%;
+    margin-top: 70px; /* This accounts for fixed header */
+}
+
+.product-hero-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem; /* Reduced from 3rem */
+    align-items: start;
+}
+
+/* Add this to reduce space further on mobile */
+@media (max-width: 768px) {
+    .product-hero {
+        padding: 30px 0 20px; /* Even smaller on mobile */
+        margin-top: 65px; /* Slightly less for mobile header */
+    }
+    
+    .product-hero-container {
+        gap: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .product-hero {
+        padding: 25px 0 15px;
+    }
+}
+
         /* Reviews */
         .reviews-carousel {
             margin-top: 40px;
