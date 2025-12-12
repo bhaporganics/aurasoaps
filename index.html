@@ -813,6 +813,8 @@
             transition: var(--transition);
             font-size: 0.9rem;
             letter-spacing: 0.3px;
+            cursor: pointer;
+            border: none;
         }
 
         .order-btn:hover {
@@ -1547,11 +1549,12 @@
         </div>
     </section>
 
-    <!-- Order Options - Now only WhatsApp -->
+    <!-- Order Options - WhatsApp Only -->
     <section class="order-options" id="order">
         <div class="order-container">
             <h2 class="order-title">Easy Ordering Options</h2>
             <div class="order-methods">
+                <!-- Only WhatsApp option remains -->
                 <div class="order-method">
                     <div class="order-icon">
                         <i class="fab fa-whatsapp"></i>
@@ -1560,18 +1563,6 @@
                     <p>Send your order directly to us on WhatsApp for quick processing and confirmation.</p>
                     <a href="https://wa.me/919486331762" class="order-btn" target="_blank">
                         <i class="fab fa-whatsapp"></i> Order Now
-                    </a>
-                </div>
-                
-                <!-- Cart Checkout option removed since phone ordering is not available -->
-                <div class="order-method">
-                    <div class="order-icon">
-                        <i class="fas fa-shopping-cart"></i>
-                    </div>
-                    <h3> Cart</h3>
-                    <p>Add items to your cart and generate WhatsApp order summary for easy ordering.</p>
-                    <a href="#home" class="order-btn" id="cartCheckoutBtn">
-                        <i class="fas fa-shopping-cart"></i> Visit Home
                     </a>
                 </div>
             </div>
@@ -1846,7 +1837,6 @@
         const emptyCartMessage = document.getElementById('emptyCartMessage');
         const productsContainer = document.getElementById('productsContainer');
         const whatsappCartBtn = document.getElementById('whatsappCartBtn');
-        const cartCheckoutBtn = document.getElementById('cartCheckoutBtn');
         const menuToggle = document.getElementById('menuToggle');
         const navLinks = document.getElementById('navLinks');
         const mobileFab = document.getElementById('mobileFab');
@@ -2318,11 +2308,6 @@
         });
 
         whatsappCartBtn.addEventListener('click', checkout);
-
-        cartCheckoutBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            cartModal.classList.add('open');
-        });
 
         // Close cart when clicking outside
         document.addEventListener('click', (e) => {
