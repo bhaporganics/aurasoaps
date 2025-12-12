@@ -38,7 +38,7 @@ const allProducts = [
         description: "Enriched with Urad Dal to exfoliate gently, remove dead skin cells, and reveal naturally glowing skin.",
         price: 100,
         mrp: 180,
-        image: "soap.jpg",
+        image: "images/uraddhal_soap_2.jpg",
         alt: "Aura-Cleanse Urad Dal Soap - Exfoliating Soap for Glowing Natural Skin",
         pageUrl: "product-urad-dal.html"
     },
@@ -68,7 +68,7 @@ const allProducts = [
         description: "Deep cleansing soap with vetiver's earthy aroma that calms the mind while purifying the skin.",
         price: 100,
         mrp: 180,
-        image: "https://images.unsplash.com/photo-1563241527-3004b7be8b7c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+        image: "images/vettiver_soap_2.jpg",
         alt: "Aura-Cleanse Vetiver Soap - Earthy Aroma Soap for Mind Calming and Skin Purification",
         pageUrl: "product-vetiver.html"
     },
@@ -88,7 +88,7 @@ const allProducts = [
         description: "Traditional herb known for healing skin ailments, reducing irritation, and promoting skin regeneration.",
         price: 100,
         mrp: 180,
-        image: "https://images.unsplash.com/photo-1556228578-9c360e1d8d34?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+        image: "images/kuppameni_soap_2.jpg",
         alt: "Aura-Cleanse Kuppaimeni Soap - Skin Healing Soap with Traditional Herbs",
         pageUrl: "product-kuppaimeni.html"
     },
@@ -98,7 +98,7 @@ const allProducts = [
         description: "Green gram flour gently exfoliates and energizes skin, removing impurities and leaving it refreshed.",
         price: 100,
         mrp: 180,
-        image: "https://images.unsplash.com/photo-1563241527-3004b7be8b7c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+        image: "images/greengram_soap_2.jpg",
         alt: "Aura-Cleanse Green Gram Soap - Exfoliating Soap for Energized Skin",
         pageUrl: "product-green-gram.html"
     },
@@ -118,7 +118,7 @@ const allProducts = [
         description: "Activated charcoal draws out impurities, toxins, and excess oil from deep within pores for ultra-clean skin.",
         price: 100,
         mrp: 180,
-        image: "https://images.unsplash.com/photo-1556228578-9c360e1d8d34?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+        image: "images/charcoal_soap_2.jpg",
         alt: "Aura-Cleanse Charcoal Soap - Deep Pore Cleansing Soap with Activated Charcoal",
         pageUrl: "product-charcoal.html"
     },
