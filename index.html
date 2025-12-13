@@ -297,21 +297,36 @@
 
 /* Mobile view image */
 @media (max-width: 768px) {
-    .hero {
-        /* Mobile-specific image */
-        background: url('images/aurasoap_cover_2.jpg');
-        height: 75vh;
-        margin-top: 65px;
-    }
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('images/aurasoap_cover_2.jpg');
+            background-size: cover;
+            background-position: center;
+            height: 85vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            margin-top: 70px;
+            padding: 0 1.5rem;
+        }
 }
 
 /* Small mobile devices */
 @media (max-width: 480px) {
-    .hero {
-        /* Optional: Different image for very small screens */
-        background: url('images/aurasoap_cover_2.jpg');
-        height: 65vh;
-    }
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('images/aurasoap_cover_2.jpg');
+            background-size: cover;
+            background-position: center;
+            height: 85vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            margin-top: 70px;
+            padding: 0 1.5rem;
+        }
 }
 
         .hero-content h1 {
