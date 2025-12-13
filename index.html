@@ -2272,9 +2272,136 @@
         html {
             scroll-behavior: smooth;
         }
+        /* Testimonials Carousel Styles */
+.testimonials-carousel {
+    display: none;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.testimonials-carousel .swiper {
+    padding: 10px 0 40px;
+    width: 100%;
+}
+
+.testimonials-carousel .swiper-slide {
+    height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.testimonials-carousel .testimonial-card {
+    height: 100%;
+    margin: 0;
+}
+
+/* Swiper Navigation */
+.testimonials-carousel .swiper-button-next,
+.testimonials-carousel .swiper-button-prev {
+    color: var(--accent);
+    background: rgba(255, 255, 255, 0.9);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.testimonials-carousel .swiper-button-next:after,
+.testimonials-carousel .swiper-button-prev:after {
+    font-size: 1rem;
+    font-weight: 900;
+}
+
+.testimonials-carousel .swiper-button-next {
+    right: 10px;
+}
+
+.testimonials-carousel .swiper-button-prev {
+    left: 10px;
+}
+
+/* Swiper Pagination */
+.testimonials-carousel .swiper-pagination {
+    bottom: 0;
+}
+
+.testimonials-carousel .swiper-pagination-bullet {
+    width: 10px;
+    height: 10px;
+    background: var(--primary);
+    opacity: 0.5;
+}
+
+.testimonials-carousel .swiper-pagination-bullet-active {
+    background: var(--accent);
+    opacity: 1;
+}
+
+/* Mobile View - Show carousel, hide grid */
+@media (max-width: 768px) {
+    .testimonials-carousel {
+        display: block;
+    }
+    
+    .testimonials-container {
+        display: none;
+    }
+    
+    .testimonials-carousel .swiper-button-next,
+    .testimonials-carousel .swiper-button-prev {
+        width: 32px;
+        height: 32px;
+    }
+    
+    .testimonials-carousel .swiper-button-next:after,
+    .testimonials-carousel .swiper-button-prev:after {
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .testimonials-carousel .swiper-button-next,
+    .testimonials-carousel .swiper-button-prev {
+        display: none;
+    }
+    
+    .testimonials-carousel .swiper {
+        padding: 10px 0 30px;
+    }
+}
+/* Smooth transitions for testimonials */
+.testimonials-carousel .testimonial-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.testimonials-carousel .swiper-slide-active .testimonial-card {
+    transform: scale(1.02);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* Loading animation for carousel */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.testimonials-carousel .swiper-slide {
+    animation: fadeInUp 0.5s ease;
+}
     </style>
     <meta name="google-site-verification" content="JaOw0O6UldWzJ6Q-s_VhNo89gRsNj0T46GZ7k7dOPHE" />
     <meta name="msvalidate.01" content="78269928576A4CB7B40ED1F4267FF3EC" />
+    <!-- Add Swiper CSS for carousel -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
 </head>
 <body itemscope itemtype="https://schema.org/WebSite">
     <header>
@@ -2417,51 +2544,118 @@
     </section>
 
     <section class="testimonials-section">
-        <div class="container" itemscope itemtype="https://schema.org/Review">
-            <h2 class="section-title">What Our Customers Say</h2>
-            <div class="testimonials-container">
-                <div class="testimonial-card">
-                    <div class="testimonial-text" itemprop="reviewBody">
-                        "The Rose Petal soap transformed my dry skin! It's so gentle and leaves my skin feeling incredibly soft. The fragrance is divine!"
+    <div class="container" itemscope itemtype="https://schema.org/Review">
+        <h2 class="section-title">What Our Customers Say</h2>
+        
+        <!-- Desktop view - Grid layout -->
+        <div class="testimonials-container" id="testimonialsGrid">
+            <div class="testimonial-card">
+                <div class="testimonial-text" itemprop="reviewBody">
+                    "The Rose Petal soap transformed my dry skin! It's so gentle and leaves my skin feeling incredibly soft. The fragrance is divine!"
+                </div>
+                <div class="testimonial-author">
+                    <div class="author-avatar">
+                        <i class="fas fa-user"></i>
                     </div>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">
-                            <i class="fas fa-user"></i>
-                        </div>
-                        <div class="author-info">
-                            <h4 itemprop="author">Priya Sharma</h4>
-                        </div>
+                    <div class="author-info">
+                        <h4 itemprop="author">Priya laskshmi</h4>
                     </div>
                 </div>
-                <div class="testimonial-card">
-                    <div class="testimonial-text" itemprop="reviewBody">
-                        "As someone with sensitive skin, I've struggled to find natural soaps that work. Aura-Cleanse's Neem soap has been a game-changer!"
+            </div>
+            <div class="testimonial-card">
+                <div class="testimonial-text" itemprop="reviewBody">
+                    "As someone with sensitive skin, I've struggled to find natural soaps that work. Aura-Cleanse's Neem soap has been a game-changer!"
+                </div>
+                <div class="testimonial-author">
+                    <div class="author-avatar">
+                        <i class="fas fa-user"></i>
                     </div>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">
-                            <i class="fas fa-user"></i>
-                        </div>
-                        <div class="author-info">
-                            <h4 itemprop="author">Rahul Mehta</h4>
-                        </div>
+                    <div class="author-info">
+                        <h4 itemprop="author">Swetha Anandam </h4>
                     </div>
                 </div>
-                <div class="testimonial-card">
-                    <div class="testimonial-text" itemprop="reviewBody">
-                        "The quality is exceptional! You can feel the care that goes into each bar. My entire family uses Aura-Cleanse soaps now."
+            </div>
+            <div class="testimonial-card">
+                <div class="testimonial-text" itemprop="reviewBody">
+                    "The quality is exceptional! You can feel the care that goes into each bar. My entire family uses Aura-Cleanse soaps now."
+                </div>
+                <div class="testimonial-author">
+                    <div class="author-avatar">
+                        <i class="fas fa-user"></i>
                     </div>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">
-                            <i class="fas fa-user"></i>
-                        </div>
-                        <div class="author-info">
-                            <h4 itemprop="author">Anjali Patel</h4>
-                        </div>
+                    <div class="author-info">
+                        <h4 itemprop="author">Anjali Shankar</h4>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
+        
+        <!-- Mobile view - Swiper carousel (hidden on desktop) -->
+        <div class="testimonials-carousel" id="testimonialsCarousel">
+            <div class="swiper">
+                <div class="swiper-wrapper">
+                    <!-- Slide 1 -->
+                    <div class="swiper-slide">
+                        <div class="testimonial-card">
+                            <div class="testimonial-text" itemprop="reviewBody">
+                                "The Rose Petal soap transformed my dry skin! It's so gentle and leaves my skin feeling incredibly soft. The fragrance is divine!"
+                            </div>
+                            <div class="testimonial-author">
+                                <div class="author-avatar">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div class="author-info">
+                                    <h4 itemprop="author">Priya Sharma</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Slide 2 -->
+                    <div class="swiper-slide">
+                        <div class="testimonial-card">
+                            <div class="testimonial-text" itemprop="reviewBody">
+                                "As someone with sensitive skin, I've struggled to find natural soaps that work. Aura-Cleanse's Neem soap has been a game-changer!"
+                            </div>
+                            <div class="testimonial-author">
+                                <div class="author-avatar">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div class="author-info">
+                                    <h4 itemprop="author">Rahul Mehta</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Slide 3 -->
+                    <div class="swiper-slide">
+                        <div class="testimonial-card">
+                            <div class="testimonial-text" itemprop="reviewBody">
+                                "The quality is exceptional! You can feel the care that goes into each bar. My entire family uses Aura-Cleanse soaps now."
+                            </div>
+                            <div class="testimonial-author">
+                                <div class="author-avatar">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div class="author-info">
+                                    <h4 itemprop="author">Anjali Patel</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Navigation buttons -->
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+                
+                <!-- Pagination dots -->
+                <div class="swiper-pagination"></div>
+            </div>
+        </div>
+    </div>
+</section>
 
     <section class="order-options" id="order">
         <div class="order-container">
@@ -2552,17 +2746,17 @@
                     <div class="scrub-image">
                         <i class="fas fa-soap"></i>
                     </div>
-                    <h4>Soap Only</h4>
+                    <h4>Only Soap </h4>
                     <p>Just the premium Ayurvedic soap</p>
                     <div class="scrub-price" id="soapOnlyPrice">₹0</div>
                 </div>
                 
                 <div class="scrub-option" data-option="with-scrub">
                     <div class="scrub-image">
-                        <img src="https://images.unsplash.com/photo-1556228578-9c360e1d8d34?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Herbal Scrub with Soap">
+                        <img src="images/soap_scrub.jpg">
                     </div>
-                    <h4>Soap + Herbal Scrub</h4>
-                    <p>Enhanced cleansing experience</p>
+                    <h4>Soap with Herbal Scrub</h4>
+                    <p>Enhanced cleansing experience with Rs.20 extra</p>
                     <div class="scrub-price" id="withScrubPrice">₹0</div>
                 </div>
             </div>
@@ -2680,6 +2874,67 @@
     </footer>
 
     <script>
+        // Initialize Testimonials Carousel for Mobile
+function initTestimonialsCarousel() {
+    // Only initialize on mobile
+    if (window.innerWidth <= 768) {
+        // Check if swiper is already initialized
+        if (!window.testimonialsSwiper) {
+            window.testimonialsSwiper = new Swiper('#testimonialsCarousel .swiper', {
+                slidesPerView: 1,
+                spaceBetween: 20,
+                loop: true,
+                autoplay: {
+                    delay: 5000,
+                    disableOnInteraction: false,
+                },
+                pagination: {
+                    el: '#testimonialsCarousel .swiper-pagination',
+                    clickable: true,
+                },
+                navigation: {
+                    nextEl: '#testimonialsCarousel .swiper-button-next',
+                    prevEl: '#testimonialsCarousel .swiper-button-prev',
+                },
+                breakpoints: {
+                    480: {
+                        slidesPerView: 1.1,
+                        spaceBetween: 15,
+                    },
+                    640: {
+                        slidesPerView: 1.3,
+                        spaceBetween: 20,
+                    }
+                }
+            });
+        }
+    } else {
+        // Destroy swiper on desktop
+        if (window.testimonialsSwiper) {
+            window.testimonialsSwiper.destroy();
+            window.testimonialsSwiper = null;
+        }
+    }
+}
+
+// Also update your existing initialization function to include the carousel
+document.addEventListener('DOMContentLoaded', () => {
+    // ... existing code ...
+    
+    // Initialize testimonials carousel
+    initTestimonialsCarousel();
+    
+    // Re-initialize on window resize
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+            initTestimonialsCarousel();
+        }, 250);
+    });
+    
+    // ... rest of existing code ...
+});
         // Product Data with images and dual pricing - NOW 15 PRODUCTS
         const products = [
             {
@@ -3976,5 +4231,7 @@
             document.head.appendChild(productScript);
         });
     </script>
+    <!-- Add Swiper JS -->
+<script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
 </body>
 </html>
