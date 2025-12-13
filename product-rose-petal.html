@@ -28,11 +28,9 @@
         <div class="nav-container">
             <a href="index.html" class="logo" itemprop="url">
                 <img src="logo-aura.png" alt="Aura Logo" class="logo-img">
-                <span itemprop="name">AURA<span>SOAPS</span></span>
+                <span itemprop="name">AURA<span></span></span>
             </a>
-            <button class="menu-toggle" id="menuToggle">
-                <i class="fas fa-bars"></i>
-            </button>
+            
             <div class="nav-links" id="navLinks">
                 <a href="index.html#home">Home</a>
                 <a href="index.html#about">About Us</a>
@@ -40,11 +38,18 @@
                 <a href="index.html#benefits">Benefits</a>
                 <a href="index.html#contact">Contact</a>
             </div>
-            <div class="cart-icon" id="cartIcon">
-                <i class="fas fa-shopping-bag"></i>
-                <span class="cart-count">0</span>
+            
+            <div class="nav-icons-wrapper">
+                <button class="menu-toggle" id="menuToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+            
+                <div class="cart-icon" id="cartIcon">
+                    <i class="fas fa-shopping-bag"></i>
+                    <span class="cart-count">0</span>
+                </div>
             </div>
-        </div>
+            </div>
     </header>
 
     <button class="mobile-fab" id="mobileFab" style="display:none !important;">
@@ -389,7 +394,7 @@
                 <button class="whatsapp-order-btn" id="whatsappCartBtn">
                     <i class="fab fa-whatsapp"></i> Order via WhatsApp
                 </button>
-                 <button class="email-order-btn" id="emailCartBtn">
+                <button class="email-order-btn" id="emailCartBtn">
                     <i class="fas fa-envelope"></i> Order via Email
                 </button>
             </div>
@@ -452,7 +457,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
-    <script src="products-data.js"></script>
+    <script src="products-data.js"></script> 
     
     <script>
         // Use the product data from the common file (products-data.js)
@@ -863,7 +868,7 @@ Please confirm my order and provide delivery details.`;
             window.open(whatsappUrl, '_blank');
         }
 
-         function checkoutViaEmail() {
+        function checkoutViaEmail() {
             const totalItems = getTotalItemsInCart();
             if (totalItems === 0) {
                 showNotification('Your cart is empty. Add some items first!');
@@ -945,14 +950,19 @@ Please confirm my order and provide delivery details.`;
                     if (isCartEmpty) {
                         btn.style.opacity = '0.7';
                         btn.style.cursor = 'not-allowed';
-                        btn.removeEventListener('click', checkoutViaWhatsApp);
+                        // Remove listeners to prevent triggering the checkout logic 
+                        // when cart is empty, relying on the notification logic inside checkout functions
+                        btn.removeEventListener('click', checkoutViaWhatsApp); 
                         btn.removeEventListener('click', checkoutViaEmail);
                     } else {
                         btn.style.opacity = '1';
                         btn.style.cursor = 'pointer';
+                        // Add listeners back if not already present
                         if (btn.id === 'whatsappCartBtn') {
+                            btn.removeEventListener('click', checkoutViaWhatsApp); // Prevent duplicate listeners
                             btn.addEventListener('click', checkoutViaWhatsApp);
                         } else if (btn.id === 'emailCartBtn') {
+                            btn.removeEventListener('click', checkoutViaEmail); // Prevent duplicate listeners
                             btn.addEventListener('click', checkoutViaEmail);
                         }
                     }
