@@ -909,6 +909,11 @@ header {
 }
 
 /* Minimum Order Progress Bar */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
 .min-order-progress {
     margin-bottom: 1.5rem;
     padding: 1rem;
@@ -916,11 +921,6 @@ header {
     border-radius: var(--radius);
     border: 1px solid rgba(232, 217, 197, 0.5);
     animation: fadeIn 0.5s ease;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-10px); }
-    to { opacity: 1; transform: translateY(0); }
 }
 
 .progress-header {
@@ -1343,7 +1343,7 @@ footer {
 .scrub-modal-content {
     background-color: white;
     border-radius: 20px;
-    padding: 2rem; /* Reduced default padding */
+    padding: 2rem;
     max-width: 500px;
     width: 100%;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
@@ -1403,49 +1403,7 @@ footer {
     background: linear-gradient(135deg, rgba(183, 110, 121, 0.05), rgba(232, 217, 197, 0.1));
     box-shadow: 0 10px 25px rgba(183, 110, 121, 0.15);
 }
-@media (max-width: 480px) {
-    /* ... existing styles ... */
 
-    /* Reduce padding for modal content on small phones */
-    .scrub-modal-content,
-    .email-modal-content,
-    .min-order-modal-content {
-        padding: 1.2rem; /* Adjusted from 1.5rem to 1.2rem */
-    }
-
-    /* Make the scrub options themselves smaller */
-    .scrub-option {
-        padding: 1rem; /* Added to reduce space inside the options */
-    }
-
-    /* Keep the scrub image size small */
-    .scrub-image {
-        width: 80px; /* Reduced from 100px to 80px */
-        height: 80px;
-        margin: 0 auto 0.8rem; /* Reduced margin */
-    }
-
-    .scrub-option h4 {
-        font-size: 1.1rem; /* Slightly reduced font size */
-    }
-
-    .scrub-price {
-        font-size: 1.2rem; /* Slightly reduced price font size */
-    }
-
-    .scrub-modal-actions {
-        flex-direction: column;
-    }
-
-    .scrub-option.selected::after {
-        width: 20px;
-        height: 20px;
-        font-size: 0.8rem;
-        top: 5px;
-        right: 5px;
-    }
-    /* ... remaining existing styles ... */
-}
 .scrub-option.selected::after {
     content: '✓';
     position: absolute;
@@ -1640,10 +1598,6 @@ footer {
     animation: ripple 2s infinite;
 }
 
-@keyframes ripple {
-    0% { transform: scale(1); opacity: 1; }
-    100% { transform: scale(1.5); opacity: 0; }
-}
 
 .email-modal-content::before {
     content: '';
@@ -2346,15 +2300,31 @@ footer {
         grid-template-columns: 1fr;
     }
     
+    /* MODIFIED: Reduced size for smaller screens */
     .scrub-image {
-        width: 100px;
-        height: 100px;
+        width: 80px;
+        height: 80px;
+        margin: 0 auto 0.5rem; /* Further reduced margin */
     }
     
+    /* MODIFIED: Reduced padding for modal content on small phones */
     .scrub-modal-content,
     .email-modal-content,
     .min-order-modal-content {
-        padding: 1.5rem;
+        padding: 1rem; /* Reduced from 1.5rem to 1rem */
+    }
+    
+    /* MODIFIED: Reduced padding inside the options */
+    .scrub-option {
+        padding: 0.8rem; /* Reduced from 1rem to 0.8rem */
+    }
+
+    .scrub-option h4 {
+        font-size: 1.05rem; /* Further reduced font size */
+    }
+
+    .scrub-price {
+        font-size: 1.15rem; /* Further reduced price font size */
     }
     
     .email-modal-actions {
@@ -2368,6 +2338,14 @@ footer {
     
     .testimonials-carousel .swiper {
         padding: 10px 0 30px;
+    }
+
+    .scrub-option.selected::after {
+        width: 18px; /* Slightly smaller checkmark */
+        height: 18px;
+        font-size: 0.75rem;
+        top: 3px;
+        right: 3px;
     }
 }
 
