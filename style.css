@@ -1343,7 +1343,7 @@ footer {
 .scrub-modal-content {
     background-color: white;
     border-radius: 20px;
-    padding: 2.5rem;
+    padding: 2rem; /* Reduced default padding */
     max-width: 500px;
     width: 100%;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
@@ -1403,7 +1403,49 @@ footer {
     background: linear-gradient(135deg, rgba(183, 110, 121, 0.05), rgba(232, 217, 197, 0.1));
     box-shadow: 0 10px 25px rgba(183, 110, 121, 0.15);
 }
+@media (max-width: 480px) {
+    /* ... existing styles ... */
 
+    /* Reduce padding for modal content on small phones */
+    .scrub-modal-content,
+    .email-modal-content,
+    .min-order-modal-content {
+        padding: 1.2rem; /* Adjusted from 1.5rem to 1.2rem */
+    }
+
+    /* Make the scrub options themselves smaller */
+    .scrub-option {
+        padding: 1rem; /* Added to reduce space inside the options */
+    }
+
+    /* Keep the scrub image size small */
+    .scrub-image {
+        width: 80px; /* Reduced from 100px to 80px */
+        height: 80px;
+        margin: 0 auto 0.8rem; /* Reduced margin */
+    }
+
+    .scrub-option h4 {
+        font-size: 1.1rem; /* Slightly reduced font size */
+    }
+
+    .scrub-price {
+        font-size: 1.2rem; /* Slightly reduced price font size */
+    }
+
+    .scrub-modal-actions {
+        flex-direction: column;
+    }
+
+    .scrub-option.selected::after {
+        width: 20px;
+        height: 20px;
+        font-size: 0.8rem;
+        top: 5px;
+        right: 5px;
+    }
+    /* ... remaining existing styles ... */
+}
 .scrub-option.selected::after {
     content: '✓';
     position: absolute;
