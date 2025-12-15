@@ -8,6 +8,8 @@
     --shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
     --radius: 8px;
     --small-radius: 4px;
+    --success: #27ae60;
+    --warning: #e67e22;
 }
 
 /* --- Product Hero Section --- */
@@ -701,6 +703,420 @@
     visibility: visible;
 }
 
+/* ---------------------------------------------------- */
+/* --- NEWLY ADDED MODAL STYLES (FROM style.css) --- */
+/* ---------------------------------------------------- */
+
+/* Scrub Option Modal */
+.scrub-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 3000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: var(--transition);
+    padding: 1.5rem;
+}
+
+.scrub-modal.open {
+    opacity: 1;
+    visibility: visible;
+}
+
+.scrub-modal-content {
+    background-color: white;
+    border-radius: 20px;
+    padding: 2rem;
+    max-width: 500px;
+    width: 100%;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+    transform: translateY(30px);
+    transition: transform 0.4s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.scrub-modal.open .scrub-modal-content {
+    transform: translateY(0);
+}
+
+.scrub-modal-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.scrub-modal-header h3 {
+    font-size: 1.8rem;
+    color: var(--secondary);
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+.scrub-modal-header p {
+    color: #666;
+    font-size: 0.95rem;
+}
+
+.scrub-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.scrub-option {
+    border: 2px solid #eee;
+    border-radius: 15px;
+    padding: 1.5rem;
+    text-align: center;
+    cursor: pointer;
+    transition: var(--transition);
+    position: relative;
+    background: white;
+}
+
+.scrub-option:hover {
+    border-color: var(--primary);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+}
+
+.scrub-option.selected {
+    border-color: var(--accent);
+    background: linear-gradient(135deg, rgba(183, 110, 121, 0.05), rgba(232, 217, 197, 0.1));
+    box-shadow: 0 10px 25px rgba(183, 110, 121, 0.15);
+}
+
+.scrub-option.selected::after {
+    content: '✓';
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: var(--accent);
+    color: white;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+
+.scrub-image {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 1rem;
+    border-radius: 12px;
+    overflow: hidden;
+    background-color: var(--primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.scrub-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.scrub-image i {
+    font-size: 3rem;
+    color: var(--secondary);
+    opacity: 0.7;
+}
+
+.scrub-option h4 {
+    font-size: 1.2rem;
+    color: var(--secondary);
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+.scrub-option p {
+    color: #666;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+}
+
+.scrub-price {
+    font-size: 1.3rem;
+    color: var(--accent);
+    font-weight: 700;
+    margin-top: 0.5rem;
+}
+
+.scrub-modal-actions {
+    display: flex;
+    gap: 1rem;
+}
+
+.scrub-cancel-btn, .scrub-add-btn {
+    flex: 1;
+    padding: 0.9rem;
+    border-radius: 12px;
+    border: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.scrub-cancel-btn {
+    background-color: #f8f5f1;
+    color: var(--secondary);
+    border: 2px solid #eee;
+}
+
+.scrub-cancel-btn:hover {
+    background-color: #eee;
+    border-color: #ddd;
+}
+
+.scrub-add-btn {
+    background-color: var(--secondary);
+    color: white;
+}
+
+.scrub-add-btn:hover {
+    background-color: #3a5152;
+}
+
+.scrub-add-btn.adding {
+    background-color: var(--accent);
+    position: relative;
+    overflow: hidden;
+}
+
+.scrub-add-btn.adding::after {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border: 3px solid transparent;
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg);
+}
+}
+
+
+/* Email Name Input Modal */
+.email-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 3001;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: var(--transition);
+    padding: 1.5rem;
+    backdrop-filter: blur(8px);
+}
+
+.email-modal.open {
+    opacity: 1;
+    visibility: visible;
+}
+
+.email-modal-content {
+    background-color: white;
+    border-radius: 20px;
+    padding: 2.5rem;
+    max-width: 450px;
+    width: 100%;
+    box-shadow: 0 25px 80px rgba(0, 0, 0, 0.25);
+    transform: translateY(40px) scale(0.95);
+    transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    overflow: hidden;
+}
+
+.email-modal.open .email-modal-content {
+    transform: translateY(0) scale(1);
+}
+
+.email-modal-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.email-icon {
+    font-size: 3.5rem;
+    color: var(--accent);
+    margin-bottom: 1rem;
+    background: linear-gradient(135deg, rgba(232, 217, 197, 0.2), rgba(183, 110, 121, 0.1));
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+    position: relative;
+}
+
+.email-icon::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 2px solid rgba(183, 110, 121, 0.2);
+    animation: ripple 2s infinite;
+}
+
+@keyframes ripple {
+    0% { transform: scale(0.8); opacity: 1; }
+    100% { transform: scale(1.2); opacity: 0; }
+}
+
+
+.email-modal-content::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 6px;
+    background: linear-gradient(90deg, var(--accent), var(--secondary));
+}
+
+.email-modal-header h3 {
+    font-size: 1.8rem;
+    color: var(--secondary);
+    margin-bottom: 0.8rem;
+    font-weight: 600;
+}
+
+.email-modal-header p {
+    color: #666;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.email-input-group {
+    margin-bottom: 2rem;
+}
+
+.email-input-group label {
+    display: block;
+    margin-bottom: 0.8rem;
+    color: var(--secondary);
+    font-weight: 500;
+    font-size: 0.95rem;
+}
+
+.email-name-input {
+    width: 100%;
+    padding: 1rem 1.5rem;
+    border: 2px solid #eee;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-family: 'Montserrat', sans-serif;
+    color: var(--secondary);
+    transition: var(--transition);
+    background-color: #fcfbf9;
+}
+
+.email-name-input:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(183, 110, 121, 0.1);
+    background-color: white;
+}
+
+.email-name-input::placeholder {
+    color: #aaa;
+}
+
+.email-modal-actions {
+    display: flex;
+    gap: 1rem;
+}
+
+.email-cancel-btn, .email-proceed-btn {
+    flex: 1;
+    padding: 1rem;
+    border-radius: 12px;
+    border: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.email-cancel-btn {
+    background-color: #f8f5f1;
+    color: var(--secondary);
+    border: 2px solid #eee;
+}
+
+.email-cancel-btn:hover {
+    background-color: #eee;
+    border-color: #ddd;
+}
+
+.email-proceed-btn {
+    background-color: var(--secondary);
+    color: white;
+}
+
+.email-proceed-btn:hover {
+    background-color: #3a5152;
+}
+
+.email-proceed-btn:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+.email-proceed-btn:disabled:hover {
+    background-color: #cccccc;
+}
+
+/* Cart Item Scrub Indicator */
+.scrub-indicator {
+    display: inline-block;
+    background: linear-gradient(135deg, #ffd166, #ffb347);
+    color: white;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    margin-left: 0.5rem;
+    vertical-align: middle;
+}
+
+
 /* --- Responsive Design (Matching index.html breakpoints) --- */
 @media (max-width: 992px) {
     .product-hero-container {
@@ -750,6 +1166,15 @@
 
     .contact-info {
         justify-content: center;
+    }
+    
+    .scrub-options {
+        grid-template-columns: 1fr;
+    }
+    
+    .scrub-modal-content,
+    .email-modal-content {
+        padding: 1.5rem;
     }
 }
 
@@ -822,6 +1247,41 @@
     
     .similar-products-grid {
         grid-template-columns: 1fr;
+    }
+    
+    .scrub-modal-content,
+    .email-modal-content {
+        padding: 1rem;
+    }
+    
+    .scrub-image {
+        width: 80px;
+        height: 80px;
+        margin: 0 auto 0.5rem; 
+    }
+    
+    .scrub-option {
+        padding: 0.8rem;
+    }
+
+    .scrub-option h4 {
+        font-size: 1.05rem;
+    }
+
+    .scrub-price {
+        font-size: 1.15rem;
+    }
+    
+    .email-modal-actions {
+        flex-direction: column;
+    }
+    
+    .scrub-option.selected::after {
+        width: 18px;
+        height: 18px;
+        font-size: 0.75rem;
+        top: 3px;
+        right: 3px;
     }
 }
 
