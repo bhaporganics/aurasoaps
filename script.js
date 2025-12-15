@@ -156,7 +156,7 @@ const products = [
     },
     {
         id: 'product-12',
-        name: "Charcoal",
+        name: "Activated Charcoal",
         subtitle: "Deep Pore Cleanser",
         description: "Activated charcoal draws out impurities, toxins, and excess oil from deep within pores for ultra-clean skin.",
         price: 160,
@@ -1348,3 +1348,4 @@ document.addEventListener('DOMContentLoaded', () => {
     productScript.textContent = JSON.stringify(productStructuredData);
     document.head.appendChild(productScript);
 });
+
