@@ -131,5 +131,13 @@ const allProducts = [
         image: "images/neem_soap_2.jpg",
         alt: "Aura-Cleanse Neem Soap - Acne Healing Soap with Neem Antibacterial Properties",
         pageUrl: "product-neem.html"
-    }
+    },
+    { id: 'product-14',
+      name: "Function Pack",
+      description: "Celebrate life’s special moments with our Function Soap Packs, a beautifully curated set of 6–7 handmade soaps, each in a unique mould design, thoughtfully arranged on a decorative plate. Designed to blend seamlessly with traditional function décor, these packs are perfect for placing on stages, gifting tables, or alongside ceremonial plates during auspicious occasions.",
+      price: 999,
+      mrp: 1200,
+      image: "images/functionpack_soap_2.jpg",
+      alt: "Aura Rose Petal Handmade Soap - Natural Ayurvedic Soap with Rose Petals for Soft Skin",
+      pageUrl: "product-function-pack.html"
 ];
