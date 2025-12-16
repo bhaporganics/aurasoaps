@@ -23,6 +23,19 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="product-detail.css">
     <style>
+        /* Reset and base styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        html, body {
+            width: 100%;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
         /* Customization Form Styles */
         .customize-section {
             padding: 100px 0 60px;
@@ -34,6 +47,13 @@
             align-items: center;
         }
         
+        .container {
+            width: 100%;
+            max-width: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        
         .customize-container {
             max-width: 700px;
             margin: 0 auto;
@@ -42,6 +62,7 @@
             box-shadow: var(--shadow);
             overflow: hidden;
             width: 100%;
+            width: calc(100% - 20px); /* Added for mobile */
         }
         
         .customize-header {
@@ -72,6 +93,7 @@
         
         .form-group {
             margin-bottom: 25px;
+            width: 100%;
         }
         
         .form-group label {
@@ -123,6 +145,7 @@
             flex-wrap: wrap;
             gap: 8px;
             margin-top: 10px;
+            justify-content: flex-start;
         }
         
         .fragrance-tag {
@@ -319,32 +342,53 @@
         /* Mobile Responsive Styles */
         @media (max-width: 768px) {
             .customize-section {
-                padding: 100px 0 40px;
+                padding: 90px 0 40px;
                 margin-top: 65px;
+                display: block;
+            }
+            
+            .container {
+                padding: 0 10px;
+                display: flex;
+                justify-content: center;
+                align-items: flex-start;
+                min-height: auto;
+            }
+            
+            .customize-container {
+                margin: 0 auto;
+                width: 100%;
+                max-width: 100%;
+                border-radius: 10px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             }
             
             .customize-header {
-                padding: 20px;
+                padding: 20px 15px;
             }
             
             .customize-header h1 {
                 font-size: 1.8rem;
+                padding: 0 10px;
             }
             
             .customize-header p {
                 font-size: 0.9rem;
+                padding: 0 5px;
             }
             
             .customize-form {
-                padding: 20px;
+                padding: 20px 15px;
             }
             
             .customize-actions {
                 flex-direction: column;
+                gap: 10px;
             }
             
             .btn-primary, .btn-secondary {
                 width: 100%;
+                margin: 0;
             }
             
             .quantity-selector {
@@ -355,6 +399,7 @@
             
             .fragrance-examples {
                 justify-content: center;
+                gap: 6px;
             }
             
             .fragrance-tag {
@@ -362,23 +407,49 @@
                 padding: 4px 10px;
             }
             
-            .customize-container {
-                border-radius: 10px;
-                margin: 0 15px;
+            .customize-price {
+                padding: 15px;
+            }
+            
+            .customize-input, .customize-textarea {
+                padding: 10px 12px;
             }
         }
         
         @media (max-width: 480px) {
+            .customize-section {
+                padding: 80px 0 30px;
+            }
+            
+            .container {
+                padding: 0 8px;
+            }
+            
+            .customize-container {
+                margin: 0 auto;
+                width: 100%;
+            }
+            
+            .customize-header {
+                padding: 15px 12px;
+            }
+            
             .customize-header h1 {
                 font-size: 1.6rem;
+                line-height: 1.3;
             }
             
             .customize-header p {
                 font-size: 0.85rem;
+                line-height: 1.4;
             }
             
             .customize-form {
-                padding: 15px;
+                padding: 15px 12px;
+            }
+            
+            .form-group {
+                margin-bottom: 20px;
             }
             
             .form-group label {
@@ -386,7 +457,7 @@
             }
             
             .customize-input, .customize-textarea {
-                padding: 10px 12px;
+                padding: 10px;
                 font-size: 0.95rem;
             }
             
@@ -400,7 +471,8 @@
             
             .min-order-notice {
                 font-size: 0.8rem;
-                padding: 12px;
+                padding: 12px 10px;
+                margin-top: 15px;
             }
             
             .preview-title {
@@ -411,13 +483,22 @@
                 font-size: 0.85rem;
             }
             
-            .customize-container {
-                margin: 0 10px;
-                border-radius: 8px;
+            .fragrance-examples {
+                gap: 5px;
             }
             
-            .container {
-                padding: 0 10px;
+            .fragrance-tag {
+                font-size: 0.75rem;
+                padding: 3px 8px;
+            }
+            
+            .quantity-control {
+                padding: 5px 10px;
+            }
+            
+            .qty-btn {
+                width: 28px;
+                height: 28px;
             }
         }
         
@@ -426,14 +507,30 @@
                 font-size: 1.4rem;
             }
             
-            .fragrance-tag {
-                font-size: 0.75rem;
-                padding: 3px 8px;
+            .customize-header p {
+                font-size: 0.8rem;
             }
             
             .btn-primary, .btn-secondary {
                 font-size: 0.85rem;
                 padding: 10px 12px;
+            }
+            
+            .fragrance-tag {
+                font-size: 0.7rem;
+                padding: 3px 6px;
+            }
+            
+            .fragrance-examples {
+                justify-content: space-between;
+            }
+        }
+        
+        /* Fix for Safari/iOS */
+        @supports (-webkit-touch-callout: none) {
+            .customize-section {
+                min-height: -webkit-fill-available;
+                height: auto;
             }
         }
     </style>
