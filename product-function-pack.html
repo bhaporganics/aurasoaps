@@ -614,13 +614,13 @@
             // Define fallback product data if not found in the array
             const FALLBACK_PRODUCT = {
                 id: PRODUCT_ID,
-                name: "Rose Petal",
-                subtitle: "Simply Rosy",
-                price: 160,
-                mrp: 200,
-                weight: "100g",
-                size: "100g",
-                image: "images/rosepetal_soap_2.jpg",
+                name: "Function Pack",
+                subtitle: "Occation",
+                price: 999,
+                mrp: 1200,
+                weight: "Differs on moulding",
+                size: "Differs on moulding",
+                image: "images/functionpack_soap_2.jpg",
                 alt: "Aura Rose Petal Handmade Soap - Natural Ayurvedic Soap with Rose Petals for Soft Skin"
             };
             productData = FALLBACK_PRODUCT; // Assign fallback data
@@ -629,11 +629,11 @@
         // Product Configuration
         const productId = productData.id;
         const productName = productData.name;
-        const productSubtitle = productData.subtitle || 'Simply Rosy';
+        const productSubtitle = productData.subtitle || 'Occation';
         const productPrice = productData.price;
         const productMrp = productData.mrp;
-        const productWeight = productData.weight || "100g";
-        const productSize = productData.size || "100g";
+        const productWeight = productData.weight || "Differs on moulding";
+        const productSize = productData.size || "Differs on moulding";
         const productImage = productData.image;
         const productAlt = productData.alt;
         let quantity = 1;
@@ -1512,4 +1512,5 @@ Please confirm my order and provide delivery details.`;
         });
     </script>
 </body>
+
 </html>
