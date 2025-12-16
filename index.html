@@ -3,16 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aura |
-Divine Handmade Soaps - Natural Ayurvedic Skincare</title>
+    <title>Aura | Divine Handmade Soaps - Natural Ayurvedic Skincare</title>
     <meta name="description" content="Experience pure Ayurvedic handmade soaps from Aura Soaps. Natural, organic skincare with medicinal herbs for radiant, healthy skin. Shop now for premium quality.">
     <meta name="keywords" content="Ayurvedic soaps, handmade soaps, natural skincare, organic soaps, medicinal herbs soap, rose petal soap, neem soap, sandalwood soap, natural beauty products">
     <meta name="author" content="Aura, BHAP Organics">
     <meta name="robots" content="index, follow">
     <meta property="og:title" content="Aura | Divine Handmade Soaps">
     <meta property="og:description" content="Natural Ayurvedic handmade soaps for radiant skin">
-   
- <meta property="og:type" content="website">
+    <meta property="og:type" content="website">
     <meta property="og:url" content="https://bhaporganics.github.io/aurasoaps/">
     <meta property="og:image" content="https://images.unsplash.com/photo-1600857544200-b2f666a9a2ec?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80">
     <link rel="canonical" href="https://bhaporganics.github.io/aurasoaps/">
@@ -28,12 +26,89 @@ Divine Handmade Soaps - Natural Ayurvedic Skincare</title>
 
     <meta name="google-site-verification" content="JaOw0O6UldWzJ6Q-s_VhNo89gRsNj0T46GZ7k7dOPHE" />
     <meta name="msvalidate.01" content="78269928576A4CB7B40ED1F4267FF3EC" />
+
+    <style>
+        :root {
+            --bar-height: 35px; /* Adjust height for the bar */
+            --bar-bg: #b76e79; /* Accent color for premium look */
+            --bar-text-color: white;
+            --bar-scroll-speed: 12s; /* Adjust animation duration for speed */
+        }
+        
+        #delivery-announcement-bar {
+            position: fixed;
+            top: 70px; /* Below the main header */
+            left: 0;
+            width: 100%;
+            height: var(--bar-height);
+            background: linear-gradient(90deg, var(--bar-bg) 0%, #a65a66 100%);
+            color: var(--bar-text-color);
+            z-index: 999; /* Below header (1000) and modals, above content */
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Adjust content below the bar */
+        body {
+            /* Note: This assumes the original body margin was 0, which is standard. */
+        }
+
+        /* Adjust hero section and mobile header position to account for the bar */
+        .hero {
+            margin-top: calc(70px + var(--bar-height)); /* 70px (header) + 35px (bar) */
+        }
+
+        @media (max-width: 768px) {
+            #delivery-announcement-bar {
+                top: 65px; /* Below the mobile header (65px) */
+            }
+            .hero {
+                margin-top: calc(65px + var(--bar-height)); /* 65px (header) + 35px (bar) */
+            }
+            
+            /* Add some padding to hero to prevent the bar from overlapping the top part of the image */
+            .hero {
+                padding-top: 1.5rem;
+            }
+        }
+
+
+        .announcement-content {
+            white-space: nowrap;
+            display: inline-block;
+            padding-left: 100%; /* Start off-screen to the right */
+            font-size: 0.9rem;
+            font-weight: 500;
+            animation: marquee var(--bar-scroll-speed) linear infinite;
+        }
+
+        .announcement-content span {
+            /* Create space between repeating messages */
+            margin-right: 150px; 
+            display: inline-block;
+            /* Style the icon */
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .announcement-content i {
+            font-size: 1.1em;
+            color: var(--bar-text-color);
+        }
+
+        @keyframes marquee {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(-100%, 0); } /* Scrolls to the left */
+        }
+    </style>
 </head>
 <body itemscope itemtype="https://schema.org/WebSite">
     <header>
         <div class="nav-container">
-    
-         <a href="#" class="logo" itemprop="url">
+            <a href="#" class="logo" itemprop="url">
                 <img src="logo-aura.png" alt="Aura Logo" class="logo-img">
                 <span itemprop="name">AURA<span></span></span>
             </a>
@@ -42,8 +117,7 @@ Divine Handmade Soaps - Natural Ayurvedic Skincare</title>
                 <a href="#home">Home</a>
                 <a href="#about">About Us</a>
                 <a href="#products">Products</a>
-      
-           <a href="#benefits">Benefits</a>
+                <a href="#benefits">Benefits</a>
                 <a href="#contact">Contact</a>
             </div>
             
@@ -64,10 +138,22 @@ Divine Handmade Soaps - Natural Ayurvedic Skincare</title>
         </div>
     </header>
 
+    <div id="delivery-announcement-bar">
+        <div class="announcement-content">
+            <script>
+                // New message with the truck icon
+                const message = `<i class="fas fa-truck-fast"></i> Delivery Fee ₹100 will be added extra to every order`;
+                const contentDiv = document.querySelector('.announcement-content');
+                // Repeat the message enough times to fill the space
+                contentDiv.innerHTML = '<span>' + message + '</span>'.repeat(10); 
+            </script>
+        </div>
+    </div>
     <button class="mobile-fab" id="mobileFab">
         <i class="fas fa-shopping-bag"></i>
  
         <div class="min-order-indicator" id="mobileFabIndicator" style="display: none;">
+ 
             <i class="fas fa-exclamation"></i>
         </div>
     </button>
@@ -76,6 +162,7 @@ Divine Handmade Soaps - Natural Ayurvedic Skincare</title>
         <div class="hero-content">
             <h1>The Divine Cleanse</h1>
             <p>Experience the purity of nature with our handmade organic soaps, crafted with ancient Ayurvedic wisdom and the finest natural ingredients for healthy skin.</p>
+            
             <a href="#products" class="cta-button">Explore Our Collection</a>
         </div>
     </section>
@@ -86,15 +173,19 @@ Divine Handmade Soaps - Natural Ayurvedic Skincare</title>
                 <div class="about-video">
                     <video autoplay muted loop 
 playsinline class="video-player" poster="images/aurasoap_cover_1.jpg">
-                        <source src="aura-inro.mp4" type="video/mp4">
+           
+              <source src="aura-inro.mp4" type="video/mp4">
                         <img src="images/aurasoap_cover_1.jpg" alt="Aura handmade soap making process">
                     </video>
                 </div>
       
            <div class="about-content">
+ 
                     <h2>About Aura </h2>
-                    <p>From the House of BHAP Organics, Aura is the divine handmade soaps crafted with pure, natural ingredients and ancient Ayurvedic wisdom. Our journey began with a simple mission to provide skin care that nourishes both body and soul.</p>
-                    <p>Each soap is meticulously handcrafted in small batches, ensuring the highest quality and potency of natural ingredients. We believe in sustainable practices, ethical sourcing, and creating products that are gentle on both your skin and the environment.</p>
+                    <p>From the House of BHAP Organics, Aura is the divine handmade soaps crafted with pure, natural ingredients and ancient Ayurvedic wisdom.
+ Our journey began with a simple mission to provide skin care that nourishes both body and soul.</p>
+                    <p>Each soap is meticulously handcrafted in small batches, ensuring the highest quality and potency of natural ingredients.
+ We believe in sustainable practices, ethical sourcing, and creating products that are gentle on both your skin and the environment.</p>
                     
                     <div class="values-grid">
                         <div class="value-item">
@@ -102,46 +193,52 @@ playsinline class="video-player" poster="images/aurasoap_cover_1.jpg">
               <div class="value-icon">
                                 <i class="fas fa-leaf"></i>
                             </div>
-                        
+                       
      <div class="value-content">
                                 <h4>100% Natural</h4>
                                 <p>Only pure, plant-based ingredients</p>
-                           
+                         
  </div>
                         </div>
                         <div class="value-item">
                             <div class="value-icon">
-                     
+                   
                <i class="fas fa-heart"></i>
                             </div>
                             <div class="value-content">
-                              
+                        
+       
    <h4>Handcrafted</h4>
                                 <p>Made with love and care</p>
                             </div>
                         </div>
-          
+   
                <div class="value-item">
                             <div class="value-icon">
                                 <i class="fas fa-seedling"></i>
-                      
+              
+         
        </div>
                             <div class="value-content">
                                 <h4>Sustainable</h4>
-                                <p>Eco-friendly 
+                        
+         <p>Eco-friendly 
  and biodegradable</p>
                             </div>
                         </div>
                         <div class="value-item">
-                      
+            
+           
        <div class="value-icon">
                                 <i class="fas fa-hand-peace"></i>
                             </div>
-                            <div class="value-content">
+                    
+         <div class="value-content">
   
                                 <h4>Cruelty-Free</h4>
                                 <p>Never tested on animals</p>
-                            </div>
+                      
+       </div>
        
                   </div>
                     </div>
@@ -151,7 +248,8 @@ playsinline class="video-player" poster="images/aurasoap_cover_1.jpg">
     </section>
 
     <section id="products" itemscope itemtype="https://schema.org/ItemList">
-        <div class="container">
+  
+       <div class="container">
        
       <h2 class="section-title">Our Divine Collection</h2>
             
@@ -162,30 +260,35 @@ playsinline class="video-player" poster="images/aurasoap_cover_1.jpg">
 
     <section class="benefits-section" id="benefits">
         <div class="container">
-            <h2 class="section-title">Why Choose Aura</h2>
+        
+     <h2 class="section-title">Why Choose Aura</h2>
         
      <div class="benefits-container">
                 <div class="benefit-card">
                     <div class="benefit-icon">
                         <i class="fas fa-spa"></i>
-                    </div>
+               
+      </div>
            
           <h3>Ayurvedic Wisdom</h3>
                     <p>Formulated using ancient Ayurvedic principles for balanced, healthy skin.</p>
                 </div>
                 <div class="benefit-card">
-                    <div class="benefit-icon">
+            
+         <div class="benefit-icon">
         
                  <i class="fas fa-star"></i>
                     </div>
                     <h3>Premium Quality</h3>
-                    <p>Only the finest natural ingredients, carefully selected for purity and potency.</p>
+                    <p>Only the finest 
+ natural ingredients, carefully selected for purity and potency.</p>
            
       </div>
                 <div class="benefit-card">
                     <div class="benefit-icon">
                         <i class="fas fa-smile"></i>
-                    </div>
+            
+         </div>
            
           <h3>Skin Nourishment</h3>
                     <p>Deeply moisturizes and nourishes skin without harsh chemicals or additives.</p>
@@ -194,6 +297,7 @@ playsinline class="video-player" poster="images/aurasoap_cover_1.jpg">
         </div>
     </section>
 
+ 
     <section class="testimonials-section">
         <div class="container" itemscope itemtype="https://schema.org/Review">
      
@@ -202,9 +306,11 @@ playsinline class="video-player" poster="images/aurasoap_cover_1.jpg">
             <div class="testimonials-container" id="testimonialsGrid">
                 <div class="testimonial-card">
                     <div class="testimonial-text" itemprop="reviewBody">
-                        
-"The Rose Petal soap transformed my dry skin! It's so gentle and leaves my skin feeling incredibly soft.
-The fragrance is divine!"
+   
+                      
+"The Rose Petal soap transformed my dry skin!
+ It's so gentle and leaves my skin feeling incredibly soft.
+ The fragrance is divine!"
                     </div>
                     <div class="testimonial-author">
                         <div class="author-avatar">
@@ -213,15 +319,16 @@ The fragrance is divine!"
                         </div>
                         <div class="author-info">
                             <h4 itemprop="author">Swetha Anand</h4>
-                      
+                     
    </div>
                     </div>
                 </div>
                 <div class="testimonial-card">
                     <div class="testimonial-text" itemprop="reviewBody">
-                       
+                     
+   
  "As someone with sensitive skin, I've struggled to find natural soaps that work.
-Aura's Neem soap has been a game-changer!"
+ Aura's Neem soap has been a game-changer!"
                     </div>
                     <div class="testimonial-author">
                         <div class="author-avatar">
@@ -236,9 +343,10 @@ Aura's Neem soap has been a game-changer!"
                 </div>
                 <div class="testimonial-card">
                     <div class="testimonial-text" itemprop="reviewBody">
-                   
-      "The quality is exceptional! You can feel the care that goes into each bar.
-My entire family uses Aura soaps now."
+                  
+      "The quality is exceptional!
+ You can feel the care that goes into each bar.
+ My entire family uses Aura soaps now."
                     </div>
                     <div class="testimonial-author">
                         <div class="author-avatar">
@@ -247,89 +355,100 @@ My entire family uses Aura soaps now."
                         </div>
                         <div class="author-info">
                             <h4 itemprop="author">Kala Devi</h4>
-                   
-      </div>
+                  
+       </div>
                     </div>
                 </div>
             </div>
             
             <div class="testimonials-carousel" id="testimonialsCarousel">
                 <div class="swiper">
-    
+  
+   
                  <div class="swiper-wrapper">
                         <div class="swiper-slide">
                             <div class="testimonial-card">
-                             
+                          
     <div class="testimonial-text" itemprop="reviewBody">
                                     "The Rose Petal soap transformed my dry skin!
-It's so gentle and leaves my skin feeling incredibly soft.
-The fragrance is divine!"
+ It's so gentle and leaves my skin feeling incredibly soft.
+ The fragrance is divine!"
                                 </div>
                                 <div class="testimonial-author">
                                 
      <div class="author-avatar">
                                         <i class="fas fa-user"></i>
                                     </div>
-                 
+                
+  
                     <div class="author-info">
                                         <h4 itemprop="author">Swetha Anand</h4>
-                                    </div>
+                                    
+ </div>
   
                                </div>
                             </div>
                         </div>
-                  
+               
        
                         <div class="swiper-slide">
                             <div class="testimonial-card">
                                 <div class="testimonial-text" itemprop="reviewBody">
-      
+  
+     
                                "As someone with sensitive skin, I've struggled to find natural soaps that work.
-Aura's Neem soap has been a game-changer!"
+ Aura's Neem soap has been a game-changer!"
                                 </div>
                                 <div class="testimonial-author">
                              
         <div class="author-avatar">
                                         <i class="fas fa-user"></i>
                                     </div>
-              
+             
+  
                        <div class="author-info">
                                         <h4 itemprop="author">Mirthin Raj</h4>
-                                   
+                                 
+   
  </div>
                                 </div>
                             </div>
                         </div>
-               
+             
+   
           
                         <div class="swiper-slide">
                             <div class="testimonial-card">
-                                <div class="testimonial-text" itemprop="reviewBody">
+                                <div class="testimonial-text" 
+ itemprop="reviewBody">
    
                                   "The quality is exceptional!
-You can feel the care that goes into each bar.
-My entire family uses Aura soaps now."
+ You can feel the care that goes into each bar.
+ My entire family uses Aura soaps now."
                                 </div>
                                 <div class="testimonial-author">
                              
         <div class="author-avatar">
                                         <i class="fas fa-user"></i>
                                     </div>
-              
+             
+  
                        <div class="author-info">
                                         <h4 itemprop="author">Kala Devi</h4>
-                                   
+                                 
+   
  </div>
                                 </div>
                             </div>
                         </div>
-               
+             
+   
       </div>
                     
                     <div class="swiper-button-next"></div>
                     <div class="swiper-button-prev"></div>
                     
-             
+          
                <div class="swiper-pagination"></div>
                 </div>
             </div>
@@ -339,34 +458,38 @@ My entire family uses Aura soaps now."
     <section class="order-options" id="order">
         <div class="order-container">
             <h2 class="order-title">Easy Ordering Options</h2>
-            <div class="order-methods">
+           
+  <div class="order-methods">
          
         <div class="order-method">
                     <div class="order-icon">
                         <i class="fab fa-whatsapp"></i>
                     </div>
-                    <h3>Order via WhatsApp</h3>
+             
+        <h3>Order via WhatsApp</h3>
    
                   <p>Send your order directly to us on WhatsApp for quick processing and confirmation.</p>
                     <button class="order-btn" id="whatsappOrderBtn">
                         <i class="fab fa-whatsapp"></i> Order via WhatsApp
-                    
+       
  </button>
                 </div>
                 
                 <div class="order-method">
                     <div class="order-icon">
-                        <i class="fas fa-envelope"></i>
+                
+         <i class="fas fa-envelope"></i>
     
                  </div>
                     <h3>Order via Email</h3>
                     <p>Send your cart details via email.
-We'll prepare your order and get back to you with confirmation.</p>
+ We'll prepare your order and get back to you with confirmation.</p>
                     <button class="order-btn" id="emailOrderBtn">
                         <i class="fas fa-envelope"></i> Order via Email
                     </button>
                 </div>
    
+ 
           </div>
             <p style="margin-top: 1.5rem; font-size: 0.9rem; color: var(--secondary); text-align: center;">
                 <i class="fas fa-info-circle"></i> Minimum order: 3 products for processing
@@ -376,7 +499,8 @@ We'll prepare your order and get back to you with confirmation.</p>
 
     <div class="cart-modal" id="cartModal">
         <div class="cart-header">
-        
+       
+  
      <h2>Your Cart</h2>
             <button class="close-cart" id="closeCart">
                 <i class="fas fa-times"></i>
@@ -385,14 +509,16 @@ We'll prepare your order and get back to you with confirmation.</p>
         
         <div class="min-order-progress" id="minOrderProgress" style="display: none;">
             <div class="progress-header">
-          
+        
+   
        <div class="progress-text">Minimum Order Progress</div>
                 <div class="progress-count" id="progressCount">0/3</div>
             </div>
             <div class="progress-bar-container">
                 <div class="progress-bar" id="progressBar" style="width: 0%"></div>
             </div>
-            <div class="progress-message" id="progressMessage">
+            <div 
+ class="progress-message" id="progressMessage">
   
                Add 3 more products to place your order
             </div>
@@ -401,7 +527,8 @@ We'll prepare your order and get back to you with confirmation.</p>
         <div class="cart-items" id="cartItems">
             <div class="empty-cart-message" id="emptyCartMessage">
                 <p>Your cart is empty</p>
-        
+    
+     
          <p>Add some divine soaps to get started!</p>
             </div>
             </div>
@@ -409,14 +536,16 @@ We'll prepare your order and get back to you with confirmation.</p>
         <div class="cart-footer">
             <div class="cart-total">
                 <span>Total:</span>
-                
+           
+      
  <span id="cartTotal">₹0</span>
             </div>
             
             <div class="cart-actions">
                 <button class="whatsapp-order-btn" id="whatsappCartBtn">
                     <i class="fab fa-whatsapp"></i> Order via WhatsApp
-                </button>
+             
+    </button>
    
               <button class="email-order-btn" id="emailCartBtn">
                     <i class="fas fa-envelope"></i> Order via Email
@@ -426,7 +555,8 @@ We'll prepare your order and get back to you with confirmation.</p>
     </div>
 
     <div class="scrub-modal" id="scrubModal">
-        <div class="scrub-modal-content">
+       
+  <div class="scrub-modal-content">
      
         <div class="scrub-modal-header">
                 <h3 id="scrubProductName">Add to Cart</h3>
@@ -434,36 +564,42 @@ We'll prepare your order and get back to you with confirmation.</p>
             </div>
             
             <div class="scrub-options">
+ 
          
         <div class="scrub-option selected" data-option="soap-only">
                     <div class="scrub-image">
                         <i class="fas fa-soap"></i>
                     </div>
-                    <h4>Only Soap </h4>
+              
+       <h4>Only Soap </h4>
  
                     <p>Just the premium Ayurvedic soap</p>
                     <div class="scrub-price" id="soapOnlyPrice">₹0</div>
                 </div>
                 
-                <div class="scrub-option" data-option="with-scrub">
+             
+    <div class="scrub-option" data-option="with-scrub">
      
                 <div class="scrub-image">
                         <img src="images/soap_scrub.jpg" alt="Herbal scrub pouch">
                     </div>
                     <h4>Soap with Herbal Scrub</h4>
-             
+  
+            
         <p>Enhanced cleansing experience with Rs.20 extra</p>
                     <div class="scrub-price" id="withScrubPrice">₹0</div>
                 </div>
             </div>
             
             <div class="scrub-modal-actions">
+ 
              
     <button class="scrub-cancel-btn" id="scrubCancelBtn">
                     <i class="fas fa-times"></i> Cancel
                 </button>
                 <button class="scrub-add-btn" id="scrubAddBtn">
-                    <i class="fas fa-shopping-bag"></i> Add to Cart
+                    <i class="fas fa-shopping-bag"></i> Add to 
+ Cart
              
     </button>
             </div>
@@ -474,12 +610,13 @@ We'll prepare your order and get back to you with confirmation.</p>
         <div class="email-modal-content">
             <div class="email-modal-header">
                 <div class="email-icon">
-                    <i class="fas fa-envelope"></i>
+              
+       <i class="fas fa-envelope"></i>
       
            </div>
                 <h3>Complete Your Order</h3>
                 <p>Please provide your name for order confirmation.
-We'll contact you via email for further details.</p>
+ We'll contact you via email for further details.</p>
             </div>
             
             <div class="email-input-group">
@@ -487,12 +624,14 @@ We'll contact you via email for further details.</p>
                 <input type="text" id="customerName" class="email-name-input" placeholder="Enter your name" maxlength="50">
             </div>
   
+ 
            
             <div class="email-modal-actions">
                 <button class="email-cancel-btn" id="emailCancelBtn">
                     <i class="fas fa-times"></i> Cancel
                 </button>
-                <button class="email-proceed-btn" id="emailProceedBtn" disabled>
+                <button class="email-proceed-btn" id="emailProceedBtn" 
+ disabled>
  
                     <i class="fas fa-paper-plane"></i> Proceed with Order
                 </button>
@@ -503,14 +642,16 @@ We'll contact you via email for further details.</p>
     <div class="min-order-modal" id="minOrderModal">
         <div class="min-order-modal-content">
             <div class="min-order-icon">
-        
+      
+   
          <i class="fas fa-shopping-basket"></i>
             </div>
             
             <div class="min-order-modal-header">
                 <h3 id="minOrderTitle">Add More Items</h3>
                 <div class="min-order-message" id="minOrderMessage">
-                
+             
+    
      You need to add <span class="min-order-count" id="itemsNeededCount">3</span> more product(s) to meet the minimum order requirement.
  </div>
             </div>
@@ -520,6 +661,7 @@ We'll contact you via email for further details.</p>
                     <i class="fas fa-times"></i> Close
                 </button>
       
+ 
            <button class="min-order-shop-btn" id="minOrderShopBtn">
                     <i class="fas fa-shopping-bag"></i> Continue Shopping
                 </button>
@@ -529,7 +671,8 @@ We'll contact you via email for further details.</p>
 
     <footer id="contact" itemscope itemtype="https://schema.org/LocalBusiness">
         <div class="footer-container">
-        
+       
+  
      <div class="footer-column">
                 <h3>AURA</h3>
                 <p itemprop="description">Experience the purity of nature with our handmade organic soaps, crafted with ancient Ayurvedic wisdom and the finest natural ingredients for healthy skin.</p>
@@ -542,18 +685,21 @@ We'll contact you via email for further details.</p>
                     <i class="fab fa-whatsapp"></i>
                     <a href="https://wa.me/918532853241" target="_blank">WhatsApp: 8532853241</a>
                 </div>
-      
+     
+  
            <div class="contact-info">
                     <i class="fas fa-envelope"></i>
                     <a href="mailto:bhaporganics@gmail.com" itemprop="email">bhaporganics@gmail.com</a>
                 </div>
                 <div class="contact-info">
-            
+          
+   
          <i class="fas fa-map-marker-alt"></i>
                     <span itemprop="address" itemscope itemtype="https://schema.org/PostalAddress">
                         <span itemprop="addressLocality">Theni</span>, 
                         <span itemprop="addressRegion">Tamilnadu</span>
-                
+             
+    
      </span>
                 </div>
             </div>
@@ -561,21 +707,24 @@ We'll contact you via email for further details.</p>
             <div class="footer-column">
                 <h3>Quick Links</h3>
                 <a href="#home">Home</a>
-         
+     
+     
         <a href="#about">About Us</a>
                 <a href="#products">Products</a>
                 <a href="#benefits">Benefits</a>
                 <a href="#order">Order Options</a>
                 <a href="#contact">Contact</a>
             </div>
-          
+     
+      
    
             <div class="footer-column">
                 <h3>Our Promise</h3>
                 <p>100% Natural Ingredients</p>
                 <p>Handmade with Care</p>
                 <p>Cruelty-Free & Sustainable</p>
-              
+        
+       
    <p>Ayurvedic Formulations</p>
                 <p>No Artificial Preservatives</p>
             </div>
@@ -583,7 +732,7 @@ We'll contact you via email for further details.</p>
         
         <div class="copyright">
             <p>&copy;
-AURA - From the House of BHAP Organics. All rights reserved.</p>
+ AURA - From the House of BHAP Organics. All rights reserved.</p>
         </div>
     </footer>
 
