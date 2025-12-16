@@ -3,517 +3,1426 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Alchemist's Atelier | Aura Custom Soaps</title>
-    
+    <title>Customize Your Soap | Create Personalized Handmade Soap | Aura</title>
+    <meta name="description" content="Create your own personalized handmade soap with Aura. Choose your fragrance and add special instructions for a custom soap experience.">
+    <meta name="keywords" content="custom soap, personalized soap, handmade custom soap, fragrance soap, bespoke soap, custom skincare, personalized gifts">
+    <meta name="author" content="Aura, BHAP Organics">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="Customize Your Soap | Create Personalized Handmade Soap | Aura">
+    <meta property="og:description" content="Design your own personalized handmade soap with custom fragrance and instructions">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://bhaporganics.github.io/aurasoaps/customize-soap.html">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1608248242905-5f2274e7d4d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80">
+    <link rel="canonical" href="https://bhaporganics.github.io/aurasoaps/customize-soap.html">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
     
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="product-detail.css">
     <style>
-        /* --- CORE STYLES (Derived from style.css) --- */
-        :root {
-            --primary: #e8d9c5;
-            --secondary: #2c3e3f;
-            --accent: #b76e79;
-            --light: #f8f5f1;
-            --dark: #1a1a1a;
-            --transition: all 0.3s ease;
-            --shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
-            --radius: 8px;
-            --success: #27ae60;
-            --warning: #e67e22;
-        }
-
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-
-        body {
-            font-family: 'Montserrat', sans-serif;
-            background-color: var(--light);
-            color: var(--dark);
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
-
-        h1, h2, h3 { font-family: 'Cormorant Garamond', serif; font-weight: 500; }
-
-        /* --- NAVIGATION --- */
-        header {
-            background-color: rgba(255, 255, 255, 0.98);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-            position: fixed;
+        /* Customization Form Styles */
+        .customize-section {
+            padding: 100px 0 60px;
+            background: linear-gradient(135deg, var(--primary) 0%, #f5efe6 100%);
             width: 100%;
-            top: 0;
-            z-index: 1000;
-            height: 70px;
+            margin-top: 70px;
+            min-height: calc(100vh - 70px);
             display: flex;
             align-items: center;
         }
-
-        .nav-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-            max-width: 1200px;
+        
+        .customize-container {
+            max-width: 700px;
             margin: 0 auto;
-            padding: 0 1.5rem;
-        }
-
-        .logo {
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-size: 1.8rem;
-            color: var(--secondary);
-            font-weight: 600;
-        }
-
-        .logo-img { width: 50px; height: 50px; border-radius: 50%; border: 2px solid var(--primary); }
-
-        .cart-icon {
-            position: relative;
-            cursor: pointer;
-            padding: 0.6rem;
             background: white;
-            border-radius: 10px;
-            border: 1px solid var(--primary);
-            width: 46px;
-            height: 46px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .cart-count {
-            position: absolute;
-            top: -5px;
-            right: -5px;
-            background: var(--accent);
-            color: white;
-            width: 22px;
-            height: 22px;
-            border-radius: 50%;
-            font-size: 0.75rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 2px solid white;
-        }
-
-        /* --- CUSTOMIZER UI --- */
-        .atelier-container {
-            margin-top: 100px;
-            max-width: 1200px;
-            margin-left: auto;
-            margin-right: auto;
-            padding: 2rem 1.5rem;
-        }
-
-        .atelier-header { text-align: center; margin-bottom: 3rem; }
-        .atelier-header h1 { font-size: 3rem; color: var(--secondary); margin-bottom: 10px; }
-        .atelier-header p { font-style: italic; color: #666; }
-
-        .builder-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 3rem;
-            align-items: start;
-        }
-
-        .soap-palette {
-            background: white;
-            padding: 1.5rem;
             border-radius: var(--radius);
             box-shadow: var(--shadow);
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
-            gap: 1.2rem;
-            max-height: 550px;
-            overflow-y: auto;
+            overflow: hidden;
         }
-
-        .palette-item {
-            text-align: center;
-            cursor: grab;
-            padding: 0.8rem;
-            border: 1px solid #f0f0f0;
-            border-radius: var(--radius);
-            transition: var(--transition);
-            background: #fff;
-        }
-
-        .palette-item:hover { border-color: var(--accent); transform: translateY(-3px); }
-        .palette-item img { width: 70px; height: 70px; object-fit: cover; border-radius: 50%; margin-bottom: 8px; }
-        .palette-item p { font-size: 0.85rem; font-weight: 500; }
-
-        .mixing-zone { text-align: center; }
-
-        .vessel {
-            background: radial-gradient(circle, #fff 0%, var(--primary) 100%);
-            border: 4px dashed var(--accent);
-            border-radius: 50%;
-            height: 380px;
-            width: 380px;
-            margin: 0 auto 2rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            transition: var(--transition);
-            box-shadow: inset 0 0 20px rgba(0,0,0,0.05);
-        }
-
-        .vessel.drag-over { background: #fdfaf5; border-style: solid; transform: scale(1.02); }
-
-        .vessel-items { 
-            display: flex; 
-            gap: 8px; 
-            flex-wrap: wrap; 
-            justify-content: center; 
-            padding: 20px;
-            z-index: 2;
-        }
-
-        .vessel-tag { 
-            background: white; 
-            padding: 6px 14px; 
-            border-radius: 20px; 
-            font-size: 0.75rem; 
-            box-shadow: var(--shadow);
-            border: 1px solid var(--primary);
-            animation: fadeIn 0.3s ease;
-        }
-
-        @keyframes fadeIn { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
-
-        /* --- WISH FORM --- */
-        .wish-section {
-            margin-top: 5rem;
-            background: white;
-            padding: 3rem;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            border-top: 6px solid var(--accent);
-            text-align: center;
-        }
-
-        .wish-section h2 { font-size: 2.5rem; margin-bottom: 1rem; }
-        .form-group { text-align: left; margin-bottom: 1.5rem; max-width: 700px; margin-left: auto; margin-right: auto; }
-        .form-group label { display: block; margin-bottom: 8px; font-weight: 600; color: var(--secondary); }
-        .form-group input, .form-group textarea {
-            width: 100%;
-            padding: 1rem;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            font-family: inherit;
-            font-size: 1rem;
-        }
-
-        .btn-aura {
+        
+        .customize-header {
+            padding: 30px;
             background: var(--secondary);
             color: white;
-            padding: 1.2rem 2.5rem;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            font-weight: 600;
+            text-align: center;
+        }
+        
+        .customize-header h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            font-weight: 400;
+            color: white;
+        }
+        
+        .customize-header p {
             font-size: 1rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.5;
+        }
+        
+        .customize-form {
+            padding: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--secondary);
+            font-size: 1rem;
+        }
+        
+        .form-group label .required {
+            color: var(--accent);
+        }
+        
+        .customize-input, .customize-textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #eee;
+            border-radius: var(--radius);
+            font-size: 1rem;
+            font-family: 'Montserrat', sans-serif;
+            color: var(--secondary);
             transition: var(--transition);
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
+            background-color: #fcfbf9;
         }
-
-        .btn-aura:hover { background: var(--accent); transform: translateY(-2px); }
-        .btn-aura:disabled { background: #ccc; cursor: not-allowed; transform: none; }
-
-        /* --- CART SIDEBAR --- */
-        .cart-sidebar {
-            position: fixed; top: 0; right: -100%; width: 420px; height: 100%;
-            background: white; z-index: 2000; box-shadow: -10px 0 40px rgba(0,0,0,0.1);
-            transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); padding: 2.5rem;
-            display: flex; flex-direction: column;
+        
+        .customize-input:focus, .customize-textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(183, 110, 121, 0.1);
+            background-color: white;
         }
-        .cart-sidebar.open { right: 0; }
-        .cart-items-list { flex-grow: 1; overflow-y: auto; margin: 2rem 0; }
-        .cart-item { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding: 15px 0; }
-
-        .min-order-alert {
-            background: #fff8f0;
-            border: 1px solid var(--warning);
-            padding: 10px;
-            border-radius: 6px;
+        
+        .customize-textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .fragrance-hint {
             font-size: 0.85rem;
-            color: var(--warning);
-            margin-bottom: 1rem;
+            color: #666;
+            margin-top: 5px;
+            display: block;
+        }
+        
+        .fragrance-examples {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        
+        .fragrance-tag {
+            background: rgba(232, 217, 197, 0.3);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: var(--secondary);
+            cursor: pointer;
+            transition: var(--transition);
+            border: 1px solid transparent;
+        }
+        
+        .fragrance-tag:hover {
+            background: var(--primary);
+            border-color: var(--accent);
+        }
+        
+        .customize-price {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: var(--radius);
+            margin-bottom: 25px;
+            border: 1px solid #eee;
+        }
+        
+        .price-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 1rem;
+        }
+        
+        .price-row.total {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--secondary);
+            border-top: 1px solid #eee;
+            padding-top: 10px;
+            margin-top: 10px;
+        }
+        
+        .quantity-selector {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 15px;
+            margin-bottom: 20px;
         }
-
-        /* --- FOOTER --- */
-        footer { background: var(--secondary); color: white; padding: 3rem 1.5rem; margin-top: 5rem; text-align: center; }
-
-        @media (max-width: 900px) {
-            .builder-grid { grid-template-columns: 1fr; }
-            .vessel { width: 320px; height: 320px; }
-            .cart-sidebar { width: 100%; }
+        
+        .quantity-control {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #f9f9f9;
+            padding: 6px 12px;
+            border-radius: var(--radius);
+        }
+        
+        .qty-btn {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: 1px solid #ddd;
+            background: white;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .qty-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+        
+        .qty-display {
+            font-size: 1rem;
+            font-weight: 600;
+            min-width: 30px;
+            text-align: center;
+        }
+        
+        .customize-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 25px;
+        }
+        
+        .btn-primary, .btn-secondary {
+            flex: 1;
+            padding: 12px 16px;
+            border-radius: var(--radius);
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        
+        .btn-primary {
+            background: var(--secondary);
+            color: white;
+            border: none;
+        }
+        
+        .btn-primary:hover {
+            background: #3a5152;
+        }
+        
+        .btn-primary:disabled {
+            background: #cccccc;
+            cursor: not-allowed;
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            color: var(--secondary);
+            border: 1px solid var(--secondary);
+        }
+        
+        .btn-secondary:hover {
+            background: var(--secondary);
+            color: white;
+        }
+        
+        .min-order-notice {
+            background: rgba(39, 174, 96, 0.1);
+            border: 1px solid rgba(39, 174, 96, 0.3);
+            border-radius: var(--radius);
+            padding: 15px;
+            margin-top: 20px;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #2c3e3f;
+        }
+        
+        .min-order-notice i {
+            color: var(--success);
+            margin-right: 8px;
+        }
+        
+        .customization-preview {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: var(--radius);
+            margin-top: 25px;
+            border: 1px solid #eee;
+            display: none;
+        }
+        
+        .customization-preview.active {
+            display: block;
+        }
+        
+        .preview-title {
+            font-size: 1.1rem;
+            color: var(--secondary);
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        .preview-content {
+            font-size: 0.9rem;
+            color: #666;
+            line-height: 1.5;
+        }
+        
+        .preview-content strong {
+            color: var(--secondary);
+        }
+        
+        /* Custom Soap Badge in Cart */
+        .custom-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #b76e79, #e8d9c5);
+            color: white;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+            vertical-align: middle;
+        }
+        
+        @media (max-width: 768px) {
+            .customize-section {
+                padding: 100px 0 40px;
+            }
+            
+            .customize-header {
+                padding: 20px;
+            }
+            
+            .customize-header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .customize-form {
+                padding: 20px;
+            }
+            
+            .customize-actions {
+                flex-direction: column;
+            }
+            
+            .fragrance-examples {
+                justify-content: center;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .customize-header h1 {
+                font-size: 1.6rem;
+            }
+            
+            .customize-container {
+                border-radius: 0;
+            }
         }
     </style>
 </head>
-<body>
-
+<body itemscope itemtype="https://schema.org/Product">
     <header>
         <div class="nav-container">
-            <a href="index.html" class="logo">
+            <a href="index.html" class="logo" itemprop="url">
                 <img src="logo-aura.png" alt="Aura Logo" class="logo-img">
-                <span>AURA</span>
+                <span itemprop="name">AURA<span></span></span>
             </a>
-            <div class="cart-icon" id="cartTrigger">
-                <i class="fas fa-shopping-bag"></i>
-                <span class="cart-count" id="cartBadge">0</span>
+            
+            <div class="nav-links" id="navLinks">
+                <a href="index.html#home">Home</a>
+                <a href="index.html#about">About Us</a>
+                <a href="index.html#products" class="active">Products</a>
+                <a href="index.html#benefits">Benefits</a>
+                <a href="index.html#contact">Contact</a>
+            </div>
+            
+            <div class="nav-icons-wrapper">
+                <button class="menu-toggle" id="menuToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+            
+                <div class="cart-icon" id="cartIcon">
+                    <i class="fas fa-shopping-bag"></i>
+                    <span class="cart-count">0</span>
+                </div>
             </div>
         </div>
     </header>
 
-    <div class="atelier-container">
-        <div class="atelier-header">
-            <h1>The Divine Alchemist</h1>
-            <p>Blend the spirits of nature. Drag 2-4 essences into the vessel to create your unique bar.</p>
-        </div>
+    <button class="mobile-fab" id="mobileFab" style="display:none !important;">
+        <i class="fas fa-shopping-bag"></i>
+    </button>
 
-        <div class="builder-grid">
-            <div class="soap-palette" id="palette">
+    <section class="customize-section">
+        <div class="container">
+            <div class="customize-container">
+                <div class="customize-header">
+                    <h1>Customize Your Soap</h1>
+                    <p>Create your own personalized handmade soap. Choose your preferred fragrance and add any special instructions for a truly unique soap experience.</p>
                 </div>
-
-            <div class="mixing-zone">
-                <div class="vessel" id="dropZone">
-                    <i class="fas fa-mortar-pestle" style="font-size: 4rem; color: var(--accent); opacity: 0.2; position: absolute;"></i>
-                    <div class="vessel-items" id="vesselList"></div>
-                </div>
-                <div>
-                    <p style="margin-bottom: 1.5rem; font-weight: 600;" id="mixLabel">Vessel Status: 0/4 Essences</p>
-                    <button class="btn-aura" id="addBlendBtn">
-                        <i class="fas fa-flask"></i> Create This Blend (₹200)
-                    </button>
-                    <button id="resetVessel" style="background:none; border:none; color: #999; cursor:pointer; display:block; margin: 15px auto; font-size: 0.9rem;">
-                        <i class="fas fa-redo"></i> Reset Vessel
-                    </button>
+                
+                <div class="customize-form">
+                    <form id="customizeForm">
+                        <div class="form-group">
+                            <label for="customFragrance">Custom Fragrance <span class="required">*</span></label>
+                            <input type="text" id="customFragrance" class="customize-input" 
+                                   placeholder="e.g., Lavender & Mint, Citrus Burst, Rose & Sandalwood, Potato & Herbs" 
+                                   required maxlength="100">
+                            <span class="fragrance-hint">Describe your preferred fragrance combination (potato, flowers, herbs, fruits, spices, etc.)</span>
+                            
+                            <div class="fragrance-examples">
+                                <div class="fragrance-tag" data-fragrance="Potato & Herbs">Potato & Herbs</div>
+                                <div class="fragrance-tag" data-fragrance="Rose & Jasmine">Rose & Jasmine</div>
+                                <div class="fragrance-tag" data-fragrance="Lavender & Mint">Lavender & Mint</div>
+                                <div class="fragrance-tag" data-fragrance="Citrus (Lemon, Orange)">Citrus</div>
+                                <div class="fragrance-tag" data-fragrance="Sandalwood & Rose">Sandalwood & Rose</div>
+                                <div class="fragrance-tag" data-fragrance="Coconut & Vanilla">Coconut & Vanilla</div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="specialInstructions">Special Instructions (Optional)</label>
+                            <textarea id="specialInstructions" class="customize-textarea" 
+                                      placeholder="Any specific requirements, allergies, or preferences you'd like us to consider..." 
+                                      maxlength="500"></textarea>
+                            <span class="fragrance-hint">Max 500 characters. Examples: "Please use only natural colors", "No artificial fragrance", "Extra moisturizing", etc.</span>
+                        </div>
+                        
+                        <div class="customize-price">
+                            <div class="price-row">
+                                <span>Base Price (100g Custom Soap):</span>
+                                <span>₹200</span>
+                            </div>
+                            <div class="price-row">
+                                <span>Customization Fee:</span>
+                                <span>₹50</span>
+                            </div>
+                            <div class="price-row total">
+                                <span>Price per soap:</span>
+                                <span>₹250</span>
+                            </div>
+                        </div>
+                        
+                        <div class="quantity-selector">
+                            <div class="quantity-control">
+                                <button type="button" class="qty-btn" id="decreaseQty">-</button>
+                                <span class="qty-display" id="quantity">3</span>
+                                <button type="button" class="qty-btn" id="increaseQty">+</button>
+                            </div>
+                            <div style="font-weight:600;color:var(--secondary);font-size:1rem;">
+                                Total: ₹<span id="totalPrice">750</span>
+                            </div>
+                        </div>
+                        
+                        <div class="min-order-notice">
+                            <i class="fas fa-info-circle"></i>
+                            Minimum 3 customized soaps per order. This ensures we can create your unique batch with care.
+                        </div>
+                        
+                        <div class="customization-preview" id="previewSection">
+                            <div class="preview-title">Your Customization:</div>
+                            <div class="preview-content" id="previewContent"></div>
+                        </div>
+                        
+                        <div class="customize-actions">
+                            <button type="button" class="btn-primary" id="addToCartBtn">
+                                <i class="fas fa-shopping-bag"></i> Add to Cart
+                            </button>
+                            <button type="button" class="btn-secondary" id="resetFormBtn">
+                                <i class="fas fa-redo"></i> Reset Form
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
+    </section>
 
-        <div class="wish-section">
-            <h2>The Secret Wish</h2>
-            <p style="margin-bottom: 2rem; color: #666;">Seeking a specific flower, herb, or fragrance not seen above? Command our artisans.</p>
-            <div class="form-group">
-                <label>Soap Name / Spiritual Intent</label>
-                <input type="text" id="wishTitle" placeholder="e.g. Lavender & Potato Radiance">
-            </div>
-            <div class="form-group">
-                <label>Bespoke Ingredients & Instructions</label>
-                <textarea id="wishDetails" rows="4" placeholder="Mention specific flowers, essences, or skin goals..."></textarea>
-            </div>
-            <button class="btn-aura" id="submitWish">
-                <i class="fas fa-wand-magic-sparkles"></i> Add Bespoke Wish to Cart (₹200)
+    <!-- Cart Modal -->
+    <div class="cart-modal" id="cartModal">
+        <div class="cart-header">
+            <h2>Your Cart</h2>
+            <button class="close-cart" id="closeCart">
+                <i class="fas fa-times"></i>
             </button>
-        </div>
-    </div>
-
-    <div class="cart-sidebar" id="cartPanel">
-        <div style="display:flex; justify-content:space-between; align-items:center;">
-            <h3>Your Aura Collection</h3>
-            <i class="fas fa-times" id="closePanel" style="cursor:pointer; font-size: 1.5rem;"></i>
         </div>
         
-        <div class="cart-items-list" id="itemList"></div>
-
-        <div style="padding-top: 20px; border-top: 2px solid var(--primary);">
-            <div style="display:flex; justify-content:space-between; margin-bottom: 1rem; font-weight: 700; font-size: 1.2rem;">
-                <span>Total Value:</span>
-                <span>₹<span id="priceSum">0</span></span>
+        <div class="min-order-progress" id="minOrderProgress" style="display: none;">
+            <div class="progress-header">
+                <div class="progress-text">Minimum Order Progress</div>
+                <div class="progress-count" id="progressCount">0/3</div>
+            </div>
+            <div class="progress-bar-container">
+                <div class="progress-bar" id="progressBar" style="width: 0%"></div>
+            </div>
+            <div class="progress-message" id="progressMessage">
+                Add 3 more products to place your order
+            </div>
+        </div>
+        
+        <div class="cart-items" id="cartItems">
+            <div class="empty-cart-message" id="emptyCartMessage">
+                <p>Your cart is empty</p>
+                <p>Add some divine soaps to get started!</p>
+            </div>
+        </div>
+        
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>Total:</span>
+                <span id="cartTotal">₹0</span>
             </div>
             
-            <div id="minOrderWarning" class="min-order-alert">
-                <i class="fas fa-circle-exclamation"></i>
-                <span>Minimum 3 items required for processing.</span>
+            <div class="cart-actions">
+                <button class="whatsapp-order-btn" id="whatsappCartBtn">
+                    <i class="fab fa-whatsapp"></i> Order via WhatsApp
+                </button>
+                <button class="email-order-btn" id="emailCartBtn">
+                    <i class="fas fa-envelope"></i> Order via Email
+                </button>
             </div>
-
-            <button class="btn-aura" id="whatsappCheckout" style="width: 100%; background: #25D366; justify-content: center;">
-                <i class="fab fa-whatsapp"></i> Order via WhatsApp
-            </button>
         </div>
     </div>
 
-    <footer>
-        <p>&copy; AURA - From the House of BHAP Organics. Handmade with Devotion.</p>
+    <!-- Scrub Option Modal -->
+    <div class="scrub-modal" id="scrubModal">
+        <div class="scrub-modal-content">
+            <div class="scrub-modal-header">
+                <h3 id="scrubProductName">Add Custom Soap to Cart</h3>
+                <p>Would you like to add our premium herbal scrub with your custom soap?</p>
+            </div>
+            
+            <div class="scrub-options">
+                <div class="scrub-option selected" data-option="soap-only">
+                    <div class="scrub-image">
+                        <i class="fas fa-soap"></i>
+                    </div>
+                    <h4>Only Custom Soap</h4>
+                    <p>Just your personalized handmade soap</p>
+                    <div class="scrub-price" id="soapOnlyPrice">₹0</div>
+                </div>
+                
+                <div class="scrub-option" data-option="with-scrub">
+                    <div class="scrub-image">
+                        <img src="images/soap_scrub.jpg" alt="Herbal scrub pouch">
+                    </div>
+                    <h4>Custom Soap with Herbal Scrub</h4>
+                    <p>Enhanced cleansing experience with Rs.20 extra per soap</p>
+                    <div class="scrub-price" id="withScrubPrice">₹0</div>
+                </div>
+            </div>
+            
+            <div class="scrub-modal-actions">
+                <button class="scrub-cancel-btn" id="scrubCancelBtn">
+                    <i class="fas fa-times"></i> Cancel
+                </button>
+                <button class="scrub-add-btn" id="scrubAddBtn">
+                    <i class="fas fa-shopping-bag"></i> Add to Cart
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Email Name Input Modal -->
+    <div class="email-modal" id="emailModal">
+        <div class="email-modal-content">
+            <div class="email-modal-header">
+                <div class="email-icon">
+                    <i class="fas fa-envelope"></i>
+                </div>
+                <h3>Complete Your Order</h3>
+                <p>Please provide your name for order confirmation. We'll contact you via email for further details.</p>
+            </div>
+            
+            <div class="email-input-group">
+                <label for="customerName">Your Full Name</label>
+                <input type="text" id="customerName" class="email-name-input" placeholder="Enter your name" maxlength="50">
+            </div>
+            
+            <div class="email-modal-actions">
+                <button class="email-cancel-btn" id="emailCancelBtn">
+                    <i class="fas fa-times"></i> Cancel
+                </button>
+                <button class="email-proceed-btn" id="emailProceedBtn" disabled>
+                    <i class="fas fa-paper-plane"></i> Proceed with Order
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer id="contact" itemscope itemtype="https://schema.org/LocalBusiness">
+        <div class="footer-container">
+            <div class="footer-column">
+                <h3>AURA</h3>
+                <p itemprop="description">Experience the purity of nature with our handmade organic soaps, crafted with ancient Ayurvedic wisdom and the finest natural ingredients for healthy skin.</p>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Contact Us</h3>
+                <div class="contact-info">
+                    <i class="fab fa-whatsapp"></i>
+                    <a href="https://wa.me/918532853241" target="_blank">WhatsApp: 8532853241</a>
+                </div>
+               
+                <div class="contact-info">
+                    <i class="fas fa-envelope"></i>
+                    <a href="mailto:bhaporganics@gmail.com" itemprop="email">bhaporganics@gmail.com</a>
+                </div>
+                <div class="contact-info">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span itemprop="address" itemscope itemtype="https://schema.org/PostalAddress">
+                        <span itemprop="addressLocality">Theni</span>, 
+                        <span itemprop="addressRegion">Tamilnadu</span>
+                    </span>
+                </div>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Quick Links</h3>
+                <a href="index.html#home">Home</a>
+                <a href="index.html#about">About Us</a>
+                <a href="index.html#products">Products</a>
+                <a href="index.html#benefits">Benefits</a>
+                <a href="index.html#order">Order Options</a>
+                <a href="#contact">Contact</a>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Our Promise</h3>
+                <p>100% Natural Ingredients</p>
+                <p>Handmade with Care</p>
+                <p>Cruelty-Free & Sustainable</p>
+                <p>Ayurvedic Formulations</p>
+                <p>No Artificial Preservatives</p>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            <p>&copy; AURA - From the House of BHAP Organics. All rights reserved.</p>
+        </div>
     </footer>
 
+    <div class="back-to-top" id="backToTop">
+        <i class="fas fa-chevron-up"></i>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+    <script src="products-data.js"></script>
+    
     <script>
-        // PRODUCT DATA 
-        const ingredientData = [
-            { id: 'p1', name: "Rose Petal", img: "images/rosepetal_soap_2.jpg" },
-            { id: 'p2', name: "Red Sandal", img: "images/redsandal_soap_2.jpg" },
-            { id: 'p3', name: "Manjistha", img: "images/manjistha_soap_2.jpg" },
-            { id: 'p4', name: "Urad Dal", img: "images/uraddhal_soap_2.jpg" },
-            { id: 'p5', name: "Strawberry", img: "images/strawberry_soap_2.jpg" },
-            { id: 'p8', name: "Turmeric", img: "images/wildturmeric_soap_2.jpg" },
-            { id: 'p11', name: "Aloe Vera", img: "images/aloevera_soap_2.jpg" },
-            { id: 'p13', name: "Neem", img: "images/neem_soap_2.jpg" }
-        ];
-
-        let activeMix = [];
-        let shoppingCart = JSON.parse(sessionStorage.getItem('auraCleanseCart')) || []; // [cite: 92]
-
-        // UI ELEMENTS
-        const palette = document.getElementById('palette');
-        const dropZone = document.getElementById('dropZone');
-        const vesselList = document.getElementById('vesselList');
-        const mixLabel = document.getElementById('mixLabel');
-        const cartBadge = document.getElementById('cartBadge');
-        const itemList = document.getElementById('itemList');
-        const cartPanel = document.getElementById('cartPanel');
-
-        // INITIALIZE
-        function bootstrap() {
-            ingredientData.forEach(item => {
-                const el = document.createElement('div');
-                el.className = 'palette-item';
-                el.draggable = true;
-                el.innerHTML = `<img src="${item.img}"><p>${item.name}</p>`;
-                el.addEventListener('dragstart', (e) => e.dataTransfer.setData('ingId', item.id));
-                palette.appendChild(el);
-            });
-            syncCart();
+        // Custom Soap Configuration
+        const CUSTOM_SOAP_ID = 'custom-soap';
+        const BASE_PRICE = 200;
+        const CUSTOMIZATION_FEE = 50;
+        const PRICE_PER_SOAP = BASE_PRICE + CUSTOMIZATION_FEE;
+        const SCRUB_PRICE = 20;
+        const MIN_CUSTOM_SOAPS = 3;
+        
+        let quantity = 3; // Start with minimum required
+        let selectedScrubOption = 'soap-only';
+        let currentCustomizationData = null;
+        
+        // DOM Elements
+        const customizeForm = document.getElementById('customizeForm');
+        const customFragrance = document.getElementById('customFragrance');
+        const specialInstructions = document.getElementById('specialInstructions');
+        const quantityDisplay = document.getElementById('quantity');
+        const totalPriceDisplay = document.getElementById('totalPrice');
+        const addToCartBtn = document.getElementById('addToCartBtn');
+        const resetFormBtn = document.getElementById('resetFormBtn');
+        const previewSection = document.getElementById('previewSection');
+        const previewContent = document.getElementById('previewContent');
+        const fragranceTags = document.querySelectorAll('.fragrance-tag');
+        
+        // Scrub Modal Elements
+        const scrubModal = document.getElementById('scrubModal');
+        const scrubProductName = document.getElementById('scrubProductName');
+        const soapOnlyPrice = document.getElementById('soapOnlyPrice');
+        const withScrubPrice = document.getElementById('withScrubPrice');
+        const scrubCancelBtn = document.getElementById('scrubCancelBtn');
+        const scrubAddBtn = document.getElementById('scrubAddBtn');
+        const scrubOptions = document.querySelectorAll('.scrub-option');
+        
+        // Email Modal Elements
+        const emailModal = document.getElementById('emailModal');
+        const customerNameInput = document.getElementById('customerName');
+        const emailCancelBtn = document.getElementById('emailCancelBtn');
+        const emailProceedBtn = document.getElementById('emailProceedBtn');
+        
+        // Cart Elements
+        const cartModal = document.getElementById('cartModal');
+        const cartIcon = document.getElementById('cartIcon');
+        const closeCart = document.getElementById('closeCart');
+        const cartItemsContainer = document.getElementById('cartItems');
+        const cartTotalElement = document.getElementById('cartTotal');
+        const cartCountElement = document.querySelector('.cart-count');
+        const emptyCartMessage = document.getElementById('emptyCartMessage');
+        const whatsappCartBtn = document.getElementById('whatsappCartBtn');
+        const emailCartBtn = document.getElementById('emailCartBtn');
+        const menuToggle = document.getElementById('menuToggle');
+        const navLinks = document.getElementById('navLinks');
+        
+        // Shared Cart System
+        let cart = [];
+        const MIN_ORDER_ITEMS = 3;
+        
+        // Initialize Price Display
+        function updatePriceDisplay() {
+            const total = PRICE_PER_SOAP * quantity;
+            totalPriceDisplay.textContent = total;
         }
-
-        // DRAG & DROP [cite: 512]
-        dropZone.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            dropZone.classList.add('drag-over');
-        });
-
-        dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
-
-        dropZone.addEventListener('drop', (e) => {
-            e.preventDefault();
-            dropZone.classList.remove('drag-over');
-            const id = e.dataTransfer.getData('ingId');
-            const data = ingredientData.find(i => i.id === id);
-            
-            if (activeMix.length < 4) {
-                activeMix.push(data);
-                refreshVessel();
-            } else {
-                alert("The vessel has reached its spiritual limit (4 essences).");
+        
+        // Initialize Quantity Controls
+        document.getElementById('decreaseQty').addEventListener('click', () => {
+            if (quantity > MIN_CUSTOM_SOAPS) {
+                quantity--;
+                quantityDisplay.textContent = quantity;
+                updatePriceDisplay();
+                updatePreview();
             }
         });
-
-        function refreshVessel() {
-            vesselList.innerHTML = '';
-            activeMix.forEach(ing => {
-                const tag = document.createElement('span');
-                tag.className = 'vessel-tag';
-                tag.innerText = ing.name;
-                vesselList.appendChild(tag);
-            });
-            mixLabel.innerText = `Vessel Status: ${activeMix.length}/4 Essences`;
-        }
-
-        document.getElementById('resetVessel').addEventListener('click', () => {
-            activeMix = [];
-            refreshVessel();
+        
+        document.getElementById('increaseQty').addEventListener('click', () => {
+            if (quantity < 10) {
+                quantity++;
+                quantityDisplay.textContent = quantity;
+                updatePriceDisplay();
+                updatePreview();
+            }
         });
-
-        // ADD TO CART [cite: 122]
-        document.getElementById('addBlendBtn').addEventListener('click', () => {
-            if (activeMix.length < 2) return alert("An Alchemist needs at least 2 essences to create a blend.");
+        
+        // Fragrance Tag Click Handlers
+        fragranceTags.forEach(tag => {
+            tag.addEventListener('click', function() {
+                const fragrance = this.getAttribute('data-fragrance');
+                customFragrance.value = fragrance;
+                updatePreview();
+            });
+        });
+        
+        // Update Preview
+        function updatePreview() {
+            const fragrance = customFragrance.value.trim();
+            const instructions = specialInstructions.value.trim();
             
-            const comboName = "Custom Blend: " + activeMix.map(a => a.name).join(' & ');
-            pushToCart({
-                id: 'custom-' + Date.now(),
-                name: comboName,
-                price: 200, //
-                quantity: 1
-            });
-            activeMix = [];
-            refreshVessel();
-        });
-
-        document.getElementById('submitWish').addEventListener('click', () => {
-            const title = document.getElementById('wishTitle').value.trim();
-            const detail = document.getElementById('wishDetails').value.trim();
-            if (!title) return alert("Please name your secret wish.");
-
-            pushToCart({
-                id: 'wish-' + Date.now(),
-                name: "Wish Soap: " + title,
-                desc: detail,
-                price: 200,
-                quantity: 1
-            });
-            document.getElementById('wishTitle').value = '';
-            document.getElementById('wishDetails').value = '';
-        });
-
-        function pushToCart(item) {
-            shoppingCart.push(item);
-            sessionStorage.setItem('auraCleanseCart', JSON.stringify(shoppingCart)); // [cite: 89]
-            syncCart();
-            cartPanel.classList.add('open');
+            if (fragrance) {
+                let previewHTML = `<strong>Fragrance:</strong> ${fragrance}<br>`;
+                previewHTML += `<strong>Quantity:</strong> ${quantity} custom soap(s)<br>`;
+                
+                if (instructions) {
+                    previewHTML += `<strong>Instructions:</strong> ${instructions}<br>`;
+                }
+                
+                previewHTML += `<strong>Price per soap:</strong> ₹${PRICE_PER_SOAP}<br>`;
+                previewHTML += `<strong>Total Price:</strong> ₹${PRICE_PER_SOAP * quantity}`;
+                
+                previewContent.innerHTML = previewHTML;
+                previewSection.classList.add('active');
+            } else {
+                previewSection.classList.remove('active');
+            }
         }
-
-        function syncCart() {
-            itemList.innerHTML = '';
-            let totalValue = 0;
-
-            shoppingCart.forEach((item, i) => {
-                totalValue += item.price;
-                const row = document.createElement('div');
-                row.className = 'cart-item';
-                row.innerHTML = `
-                    <div style="max-width: 80%;">
-                        <div style="font-weight:600;">${item.name}</div>
-                        <div style="font-size:0.8rem; color:#888;">Unique Handmade Bar</div>
-                    </div>
-                    <div style="text-align:right;">
-                        <div style="font-weight:700;">₹${item.price}</div>
-                        <i class="fas fa-trash-can" onclick="killItem(${i})" style="color:#d9534f; cursor:pointer; margin-top:5px;"></i>
+        
+        // Form Input Listeners
+        customFragrance.addEventListener('input', updatePreview);
+        specialInstructions.addEventListener('input', updatePreview);
+        
+        // Reset Form
+        resetFormBtn.addEventListener('click', () => {
+            customizeForm.reset();
+            quantity = MIN_CUSTOM_SOAPS;
+            quantityDisplay.textContent = quantity;
+            updatePriceDisplay();
+            previewSection.classList.remove('active');
+            currentCustomizationData = null;
+        });
+        
+        // Add to Cart with Validation
+        addToCartBtn.addEventListener('click', () => {
+            const fragrance = customFragrance.value.trim();
+            
+            if (!fragrance) {
+                showNotification('Please enter your custom fragrance preference');
+                customFragrance.focus();
+                return;
+            }
+            
+            if (quantity < MIN_CUSTOM_SOAPS) {
+                showNotification(`Minimum ${MIN_CUSTOM_SOAPS} custom soaps required`);
+                return;
+            }
+            
+            // Store customization data
+            currentCustomizationData = {
+                fragrance: fragrance,
+                instructions: specialInstructions.value.trim() || 'None',
+                quantity: quantity,
+                timestamp: Date.now()
+            };
+            
+            // Show scrub modal
+            showScrubModal();
+        });
+        
+        // Show Scrub Modal
+        function showScrubModal() {
+            if (!currentCustomizationData) return;
+            
+            selectedScrubOption = 'soap-only';
+            
+            const basePrice = PRICE_PER_SOAP * currentCustomizationData.quantity;
+            const scrubPriceTotal = (PRICE_PER_SOAP + SCRUB_PRICE) * currentCustomizationData.quantity;
+            
+            scrubProductName.textContent = `Add Custom Soap to Cart`;
+            soapOnlyPrice.textContent = `₹${basePrice}`;
+            withScrubPrice.textContent = `₹${scrubPriceTotal}`;
+            
+            // Reset selection appearance
+            scrubOptions.forEach(option => {
+                option.classList.remove('selected');
+                if (option.dataset.option === 'soap-only') {
+                    option.classList.add('selected');
+                }
+            });
+            
+            // Show modal
+            scrubModal.classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        // Add Custom Soap to Cart
+        function addCustomSoapToCart(scrubOption) {
+            if (!currentCustomizationData) return;
+            
+            const pricePerUnit = scrubOption === 'with-scrub' ? PRICE_PER_SOAP + SCRUB_PRICE : PRICE_PER_SOAP;
+            const mrpPerUnit = pricePerUnit + 50; // Add margin for MRP
+            
+            // Create a unique ID for this customization
+            const customId = `${CUSTOM_SOAP_ID}-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+            
+            // Create custom soap item
+            const customSoapItem = {
+                id: customId,
+                name: 'Custom Soap',
+                subtitle: 'Personalized Creation',
+                price: pricePerUnit,
+                mrp: mrpPerUnit,
+                weight: '100g',
+                size: '100g',
+                image: 'images/custom_soap.jpg',
+                alt: 'Custom Handmade Soap',
+                description: `Custom fragrance: ${currentCustomizationData.fragrance}`,
+                quantity: currentCustomizationData.quantity,
+                scrubOption: scrubOption,
+                isCustom: true,
+                customData: {
+                    fragrance: currentCustomizationData.fragrance,
+                    instructions: currentCustomizationData.instructions,
+                    timestamp: currentCustomizationData.timestamp
+                },
+                originalPrice: PRICE_PER_SOAP,
+                originalMrp: mrpPerUnit
+            };
+            
+            // Add to cart
+            cart.push(customSoapItem);
+            
+            // Show notification
+            const scrubText = scrubOption === 'with-scrub' ? ' with herbal scrub' : '';
+            showNotification(`${currentCustomizationData.quantity} × Custom Soap${scrubText} added to cart!`);
+            
+            // Reset form
+            customizeForm.reset();
+            quantity = MIN_CUSTOM_SOAPS;
+            quantityDisplay.textContent = quantity;
+            updatePriceDisplay();
+            previewSection.classList.remove('active');
+            currentCustomizationData = null;
+            
+            // Save and update cart
+            saveCartToStorage();
+            updateCart();
+        }
+        
+        // --- SHARED CART FUNCTIONS ---
+        
+        function loadCartFromStorage() {
+            const savedCart = sessionStorage.getItem('auraCleanseCart');
+            if (savedCart) {
+                try {
+                    cart = JSON.parse(savedCart);
+                } catch (e) {
+                    console.error("Error parsing cart from storage:", e);
+                    cart = [];
+                }
+            } else {
+                cart = [];
+            }
+            updateCart();
+        }
+        
+        function saveCartToStorage() {
+            try {
+                sessionStorage.setItem('auraCleanseCart', JSON.stringify(cart));
+                sessionStorage.setItem('auraCleanseCartTimestamp', Date.now());
+                localStorage.setItem('cartUpdated', Date.now().toString());
+            } catch (e) {
+                console.error("Error saving cart to storage:", e);
+            }
+        }
+        
+        function getTotalItemsInCart() {
+            return cart.reduce((total, item) => total + item.quantity, 0);
+        }
+        
+        function isMinimumOrderMet() {
+            return getTotalItemsInCart() >= MIN_ORDER_ITEMS;
+        }
+        
+        function updateCart() {
+            const totalItems = getTotalItemsInCart();
+            cartCountElement.textContent = totalItems;
+            
+            cartItemsContainer.innerHTML = '';
+            
+            if (cart.length === 0) {
+                emptyCartMessage.style.display = 'block';
+                cartItemsContainer.appendChild(emptyCartMessage);
+            } else {
+                emptyCartMessage.style.display = 'none';
+                let totalPrice = 0;
+                let totalMrp = 0;
+                
+                cart.forEach((item, index) => {
+                    totalPrice += item.price * item.quantity;
+                    totalMrp += item.mrp * item.quantity;
+                    
+                    const cartItem = document.createElement('div');
+                    cartItem.className = 'cart-item';
+                    cartItem.setAttribute('data-index', index);
+                    
+                    const scrubIndicator = item.scrubOption === 'with-scrub' ? 
+                        '<span class="scrub-indicator">+ Scrub</span>' : '';
+                    
+                    const customBadge = item.isCustom ? 
+                        '<span class="custom-badge">Custom</span>' : '';
+                    
+                    // For custom soaps, show customization details
+                    let customDetails = '';
+                    if (item.isCustom && item.customData) {
+                        customDetails = `
+                            <div style="font-size: 0.8rem; color: #666; margin-top: 5px; background: #f9f9f9; padding: 8px; border-radius: 4px;">
+                                <div><strong>Fragrance:</strong> ${item.customData.fragrance}</div>
+                                ${item.customData.instructions !== 'None' ? `<div><strong>Instructions:</strong> ${item.customData.instructions}</div>` : ''}
+                            </div>
+                        `;
+                    }
+                    
+                    cartItem.innerHTML = `
+                        <div class="cart-item-image">
+                            <img src="${item.image || 'soap.jpg'}" alt="${item.alt || item.name}" loading="lazy">
+                        </div>
+                        <div class="cart-item-details">
+                            <div class="cart-item-title">
+                                ${item.name} ${item.weight ? '(' + item.weight + ')' : ''}
+                                ${customBadge}
+                                ${scrubIndicator}
+                            </div>
+                            ${customDetails}
+                            <div class="cart-item-price">
+                                ₹${item.price} × ${item.quantity} = ₹${item.price * item.quantity}
+                                <div style="font-size: 0.8rem; color: #999; text-decoration: line-through;">MRP: ₹${item.mrp * item.quantity}</div>
+                            </div>
+                        </div>
+                        <div class="cart-item-actions">
+                            <button class="cart-quantity-btn decrease-cart" data-index="${index}" ${item.isCustom ? 'disabled style="opacity:0.5; cursor:not-allowed;"' : ''}>
+                                <i class="fas fa-minus"></i>
+                            </button>
+                            <span class="cart-item-quantity">${item.quantity}</span>
+                            <button class="cart-quantity-btn increase-cart" data-index="${index}" ${item.isCustom ? 'disabled style="opacity:0.5; cursor:not-allowed;"' : ''}>
+                                <i class="fas fa-plus"></i>
+                            </button>
+                            <button class="remove-item" data-index="${index}">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    `;
+                    
+                    cartItemsContainer.appendChild(cartItem);
+                });
+                
+                // Event listeners for cart item buttons
+                document.querySelectorAll('.decrease-cart:not([disabled])').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const index = parseInt(this.getAttribute('data-index'));
+                        updateCartQuantity(index, -1);
+                    });
+                });
+                
+                document.querySelectorAll('.increase-cart:not([disabled])').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const index = parseInt(this.getAttribute('data-index'));
+                        updateCartQuantity(index, 1);
+                    });
+                });
+                
+                document.querySelectorAll('.remove-item').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const index = parseInt(this.getAttribute('data-index'));
+                        removeFromCart(index);
+                    });
+                });
+                
+                const totalSavings = totalMrp - totalPrice;
+                cartTotalElement.innerHTML = `
+                    <div>Total: ₹${totalPrice}</div>
+                    <div style="font-size: 0.9rem; color: #27ae60; font-weight: normal;">
+                        You save: ₹${totalSavings}
                     </div>
                 `;
-                itemList.appendChild(row);
-            });
-
-            document.getElementById('priceSum').innerText = totalValue;
-            cartBadge.innerText = shoppingCart.length;
+            }
             
-            // MIN ORDER LOGIC [cite: 97]
-            const isEligible = shoppingCart.length >= 3;
-            document.getElementById('minOrderWarning').style.display = isEligible ? 'none' : 'flex';
-            document.getElementById('whatsappCheckout').disabled = !isEligible;
+            updateMinimumOrderUI();
         }
-
-        window.killItem = (idx) => {
-            shoppingCart.splice(idx, 1);
-            sessionStorage.setItem('auraCleanseCart', JSON.stringify(shoppingCart));
-            syncCart();
-        };
-
-        // CHECKOUT [cite: 157, 160]
-        document.getElementById('whatsappCheckout').addEventListener('click', () => {
-            let orderText = "Aura Order Request:\n\n";
-            shoppingCart.forEach(p => orderText += `• ${p.name} (₹${p.price})\n`);
-            orderText += `\nFinal Order Total: ₹${document.getElementById('priceSum').innerText}`;
-            orderText += `\nPlease confirm my bespoke order.`;
-            window.open(`https://wa.me/918532853241?text=${encodeURIComponent(orderText)}`);
+        
+        function updateCartQuantity(index, change) {
+            if (index < 0 || index >= cart.length) return;
+            
+            const item = cart[index];
+            
+            // Don't allow quantity changes for custom soaps
+            if (item.isCustom) {
+                showNotification('Cannot modify quantity of custom soaps. Please remove and re-add with correct quantity.');
+                return;
+            }
+            
+            item.quantity += change;
+            if (item.quantity <= 0) {
+                cart.splice(index, 1);
+            }
+            updateCart();
+            saveCartToStorage();
+            updateMinimumOrderUI();
+        }
+        
+        function removeFromCart(index) {
+            if (index < 0 || index >= cart.length) return;
+            
+            const itemName = cart[index].name;
+            cart.splice(index, 1);
+            updateCart();
+            saveCartToStorage();
+            updateMinimumOrderUI();
+            showNotification(`${itemName} removed from cart`);
+        }
+        
+        function checkoutViaWhatsApp() {
+            const totalItems = getTotalItemsInCart();
+            if (totalItems === 0) {
+                showNotification('Your cart is empty. Add some items first!');
+                return;
+            }
+            if (!isMinimumOrderMet()) {
+                showNotification(`Minimum order of ${MIN_ORDER_ITEMS} items not met.`);
+                return;
+            }
+            
+            let message = "Hello Aura Team,\n\n";
+            message += "I would like to place an order from your website:\n\n";
+            message += "ORDER DETAILS:\n";
+            message += "════════════════════════════════════════\n\n";
+            
+            let total = 0;
+            let totalMrp = 0;
+            let customSoapCount = 0;
+            
+            cart.forEach((item, index) => {
+                const itemTotal = item.price * item.quantity;
+                const itemMrp = item.mrp * item.quantity;
+                const sizeInfo = item.weight ? `(${item.weight})` : `(${item.size || '100g'})`;
+                const scrubInfo = item.scrubOption === 'with-scrub' ? ' + Herbal Scrub' : '';
+                
+                if (item.isCustom) {
+                    customSoapCount++;
+                    message += `CUSTOM SOAP #${customSoapCount} ${sizeInfo}${scrubInfo}:\n`;
+                    message += `• Quantity: ${item.quantity}\n`;
+                    message += `• Fragrance: ${item.customData.fragrance}\n`;
+                    if (item.customData.instructions && item.customData.instructions !== 'None') {
+                        message += `• Instructions: ${item.customData.instructions}\n`;
+                    }
+                    message += `• Price: ₹${item.price} × ${item.quantity} = ₹${itemTotal}\n`;
+                    message += `\n`;
+                } else {
+                    message += `${item.name}${scrubInfo} ${sizeInfo}: ${item.quantity} × ₹${item.price} = ₹${itemTotal}\n`;
+                }
+                
+                total += itemTotal;
+                totalMrp += itemMrp;
+            });
+            
+            const savings = totalMrp - total;
+            const discountPercent = Math.round((savings / totalMrp) * 100);
+            
+            message += "\n════════════════════════════════════════\n";
+            message += `TOTAL: ₹${total}\n`;
+            message += `Total Savings: ₹${savings} (${discountPercent}% OFF)\n`;
+            message += `\nPlease confirm my order and provide delivery details.\n`;
+            message += `Thank you!`;
+            
+            const whatsappUrl = `https://wa.me/918532853241?text=${encodeURIComponent(message)}`;
+            window.open(whatsappUrl, '_blank');
+        }
+        
+        function checkoutViaEmail() {
+            const totalItems = getTotalItemsInCart();
+            if (totalItems === 0) {
+                showNotification('Your cart is empty. Add some items first!');
+                return;
+            }
+            if (!isMinimumOrderMet()) {
+                showNotification(`Minimum order of ${MIN_ORDER_ITEMS} items not met.`);
+                return;
+            }
+            
+            // Proceed to Email modal for name input
+            emailModal.classList.add('open');
+            document.body.style.overflow = 'hidden';
+            customerNameInput.focus();
+        }
+        
+        function completeEmailOrder(customerName) {
+            if (!customerName || customerName.trim() === '') {
+                showNotification('Please enter your name to proceed with the order.');
+                return;
+            }
+            
+            // Build the email body
+            let emailBody = `Hello Aura Team,\n\n`;
+            emailBody += `I would like to place an order from your website.\n\n`;
+            emailBody += `CUSTOMER DETAILS:\n`;
+            emailBody += `• Name: ${customerName}\n`;
+            emailBody += `• Order Date: ${new Date().toLocaleDateString()}\n\n`;
+            
+            emailBody += `ORDER DETAILS:\n`;
+            emailBody += `════════════════════════════════════════\n\n`;
+            
+            let total = 0;
+            let totalMrp = 0;
+            let customSoapCount = 0;
+            
+            cart.forEach((item, index) => {
+                const itemTotal = item.price * item.quantity;
+                const itemMrp = item.mrp * item.quantity;
+                const sizeInfo = item.weight ? `(${item.weight})` : `(${item.size || '100g'})`;
+                const scrubInfo = item.scrubOption === 'with-scrub' ? ' + Herbal Scrub' : '';
+                
+                if (item.isCustom) {
+                    customSoapCount++;
+                    emailBody += `CUSTOM SOAP #${customSoapCount} ${sizeInfo}${scrubInfo}:\n`;
+                    emailBody += `  • Quantity: ${item.quantity}\n`;
+                    emailBody += `  • Fragrance: ${item.customData.fragrance}\n`;
+                    if (item.customData.instructions && item.customData.instructions !== 'None') {
+                        emailBody += `  • Instructions: ${item.customData.instructions}\n`;
+                    }
+                    emailBody += `  • Price: ₹${item.price} × ${item.quantity} = ₹${itemTotal}\n\n`;
+                } else {
+                    emailBody += `• ${item.name}${scrubInfo} ${sizeInfo}: ${item.quantity} × ₹${item.price} = ₹${itemTotal}\n`;
+                }
+                
+                total += itemTotal;
+                totalMrp += itemMrp;
+            });
+            
+            const savings = totalMrp - total;
+            
+            emailBody += `════════════════════════════════════════\n`;
+            emailBody += `ORDER TOTAL: ₹${total}\n`;
+            emailBody += `Total Savings: ₹${savings}\n\n`;
+            emailBody += `Please confirm my order and provide payment/delivery details.\n\n`;
+            emailBody += `Thank you,\n${customerName}`;
+            
+            // Create the mailto link 
+            const subject = `AURA Custom Soap Order - ${new Date().toLocaleDateString()}`;
+            const mailtoLink = `mailto:bhaporganics@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(emailBody)}`;
+            
+            // Close modal and open email client
+            emailModal.classList.remove('open');
+            document.body.style.overflow = '';
+            customerNameInput.value = '';
+            emailProceedBtn.disabled = true;
+            
+            // Open the user's email client
+            setTimeout(() => {
+                window.location.href = mailtoLink;
+            }, 300);
+        }
+        
+        function updateMinimumOrderUI() {
+            const totalItems = getTotalItemsInCart();
+            const minOrderProgress = document.getElementById('minOrderProgress');
+            const progressBar = document.getElementById('progressBar');
+            const progressCount = document.getElementById('progressCount');
+            const progressMessage = document.getElementById('progressMessage');
+            const progressPercentage = Math.min((totalItems / MIN_ORDER_ITEMS) * 100, 100);
+            
+            // Hide/show progress bar section 
+            if (minOrderProgress) {
+                if (totalItems > 0) {
+                    minOrderProgress.style.display = 'block';
+                } else {
+                    minOrderProgress.style.display = 'none';
+                }
+            }
+            
+            if (progressBar) progressBar.style.width = `${progressPercentage}%`;
+            if (progressCount) progressCount.textContent = `${totalItems}/${MIN_ORDER_ITEMS}`;
+            
+            if (progressMessage) {
+                if (totalItems === 0) {
+                    progressMessage.textContent = `Add ${MIN_ORDER_ITEMS} products to place your order`;
+                    progressMessage.className = 'progress-message';
+                } else if (totalItems < MIN_ORDER_ITEMS) {
+                    const itemsNeeded = MIN_ORDER_ITEMS - totalItems;
+                    progressMessage.textContent = `Add ${itemsNeeded} more product${itemsNeeded > 1 ? 's' : ''} to place your order`;
+                    progressMessage.className = 'progress-message';
+                } else {
+                    progressMessage.textContent = '✓ Minimum order requirement met!';
+                    progressMessage.className = 'progress-message progress-complete';
+                }
+            }
+            
+            // Enable/disable checkout buttons
+            const isCartEmpty = totalItems === 0;
+            const meetsMinimum = isMinimumOrderMet();
+            
+            if (whatsappCartBtn) {
+                whatsappCartBtn.disabled = isCartEmpty || !meetsMinimum;
+                whatsappCartBtn.style.opacity = (isCartEmpty || !meetsMinimum) ? '0.7' : '1';
+                whatsappCartBtn.style.cursor = (isCartEmpty || !meetsMinimum) ? 'not-allowed' : 'pointer';
+            }
+            
+            if (emailCartBtn) {
+                emailCartBtn.disabled = isCartEmpty || !meetsMinimum;
+                emailCartBtn.style.opacity = (isCartEmpty || !meetsMinimum) ? '0.7' : '1';
+                emailCartBtn.style.cursor = (isCartEmpty || !meetsMinimum) ? 'not-allowed' : 'pointer';
+            }
+        }
+        
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                bottom: 25px;
+                right: 25px;
+                background-color: var(--secondary);
+                color: white;
+                padding: 0.8rem 1.2rem;
+                border-radius: var(--radius);
+                box-shadow: var(--shadow);
+                z-index: 3000;
+                transform: translateY(100px);
+                opacity: 0;
+                transition: transform 0.3s ease, opacity 0.3s ease;
+                font-weight: 500;
+                max-width: 280px;
+                text-align: center;
+                font-size: 0.9rem;
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.transform = 'translateY(0)';
+                notification.style.opacity = '1';
+            }, 10);
+            
+            setTimeout(() => {
+                notification.style.transform = 'translateY(100px)';
+                notification.style.opacity = '0';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+        
+        // Header Scroll Effect & Menu Toggle
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            const icon = menuToggle.querySelector('i');
+            if (navLinks.classList.contains('active')) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+            } else {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            }
         });
-
-        // PANEL CONTROLS
-        document.getElementById('cartTrigger').addEventListener('click', () => cartPanel.classList.add('open'));
-        document.getElementById('closePanel').addEventListener('click', () => cartPanel.classList.remove('open'));
-
-        bootstrap();
+        
+        navLinks.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+                menuToggle.querySelector('i').classList.remove('fa-times');
+                menuToggle.querySelector('i').classList.add('fa-bars');
+            });
+        });
+        
+        cartIcon.addEventListener('click', () => {
+            cartModal.classList.add('open');
+            if (window.innerWidth <= 768) {
+                navLinks.classList.remove('active');
+                menuToggle.querySelector('i').classList.remove('fa-times');
+                menuToggle.querySelector('i').classList.add('fa-bars');
+            }
+        });
+        
+        closeCart.addEventListener('click', () => {
+            cartModal.classList.remove('open');
+        });
+        
+        function updateHeaderOnScroll() {
+            const header = document.querySelector('header');
+            if (window.scrollY > 50) {
+                header.classList.add('header-scrolled');
+            } else {
+                header.classList.remove('header-scrolled');
+            }
+        }
+        
+        // Back to Top Button
+        const backToTop = document.getElementById('backToTop');
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+            updateHeaderOnScroll();
+        });
+        
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+        
+        // Close cart/modals when clicking outside
+        document.addEventListener('click', (e) => {
+            // Cart modal
+            if (!cartModal.contains(e.target) && !cartIcon.contains(e.target) && cartModal.classList.contains('open')) {
+                cartModal.classList.remove('open');
+            }
+            
+            // Scrub modal
+            if (scrubModal.classList.contains('open') && e.target === scrubModal) {
+                scrubModal.classList.remove('open');
+                document.body.style.overflow = '';
+            }
+            
+            // Email modal
+            if (emailModal.classList.contains('open') && e.target === emailModal) {
+                emailModal.classList.remove('open');
+                document.body.style.overflow = '';
+                customerNameInput.value = '';
+                emailProceedBtn.disabled = true;
+            }
+        });
+        
+        // Scrub modal event listeners
+        scrubOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                scrubOptions.forEach(opt => opt.classList.remove('selected'));
+                this.classList.add('selected');
+                selectedScrubOption = this.dataset.option;
+            });
+        });
+        
+        scrubCancelBtn.addEventListener('click', () => {
+            scrubModal.classList.remove('open');
+            document.body.style.overflow = '';
+        });
+        
+        scrubAddBtn.addEventListener('click', () => {
+            // Show loading state
+            scrubAddBtn.classList.add('adding');
+            scrubAddBtn.innerHTML = '';
+            
+            setTimeout(() => {
+                addCustomSoapToCart(selectedScrubOption);
+                
+                scrubModal.classList.remove('open');
+                document.body.style.overflow = '';
+                
+                // Reset button
+                scrubAddBtn.classList.remove('adding');
+                scrubAddBtn.innerHTML = '<i class="fas fa-shopping-bag"></i> Add to Cart';
+            }, 800);
+        });
+        
+        // Email modal event listeners
+        customerNameInput.addEventListener('input', function() {
+            emailProceedBtn.disabled = this.value.trim() === '';
+        });
+        
+        customerNameInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' && this.value.trim() !== '') {
+                completeEmailOrder(this.value.trim());
+            }
+        });
+        
+        emailCancelBtn.addEventListener('click', () => {
+            emailModal.classList.remove('open');
+            document.body.style.overflow = '';
+            customerNameInput.value = '';
+            emailProceedBtn.disabled = true;
+        });
+        
+        emailProceedBtn.addEventListener('click', () => {
+            completeEmailOrder(customerNameInput.value.trim());
+        });
+        
+        // Initialize everything
+        document.addEventListener('DOMContentLoaded', () => {
+            loadCartFromStorage();
+            updatePriceDisplay();
+            updatePreview();
+            
+            window.addEventListener('storage', function(e) {
+                if (e.key === 'cartUpdated') {
+                    loadCartFromStorage();
+                }
+            });
+            
+            document.documentElement.style.overflowX = 'hidden';
+            document.body.style.overflowX = 'hidden';
+            
+            updateHeaderOnScroll();
+        });
     </script>
 </body>
 </html>
