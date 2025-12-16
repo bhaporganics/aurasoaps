@@ -191,7 +191,7 @@ const products = [
         price: 1000,
         mrp: 1200,
         discount: "16.67% OFF",
-        image: "images/combo_pack.jpg",
+        image: "images/functionpack_soap_2.jpg",
         alt: "Aura - Function Pack - Premium Collection of 6 Best-Selling Ayurvedic Soaps",
         size: "6 soaps (100g each)",
         weight: "600g total",
@@ -207,7 +207,7 @@ const products = [
         price: 250,
         mrp: 300,
         discount: "16.67% OFF",
-        image: "images/custom_soap.jpg",
+        image: "images/custom_soap.jpeg",
         alt: "Aura - Custom Soap - Create Your Own Personalized Ayurvedic Soap Blend",
         size: "Custom",
         weight: "100g",
@@ -1348,5 +1348,6 @@ document.addEventListener('DOMContentLoaded', () => {
     productScript.textContent = JSON.stringify(productStructuredData);
     document.head.appendChild(productScript);
 });
+
 
 
