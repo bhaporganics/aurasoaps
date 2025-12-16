@@ -490,6 +490,9 @@ function showScrubModal(product, quantity) {
     // Show modal
     scrubModal.classList.add('open');
     document.body.style.overflow = 'hidden';
+    
+    // Push to history state to handle back button
+    history.pushState({ modal: 'scrub' }, '', '#scrub');
 }
 
 // Show minimum order modal
@@ -511,6 +514,9 @@ function showMinimumOrderModal() {
     // Show modal
     minOrderModal.classList.add('open');
     document.body.style.overflow = 'hidden';
+    
+    // Push to history state to handle back button
+    history.pushState({ modal: 'minOrder' }, '', '#min-order');
 }
 
 // Update product quantity on product card
@@ -783,33 +789,33 @@ function updateCart() {
             cartItemsContainer.appendChild(cartItem);
         });
         
-// Add event listeners to cart item buttons
-document.querySelectorAll('.decrease-cart').forEach(button => {
-    button.addEventListener('click', function(e) {
-        e.stopPropagation();  // <-- ADD THIS LINE
-        const productId = this.getAttribute('data-id');
-        const scrubOption = this.getAttribute('data-scrub');
-        updateCartQuantity(productId, scrubOption, -1);
-    });
-});
-
-document.querySelectorAll('.increase-cart').forEach(button => {
-    button.addEventListener('click', function(e) {
-        e.stopPropagation();  // <-- ADD THIS LINE
-        const productId = this.getAttribute('data-id');
-        const scrubOption = this.getAttribute('data-scrub');
-        updateCartQuantity(productId, scrubOption, 1);
-    });
-});
-
-document.querySelectorAll('.remove-item').forEach(button => {
-    button.addEventListener('click', function(e) {
-        e.stopPropagation();  // <-- ADD THIS LINE
-        const productId = this.getAttribute('data-id');
-        const scrubOption = this.getAttribute('data-scrub');
-        removeFromCart(productId, scrubOption);
-    });
-});
+        // Add event listeners to cart item buttons WITH stopPropagation
+        document.querySelectorAll('.decrease-cart').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const productId = this.getAttribute('data-id');
+                const scrubOption = this.getAttribute('data-scrub');
+                updateCartQuantity(productId, scrubOption, -1);
+            });
+        });
+        
+        document.querySelectorAll('.increase-cart').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const productId = this.getAttribute('data-id');
+                const scrubOption = this.getAttribute('data-scrub');
+                updateCartQuantity(productId, scrubOption, 1);
+            });
+        });
+        
+        document.querySelectorAll('.remove-item').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const productId = this.getAttribute('data-id');
+                const scrubOption = this.getAttribute('data-scrub');
+                removeFromCart(productId, scrubOption);
+            });
+        });
         
         // Update total with savings
         const totalSavings = totalMrp - totalPrice;
@@ -959,6 +965,9 @@ function checkoutViaEmail() {
     emailModal.classList.add('open');
     document.body.style.overflow = 'hidden';
     customerNameInput.focus();
+    
+    // Push to history state to handle back button
+    history.pushState({ modal: 'email' }, '', '#email');
 }
 
 // Complete email order with customer name
@@ -1039,15 +1048,24 @@ navLinks.querySelectorAll('a').forEach(link => {
 // Mobile FAB functionality
 if (mobileFab) {
     mobileFab.addEventListener('click', function(e) {
-        e.stopPropagation();  // <-- ADD THIS LINE
+        e.stopPropagation();
         cartModal.classList.add('open');
+        
+        // Push to history state to handle back button
+        history.pushState({ modal: 'cart' }, '', '#cart');
     });
 }
 
-// Event listeners
+// EVENT LISTENERS WITH STOP PROPAGATION AND BACK BUTTON SUPPORT
+
+// Cart Icon Click with stopPropagation and history state
 cartIcon.addEventListener('click', function(e) {
-    e.stopPropagation();  // <-- ADD THIS LINE
+    e.stopPropagation();
     cartModal.classList.add('open');
+    
+    // Push to history state to handle back button
+    history.pushState({ modal: 'cart' }, '', '#cart');
+    
     // Close mobile menu if open
     if (window.innerWidth <= 768) {
         navLinks.classList.remove('active');
@@ -1056,13 +1074,29 @@ cartIcon.addEventListener('click', function(e) {
     }
 });
 
-closeCart.addEventListener('click', () => {
-    cartModal.classList.remove('open');
-});
-
 // Stop clicks inside cart modal from bubbling up
 cartModal.addEventListener('click', function(e) {
     e.stopPropagation();
+});
+
+// Stop clicks inside scrub modal from bubbling up
+scrubModal.addEventListener('click', function(e) {
+    e.stopPropagation();
+});
+
+// Stop clicks inside email modal from bubbling up
+emailModal.addEventListener('click', function(e) {
+    e.stopPropagation();
+});
+
+// Stop clicks inside min order modal from bubbling up
+minOrderModal.addEventListener('click', function(e) {
+    e.stopPropagation();
+});
+
+closeCart.addEventListener('click', () => {
+    cartModal.classList.remove('open');
+    document.body.style.overflow = '';
 });
 
 // Connect checkout functions to buttons
@@ -1083,6 +1117,11 @@ scrubOptions.forEach(option => {
 scrubCancelBtn.addEventListener('click', () => {
     scrubModal.classList.remove('open');
     document.body.style.overflow = '';
+    
+    // Go back in history
+    if (history.state && history.state.modal === 'scrub') {
+        history.back();
+    }
 });
 
 scrubAddBtn.addEventListener('click', () => {
@@ -1094,6 +1133,11 @@ scrubAddBtn.addEventListener('click', () => {
         addToCart(currentProductId, currentQuantity, selectedScrubOption);
         scrubModal.classList.remove('open');
         document.body.style.overflow = '';
+        
+        // Go back in history
+        if (history.state && history.state.modal === 'scrub') {
+            history.back();
+        }
         
         // Reset button
         scrubAddBtn.classList.remove('adding');
@@ -1109,6 +1153,11 @@ customerNameInput.addEventListener('input', function() {
 customerNameInput.addEventListener('keypress', function(e) {
     if (e.key === 'Enter' && this.value.trim() !== '') {
         completeEmailOrder(this.value.trim());
+        
+        // Go back in history
+        if (history.state && history.state.modal === 'email') {
+            history.back();
+        }
     }
 });
 
@@ -1117,21 +1166,42 @@ emailCancelBtn.addEventListener('click', () => {
     document.body.style.overflow = '';
     customerNameInput.value = '';
     emailProceedBtn.disabled = true;
+    
+    // Go back in history
+    if (history.state && history.state.modal === 'email') {
+        history.back();
+    }
 });
 
 emailProceedBtn.addEventListener('click', () => {
     completeEmailOrder(customerNameInput.value.trim());
+    
+    // Go back in history
+    if (history.state && history.state.modal === 'email') {
+        history.back();
+    }
 });
 
 // Minimum order modal event listeners
 minOrderCloseBtn.addEventListener('click', () => {
     minOrderModal.classList.remove('open');
     document.body.style.overflow = '';
+    
+    // Go back in history
+    if (history.state && history.state.modal === 'minOrder') {
+        history.back();
+    }
 });
 
 minOrderShopBtn.addEventListener('click', () => {
     minOrderModal.classList.remove('open');
     document.body.style.overflow = '';
+    
+    // Go back in history
+    if (history.state && history.state.modal === 'minOrder') {
+        history.back();
+    }
+    
     // Scroll to products section
     document.querySelector('#products').scrollIntoView({ behavior: 'smooth' });
 });
@@ -1141,12 +1211,23 @@ document.addEventListener('click', (e) => {
     // Cart modal
     if (!cartModal.contains(e.target) && !cartIcon.contains(e.target) && !mobileFab.contains(e.target) && cartModal.classList.contains('open')) {
         cartModal.classList.remove('open');
+        document.body.style.overflow = '';
+        
+        // Go back in history if we're in cart state
+        if (history.state && history.state.modal === 'cart') {
+            history.back();
+        }
     }
     
     // Scrub modal
     if (scrubModal.classList.contains('open') && e.target === scrubModal) {
         scrubModal.classList.remove('open');
         document.body.style.overflow = '';
+        
+        // Go back in history
+        if (history.state && history.state.modal === 'scrub') {
+            history.back();
+        }
     }
     
     // Email modal
@@ -1155,10 +1236,49 @@ document.addEventListener('click', (e) => {
         document.body.style.overflow = '';
         customerNameInput.value = '';
         emailProceedBtn.disabled = true;
+        
+        // Go back in history
+        if (history.state && history.state.modal === 'email') {
+            history.back();
+        }
     }
     
     // Minimum order modal
     if (minOrderModal.classList.contains('open') && e.target === minOrderModal) {
+        minOrderModal.classList.remove('open');
+        document.body.style.overflow = '';
+        
+        // Go back in history
+        if (history.state && history.state.modal === 'minOrder') {
+            history.back();
+        }
+    }
+});
+
+// Handle back/forward browser buttons
+window.addEventListener('popstate', function(event) {
+    // Close cart modal if open
+    if (cartModal.classList.contains('open')) {
+        cartModal.classList.remove('open');
+        document.body.style.overflow = '';
+    }
+    
+    // Close scrub modal if open
+    if (scrubModal.classList.contains('open')) {
+        scrubModal.classList.remove('open');
+        document.body.style.overflow = '';
+    }
+    
+    // Close email modal if open
+    if (emailModal.classList.contains('open')) {
+        emailModal.classList.remove('open');
+        document.body.style.overflow = '';
+        customerNameInput.value = '';
+        emailProceedBtn.disabled = true;
+    }
+    
+    // Close min order modal if open
+    if (minOrderModal.classList.contains('open')) {
         minOrderModal.classList.remove('open');
         document.body.style.overflow = '';
     }
@@ -1358,9 +1478,3 @@ document.addEventListener('DOMContentLoaded', () => {
     productScript.textContent = JSON.stringify(productStructuredData);
     document.head.appendChild(productScript);
 });
-
-
-
-
-
-
