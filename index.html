@@ -32,7 +32,7 @@
             --bar-height: 35px; /* Adjust height for the bar */
             --bar-bg: #b76e79; /* Accent color for premium look */
             --bar-text-color: white;
-            --bar-scroll-speed: 12s; /* Adjust animation duration for speed */
+            --bar-scroll-speed: 50s; /* Increased duration for smoother, slower scroll of three sentences */
         }
         
         #delivery-announcement-bar {
@@ -48,11 +48,6 @@
             display: flex;
             align-items: center;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Adjust content below the bar */
-        body {
-            /* Note: This assumes the original body margin was 0, which is standard. */
         }
 
         /* Adjust hero section and mobile header position to account for the bar */
@@ -84,14 +79,13 @@
             animation: marquee var(--bar-scroll-speed) linear infinite;
         }
 
-        .announcement-content span {
-            /* Create space between repeating messages */
-            margin-right: 150px; 
-            display: inline-block;
-            /* Style the icon */
-            display: flex;
+        .announcement-item {
+            /* Ensures each sentence block is treated as a flex item for icon alignment */
+            display: inline-flex;
             align-items: center;
             gap: 10px;
+            /* Use a generous margin to create a large gap between repeating messages */
+            margin-right: 250px; 
         }
 
         .announcement-content i {
@@ -141,11 +135,24 @@
     <div id="delivery-announcement-bar">
         <div class="announcement-content">
             <script>
-                // New message with the truck icon
-                const message = `<i class="fas fa-truck-fast"></i> Delivery Fee ₹100 will be added extra to every order`;
+                // Three distinct messages as requested
+                const messages = [
+                    `<i class="fas fa-truck-fast"></i> Delivery Fee ₹100 will be added extra to every order`,
+                    `<i class="fas fa-truck-fast"></i> Delivery Fee ₹100 will be added extra to every order`,
+                    `<i class="fas fa-truck-fast"></i> Delivery Fee ₹100 will be added extra to every order`
+                ];
+                
                 const contentDiv = document.querySelector('.announcement-content');
-                // Repeat the message enough times to fill the space
-                contentDiv.innerHTML = '<span>' + message + '</span>'.repeat(10); 
+                let repeatedContent = '';
+
+                // Repeat the block of three messages multiple times (e.g., 5 times)
+                for (let j = 0; j < 5; j++) {
+                    messages.forEach(msg => {
+                        repeatedContent += `<span class="announcement-item">${msg}</span>`;
+                    });
+                }
+                
+                contentDiv.innerHTML = repeatedContent;
             </script>
         </div>
     </div>
