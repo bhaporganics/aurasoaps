@@ -1279,6 +1279,39 @@ footer {
     color: var(--secondary);
 }
 
+/* Special Product Cards */
+.special-product {
+    border: 2px solid var(--primary);
+    position: relative;
+    overflow: hidden;
+}
+
+.special-product::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0 50px 50px 0;
+    border-color: transparent var(--accent) transparent transparent;
+    z-index: 1;
+}
+
+.special-product::after {
+    content: 'Special';
+    position: absolute;
+    top: 8px;
+    right: 5px;
+    color: white;
+    font-size: 0.7rem;
+    font-weight: 600;
+    z-index: 2;
+    transform: rotate(45deg);
+    transform-origin: top right;
+}
+
 .customize-btn {
     background-color: var(--accent);
     color: white;
@@ -2343,4 +2376,9 @@ html, body {
 /* Smooth scroll behavior */
 html {
     scroll-behavior: smooth;
+}
+.special-product::before,
+.special-product::after {
+    content: none !important;
+    display: none !important;
 }
