@@ -7,7 +7,7 @@ const allProducts = [
         name: "Rose Petal",
         description: "Gentle cleanser with rose petals that nourishes skin and leaves it feeling soft and supple.",
         price: 160,
-        mrp: 180,
+        mrp: 200,
         image: "images/rosepetal_soap_2.jpg",
         alt: "Aura-Cleanse Rose Petal Handmade Soap - Natural Ayurvedic Soap with Rose Petals for Soft Skin",
         pageUrl: "product-rose-petal.html"
@@ -17,7 +17,7 @@ const allProducts = [
         name: "Red Sandal",
         description: "Calming soap with red sandalwood known for its skin-soothing properties and ability to reduce inflammation.",
         price: 160,
-        mrp: 180,
+        mrp: 200,
         image: "images/redsandal_soap_2.jpg",
         alt: "Aura-Cleanse Red Sandalwood Soap - Ayurvedic Soothing Soap for Skin Inflammation",
         pageUrl: "product-red-sandal.html"
@@ -27,7 +27,7 @@ const allProducts = [
         name: "Manjistha",
         description: "Ayurvedic formula that helps brighten skin tone, reduce pigmentation, and promote an even complexion.",
         price: 160,
-        mrp: 180,
+        mrp: 200,
         image: "images/manjistha_soap_2.jpg",
         alt: "Aura-Cleanse Manjistha Soap - Natural Skin Brightening Soap for Even Complexion",
         pageUrl: "product-manjistha.html"
@@ -37,7 +37,7 @@ const allProducts = [
         name: "Urad Dal",
         description: "Enriched with Urad Dal to exfoliate gently, remove dead skin cells, and reveal naturally glowing skin.",
         price: 160,
-        mrp: 180,
+        mrp: 200,
         image: "images/uraddhal_soap_2.jpg",
         alt: "Aura-Cleanse Urad Dal Soap - Exfoliating Soap for Glowing Natural Skin",
         pageUrl: "product-urad-dal.html"
@@ -47,7 +47,7 @@ const allProducts = [
         name: "Straw Berry",
         description: "Packed with berry antioxidants to fight free radicals, protect skin from environmental damage.",
         price: 160,
-        mrp: 180,
+        mrp: 200,
         image: "images/strawberry_soap_2.jpg",
         alt: "Aura-Cleanse Berry Blast Soap - Antioxidant Rich Soap for Skin Protection",
         pageUrl: "product-straw-berry.html"
@@ -57,7 +57,7 @@ const allProducts = [
         name: "Coffee",
         description: "Coffee grounds help tighten skin, reduce cellulite appearance, and provide antioxidant benefits.",
         price: 160,
-        mrp: 180,
+        mrp: 200,
         image: "images/coffee_soap_2.jpg",
         alt: "Aura-Cleanse Coffee Soap - Skin Tightening Soap with Coffee Grounds",
         pageUrl: "product-coffee.html"
@@ -67,7 +67,7 @@ const allProducts = [
         name: "Vetiver",
         description: "Deep cleansing soap with vetiver's earthy aroma that calms the mind while purifying the skin.",
         price: 160,
-        mrp: 180,
+        mrp: 200,
         image: "images/vettiver_soap_2.jpg",
         alt: "Aura-Cleanse Vetiver Soap - Earthy Aroma Soap for Mind Calming and Skin Purification",
         pageUrl: "product-vetiver.html"
@@ -77,7 +77,7 @@ const allProducts = [
         name: "Wild Turmeric",
         description: "Powerful antibacterial and antifungal properties help treat skin infections and promote clear skin.",
         price: 160,
-        mrp: 180,
+        mrp: 200,
         image: "images/wildturmeric_soap_2.jpg",
         alt: "Aura-Cleanse Wild Turmeric Soap - Antibacterial Soap for Clear Skin",
         pageUrl: "product-wild-turmeric.html"
@@ -87,7 +87,7 @@ const allProducts = [
         name: "Kuppaimeni",
         description: "Traditional herb known for healing skin ailments, reducing irritation, and promoting skin regeneration.",
         price: 160,
-        mrp: 180,
+        mrp: 200,
         image: "images/kuppameni_soap_2.jpg",
         alt: "Aura-Cleanse Kuppaimeni Soap - Skin Healing Soap with Traditional Herbs",
         pageUrl: "product-kuppaimeni.html"
@@ -97,7 +97,7 @@ const allProducts = [
         name: "Green Gram",
         description: "Green gram flour gently exfoliates and energizes skin, removing impurities and leaving it refreshed.",
         price: 160,
-        mrp: 180,
+        mrp: 200,
         image: "images/greengram_soap_2.jpg",
         alt: "Aura-Cleanse Green Gram Soap - Exfoliating Soap for Energized Skin",
         pageUrl: "product-green-gram.html"
@@ -107,17 +107,17 @@ const allProducts = [
         name: "Aloe Vera",
         description: "Soothing aloe vera deeply hydrates, heals, and renews skin, perfect for sensitive or sun-exposed skin.",
         price: 160,
-        mrp: 180,
+        mrp: 200,
         image: "images/aloevera_soap_2.jpg",
         alt: "Aura-Cleanse Aloe Vera Soap - Hydrating Soap for Sensitive Skin",
         pageUrl: "product-aloe-vera.html"
     },
     {
         id: 'product-12',
-        name: "Charcoal",
+        name: "Activated Charcoal",
         description: "Activated charcoal draws out impurities, toxins, and excess oil from deep within pores for ultra-clean skin.",
         price: 160,
-        mrp: 180,
+        mrp: 200,
         image: "images/charcoal_soap_2.jpg",
         alt: "Aura-Cleanse Charcoal Soap - Deep Pore Cleansing Soap with Activated Charcoal",
         pageUrl: "product-charcoal.html"
@@ -127,7 +127,7 @@ const allProducts = [
         name: "Neem",
         description: "Neem's antibacterial properties combat acne while antioxidants fight signs of aging for youthful skin.",
         price: 160,
-        mrp: 180,
+        mrp: 200,
         image: "images/neem_soap_2.jpg",
         alt: "Aura-Cleanse Neem Soap - Acne Healing Soap with Neem Antibacterial Properties",
         pageUrl: "product-neem.html"
