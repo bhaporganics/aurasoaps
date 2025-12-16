@@ -221,6 +221,30 @@ let cart = [];
 const MIN_ORDER_ITEMS = 3;
 const SCRUB_PRICE = 20;
 
+// Handle browser back button
+window.addEventListener('popstate', function(event) {
+    // Just close any open modals when back button is pressed
+    [cartModal, scrubModal, emailModal, minOrderModal].forEach(modal => {
+        if (modal.classList.contains('open')) {
+            modal.classList.remove('open');
+            document.body.style.overflow = '';
+        }
+    });
+});
+
+// Prevent leaving page when cart is open
+window.addEventListener('beforeunload', function(e) {
+    if (cartModal.classList.contains('open') || 
+        scrubModal.classList.contains('open') || 
+        emailModal.classList.contains('open') || 
+        minOrderModal.classList.contains('open')) {
+        
+        // Optional: Show confirmation dialog
+        // e.preventDefault();
+        // e.returnValue = '';
+    }
+});
+
 // DOM Elements
 const cartModal = document.getElementById('cartModal');
 const cartIcon = document.getElementById('cartIcon');
@@ -1358,6 +1382,7 @@ document.addEventListener('DOMContentLoaded', () => {
     productScript.textContent = JSON.stringify(productStructuredData);
     document.head.appendChild(productScript);
 });
+
 
 
 
