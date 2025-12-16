@@ -139,5 +139,5 @@ const allProducts = [
       mrp: 1200,
       image: "images/functionpack_soap_2.jpg",
       alt: "Aura Rose Petal Handmade Soap - Natural Ayurvedic Soap with Rose Petals for Soft Skin",
-      pageUrl: "product-function-pack.html"
+      pageUrl: "product-function-pack.html"  }
 ];
