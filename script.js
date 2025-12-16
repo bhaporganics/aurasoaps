@@ -499,11 +499,6 @@ function showScrubModal(product, quantity) {
 function showMinimumOrderModal() {
     const totalItems = getTotalItemsInCart();
     const itemsNeeded = MIN_ORDER_ITEMS - totalItems;
-
-    function hasFunctionPackInCart() {
-    return cart.some(item => item.id === 'product-14');
-}
-
     
     // Update modal content
     itemsNeededCount.textContent = itemsNeeded;
@@ -615,28 +610,13 @@ function getTotalItemsInCart() {
 
 // Check if minimum order is met
 function isMinimumOrderMet() {
-    const totalItems = getTotalItemsInCart();
-    const hasFunctionPack = hasFunctionPackInCart();
-
-    return totalItems >= MIN_ORDER_ITEMS || hasFunctionPack;
+    return getTotalItemsInCart() >= MIN_ORDER_ITEMS;
 }
-
 
 // Update minimum order UI
 function updateMinimumOrderUI() {
     const totalItems = getTotalItemsInCart();
-if (hasFunctionPackInCart()) {
-    progressMessage.textContent = '✓ Function Pack added — order unlocked!';
-    progressMessage.className = 'progress-message progress-complete';
-    progressBar.style.width = '100%';
-}
-else if (totalItems < MIN_ORDER_ITEMS) {
-    const itemsNeeded = MIN_ORDER_ITEMS - totalItems;
-    progressMessage.textContent =
-        `Add ${itemsNeeded} more soap${itemsNeeded > 1 ? 's' : ''} or add a Function Pack`;
-    progressMessage.className = 'progress-message';
-}
-
+    const meetsMinimumOrder = isMinimumOrderMet();
     const progressPercentage = Math.min((totalItems / MIN_ORDER_ITEMS) * 100, 100);
     
     // Update progress bar
