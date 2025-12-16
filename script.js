@@ -325,6 +325,11 @@ function initTestimonialsCarousel() {
     }
 }
 
+// Check if cart contains Function Pack
+function hasFunctionPackInCart() {
+    return cart.some(item => item.id === 'product-14');
+}
+
 // Update the product rendering function
 function renderProducts() {
     productsContainer.innerHTML = '';
@@ -498,17 +503,28 @@ function showScrubModal(product, quantity) {
 // Show minimum order modal
 function showMinimumOrderModal() {
     const totalItems = getTotalItemsInCart();
+    const hasFunctionPack = hasFunctionPackInCart();
     const itemsNeeded = MIN_ORDER_ITEMS - totalItems;
     
     // Update modal content
     itemsNeededCount.textContent = itemsNeeded;
     
-    if (totalItems === 0) {
+    if (hasFunctionPack) {
+        minOrderTitle.textContent = 'Order Ready!';
+        minOrderMessage.innerHTML = `Your Function Pack qualifies for order. You can proceed to checkout.`;
+        
+        // If function pack is in cart, don't show the blocking modal
+        setTimeout(() => {
+            minOrderModal.classList.remove('open');
+            document.body.style.overflow = '';
+        }, 2000);
+        return;
+    } else if (totalItems === 0) {
         minOrderTitle.textContent = 'Your Cart is Empty';
-        minOrderMessage.innerHTML = `Please add <span class="min-order-count">${MIN_ORDER_ITEMS}</span> products to place your order.`;
+        minOrderMessage.innerHTML = `Please add <span class="min-order-count">${MIN_ORDER_ITEMS} soaps</span> or <span class="min-order-count">1 Function Pack</span> to place your order.`;
     } else {
         minOrderTitle.textContent = 'Add More Items';
-        minOrderMessage.innerHTML = `You need to add <span class="min-order-count">${itemsNeeded}</span> more product${itemsNeeded > 1 ? 's' : ''} to meet the minimum order requirement.`;
+        minOrderMessage.innerHTML = `You need <span class="min-order-count">${itemsNeeded}</span> more product${itemsNeeded > 1 ? 's' : ''} or add <span class="min-order-count">1 Function Pack</span> to meet the minimum order requirement.`;
     }
     
     // Show modal
@@ -610,26 +626,34 @@ function getTotalItemsInCart() {
 
 // Check if minimum order is met
 function isMinimumOrderMet() {
-    return getTotalItemsInCart() >= MIN_ORDER_ITEMS;
+    const totalItems = getTotalItemsInCart();
+    const hasFunctionPack = hasFunctionPackInCart();
+    
+    return totalItems >= MIN_ORDER_ITEMS || hasFunctionPack;
 }
 
 // Update minimum order UI
 function updateMinimumOrderUI() {
     const totalItems = getTotalItemsInCart();
-    const meetsMinimumOrder = isMinimumOrderMet();
-    const progressPercentage = Math.min((totalItems / MIN_ORDER_ITEMS) * 100, 100);
+    const hasFunctionPack = hasFunctionPackInCart();
+    const meetsRequirement = totalItems >= MIN_ORDER_ITEMS || hasFunctionPack;
+    const progressPercentage = meetsRequirement ? 100 : Math.min((totalItems / MIN_ORDER_ITEMS) * 100, 100);
     
     // Update progress bar
     progressBar.style.width = `${progressPercentage}%`;
     progressCount.textContent = `${totalItems}/${MIN_ORDER_ITEMS}`;
     
     // Update progress message
-    if (totalItems === 0) {
-        progressMessage.textContent = `Add ${MIN_ORDER_ITEMS} products to place your order`;
+    if (hasFunctionPack) {
+        progressMessage.textContent = '✓ Function Pack added — order unlocked!';
+        progressMessage.className = 'progress-message progress-complete';
+        progressBar.style.width = '100%';
+    } else if (totalItems === 0) {
+        progressMessage.textContent = `Add ${MIN_ORDER_ITEMS} soaps or 1 Function Pack to place your order`;
         progressMessage.className = 'progress-message';
     } else if (totalItems < MIN_ORDER_ITEMS) {
         const itemsNeeded = MIN_ORDER_ITEMS - totalItems;
-        progressMessage.textContent = `Add ${itemsNeeded} more product${itemsNeeded > 1 ? 's' : ''} to place your order`;
+        progressMessage.textContent = `Add ${itemsNeeded} more soap${itemsNeeded > 1 ? 's' : ''} or add a Function Pack`;
         progressMessage.className = 'progress-message';
     } else {
         progressMessage.textContent = '✓ Minimum order requirement met!';
@@ -644,7 +668,7 @@ function updateMinimumOrderUI() {
     }
     
     // Update cart icon indicator
-    if (totalItems > 0 && totalItems < MIN_ORDER_ITEMS) {
+    if (totalItems > 0 && !meetsRequirement) {
         minOrderIndicator.style.display = 'flex';
         if (mobileFabIndicator) mobileFabIndicator.style.display = 'flex';
         
@@ -669,7 +693,7 @@ function updateMinimumOrderUI() {
     checkoutButtons.forEach(btn => {
         if (btn) {
             // Visually change opacity/style if needed (optional)
-            if (totalQuantity === 0) {
+            if (totalQuantity === 0 || !meetsRequirement) {
                 btn.style.opacity = '0.7';
                 btn.style.cursor = 'not-allowed';
             } else {
