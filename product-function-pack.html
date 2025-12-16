@@ -563,6 +563,64 @@
             alt: "Aura - Function Pack - Complete Collection of 6 Best-Selling Soaps"
         };
         
+        // Similar products data (matching your main products array)
+        const similarProductsData = [
+            {
+                id: 'product-1',
+                name: "Rose Petal",
+                description: "Gentle cleanser with rose petals that nourishes skin and leaves it feeling soft and supple.",
+                price: 160,
+                mrp: 200,
+                image: "images/rosepetal_soap_2.jpg",
+                alt: "Aura - Rose Petal Handmade Soap"
+            },
+            {
+                id: 'product-2',
+                name: "Red Sandal",
+                description: "Calming soap with red sandalwood known for its skin-soothing properties and ability to reduce inflammation.",
+                price: 160,
+                mrp: 200,
+                image: "images/redsandal_soap_2.jpg",
+                alt: "Aura - Red Sandalwood Soap"
+            },
+            {
+                id: 'product-3',
+                name: "Manjistha",
+                description: "Ayurvedic formula that helps brighten skin tone, reduce pigmentation, and promote an even complexion.",
+                price: 160,
+                mrp: 200,
+                image: "images/manjistha_soap_2.jpg",
+                alt: "Aura - Manjistha Soap"
+            },
+            {
+                id: 'product-4',
+                name: "Urad Dal",
+                description: "Enriched with Urad Dal to exfoliate gently, remove dead skin cells, and reveal naturally glowing skin.",
+                price: 160,
+                mrp: 200,
+                image: "images/uraddhal_soap_2.jpg",
+                alt: "Aura - Urad Dal Soap"
+            },
+            {
+                id: 'product-5',
+                name: "Straw Berry",
+                description: "Packed with berry antioxidants to fight free radicals, protect skin from environmental damage.",
+                price: 160,
+                mrp: 200,
+                image: "images/strawberry_soap_2.jpg",
+                alt: "Aura - Straw Berry Soap"
+            },
+            {
+                id: 'product-6',
+                name: "Coffee",
+                description: "Coffee grounds help tighten skin, reduce cellulite appearance, and provide antioxidant benefits.",
+                price: 160,
+                mrp: 200,
+                image: "images/coffee_soap_2.jpg",
+                alt: "Aura - Coffee Soap"
+            }
+        ];
+        
         // Product Configuration
         const productId = productData.id;
         const productName = productData.name;
@@ -1006,6 +1064,54 @@
             }, 3000);
         }
 
+        // Generate similar products
+        function generateSimilarProducts() {
+            const container = document.getElementById('similarProductsGrid');
+            if (!container) return;
+            
+            container.innerHTML = '';
+            
+            // Take first 3 similar products
+            const productsToShow = similarProductsData.slice(0, 3);
+            
+            productsToShow.forEach(product => {
+                const discountPercent = Math.round(((product.mrp - product.price) / product.mrp) * 100);
+                
+                const productCard = document.createElement('div');
+                productCard.className = 'similar-product-card';
+                
+                // Create URL-friendly name
+                const productUrlName = product.name.toLowerCase()
+                    .replace(/\s+/g, '-')
+                    .replace(/[^\w-]/g, '')
+                    .replace(/-+/g, '-');
+                
+                productCard.innerHTML = `
+                    <div class="similar-product-image">
+                        <img src="${product.image}" alt="${product.alt || product.name}" loading="lazy">
+                    </div>
+                    <div class="similar-product-content">
+                        <h3>${product.name}</h3>
+                        <p style="font-size: 0.85rem; color: #666; margin: 8px 0; line-height: 1.4; min-height: 40px;">
+                            ${product.description.length > 80 ? product.description.substring(0, 80) + '...' : product.description}
+                        </p>
+                        <div class="similar-product-price-container">
+                            <div class="similar-product-price">₹${product.price}</div>
+                            <div class="similar-product-mrp">₹${product.mrp}</div>
+                            <div style="font-size: 0.75rem; color: #27ae60; font-weight: 600; background-color: rgba(39, 174, 96, 0.1); padding: 2px 6px; border-radius: 4px;">
+                                ${discountPercent}% OFF
+                            </div>
+                        </div>
+                        <a href="product-${productUrlName}.html?id=${product.id}" class="similar-product-btn">
+                            <i class="fas fa-shopping-bag"></i> View Details
+                        </a>
+                    </div>
+                `;
+                
+                container.appendChild(productCard);
+            });
+        }
+
         // Slideshow functionality
         let currentSlide = 0;
         const slides = document.querySelectorAll('.slideshow-slide');
@@ -1137,12 +1243,43 @@
             });
         }
 
+        // Handle back button - FIXED to stay on current page
+        function handleBackButton() {
+            // Close cart modal if open
+            if (cartModal.classList.contains('open')) {
+                cartModal.classList.remove('open');
+                document.body.style.overflow = '';
+                return true; // Event handled, don't navigate away
+            }
+            
+            // Close email modal if open
+            const emailModal = document.getElementById('emailModal');
+            if (emailModal.classList.contains('open')) {
+                emailModal.classList.remove('open');
+                document.body.style.overflow = '';
+                document.getElementById('customerName').value = '';
+                document.getElementById('emailProceedBtn').disabled = true;
+                return true; // Event handled, don't navigate away
+            }
+            
+            // Close min order modal if open
+            const minOrderModal = document.getElementById('minOrderModal');
+            if (minOrderModal.classList.contains('open')) {
+                minOrderModal.classList.remove('open');
+                document.body.style.overflow = '';
+                return true; // Event handled, don't navigate away
+            }
+            
+            return false; // Allow normal back navigation
+        }
+
         // Initialize everything
         document.addEventListener('DOMContentLoaded', () => {
             // Initialize product page
             updatePriceDisplay();
             initSlideshow();
             initReviewCarousel();
+            generateSimilarProducts(); // FIXED: Added this line
             
             // Load cart from storage
             loadCartFromStorage();
@@ -1189,18 +1326,26 @@ Please confirm my order and provide delivery details.`;
                 window.open(whatsappUrl, '_blank');
             });
             
-            // Cart icon
+            // Cart icon - FIXED: Added history state for back button
             cartIcon.addEventListener('click', function(e) {
                 e.stopPropagation();
                 cartModal.classList.add('open');
                 document.body.style.overflow = 'hidden';
+                
+                // Push to history state for back button support
+                history.pushState({ modal: 'cart', page: 'product-function-pack' }, '', '#cart');
             });
             
-            // Close cart
+            // Close cart - FIXED: Proper history management
             closeCart.addEventListener('click', function(e) {
                 e.stopPropagation();
                 cartModal.classList.remove('open');
                 document.body.style.overflow = '';
+                
+                // Go back in history if we're in cart state
+                if (history.state && history.state.modal === 'cart') {
+                    history.back();
+                }
             });
             
             // Checkout buttons
@@ -1293,6 +1438,19 @@ Please confirm my order and provide delivery details.`;
                 }
             });
             
+            // Handle browser back button - FIXED
+            window.addEventListener('popstate', function(event) {
+                // Close modals but stay on current page
+                if (handleBackButton()) {
+                    // If we handled the back button (closed a modal), 
+                    // push state again to stay on this page
+                    if (history.state && history.state.modal) {
+                        // Don't push state if we're already on this page
+                        return;
+                    }
+                }
+            });
+            
             // Header scroll effect
             function updateHeaderOnScroll() {
                 const header = document.querySelector('header');
@@ -1305,6 +1463,25 @@ Please confirm my order and provide delivery details.`;
             
             window.addEventListener('scroll', updateHeaderOnScroll);
             updateHeaderOnScroll();
+            
+            // Back to top button
+            const backToTop = document.getElementById('backToTop');
+            if (backToTop) {
+                backToTop.addEventListener('click', () => {
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                });
+                
+                window.addEventListener('scroll', () => {
+                    if (window.pageYOffset > 300) {
+                        backToTop.classList.add('visible');
+                    } else {
+                        backToTop.classList.remove('visible');
+                    }
+                });
+            }
         });
     </script>
 </body>
