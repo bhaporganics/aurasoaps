@@ -261,129 +261,99 @@
     </section>
 
      <section class="section" style="background:var(--light);">
-   
         <div class="container">
             <h2 class="section-title">Customer Love</h2>
             
             <div class="reviews-carousel">
                 <div class="swiper">
                     <div class="swiper-wrapper">
-                 
                         <div class="swiper-slide">
                             <div class="review-card">
                                 <div class="review-header">
-                              
                                     <div class="review-avatar">
                                         <i class="fas fa-user-circle"></i>
                                     </div>
-               
                                     <div>
                                         <div class="review-rating">
-                                      
                                             <i class="fas fa-star"></i>
                                             <i class="fas fa-star"></i>
-                                            <i class="fas 
-                                                fa-star"></i>
                                             <i class="fas fa-star"></i>
                                             <i class="fas fa-star"></i>
-        
+                                            <i class="fas fa-star"></i>
                                         </div>
                                         <div style="font-weight:600;color:var(--secondary);font-size:0.95rem;">Swetha Anand</div>
-                          
                                     </div>
                                 </div>
                                 <p class="review-text" style="font-size:0.9rem;">
-                        
                                     "I've struggled with sensitive skin for years. This soap is a game-changer! No more redness or dryness. My skin feels nourished and smells divine."
                                 </p>
                                 <div style="font-size:0.8rem;color:#888;margin-top:12px;">
-                             
                                     <i class="far fa-clock"></i> 2 months ago
                                 </div>
                             </div>
                         </div>
-    
                         
                         <div class="swiper-slide">
                             <div class="review-card">
-                          
                                 <div class="review-header">
                                     <div class="review-avatar">
                                         <i class="fas fa-user-circle"></i>
-              
                                     </div>
                                     <div>
                                         <div class="review-rating">
- 
                                             <i class="fas fa-star"></i>
                                             <i class="fas fa-star"></i>
-         
                                             <i class="fas fa-star"></i>
                                             <i class="fas fa-star"></i>
-                 
                                             <i class="fas fa-star-half-alt"></i>
                                         </div>
-                               
                                         <div style="font-weight:600;color:var(--secondary);font-size:0.95rem;">Mirthin Raj</div>
                                     </div>
                                 </div>
-                     
                                 <p class="review-text" style="font-size:0.9rem;">
-                                    "As someone with combination skin, finding the right soap was tough. This balances everything perfectly! Not too drying, not too oily. The  fragrance is subtle and calming."
+                                    "As someone with combination skin, finding the right soap was tough. This balances everything perfectly! Not too drying, not too oily. The fragrance is subtle and calming."
                                 </p>
                                 <div style="font-size:0.8rem;color:#888;margin-top:12px;">
-                             
                                     <i class="far fa-clock"></i> 1 month ago
                                 </div>
                             </div>
                         </div>
-    
                         
                         <div class="swiper-slide">
                             <div class="review-card">
-                          
                                 <div class="review-header">
                                     <div class="review-avatar">
                                         <i class="fas fa-user-circle"></i>
-              
                                     </div>
                                     <div>
                                         <div class="review-rating">
- 
                                             <i class="fas fa-star"></i>
                                             <i class="fas fa-star"></i>
-         
                                             <i class="fas fa-star"></i>
                                             <i class="fas fa-star"></i>
-                 
                                             <i class="fas fa-star"></i>
                                         </div>
-                               
                                         <div style="font-weight:600;color:var(--secondary);font-size:0.95rem;">Kala Devi</div>
                                     </div>
                                 </div>
-                     
                                 <p class="review-text" style="font-size:0.9rem;">
                                     "The packaging alone is beautiful! But the product inside is even better. My skin has never felt this soft. I've gifted this to all my friends - they're all converts now!"
                                 </p>
                                 <div style="font-size:0.8rem;color:#888;margin-top:12px;">
-                        
                                     <i class="far fa-clock"></i> 3 weeks ago
                                 </div>
                             </div>
-                       
                         </div>
                     </div>
                     
                     <div class="swiper-button-next" style="color:var(--accent);font-size:1.2rem;"></div>
                     <div class="swiper-button-prev" style="color:var(--accent);font-size:1.2rem;"></div>
-               
-      
                     <div class="swiper-pagination"></div>
                 </div>
             </div>
         </div>
     </section>
+    
     <div class="cart-modal" id="cartModal">
         <div class="cart-header">
             <h2>Your Cart</h2>
@@ -441,7 +411,7 @@
                     <div class="scrub-image">
                         <i class="fas fa-soap"></i>
                     </div>
-                    <h4>Only Soap </h4>
+                    <h4>Only Soap</h4>
                     <p>Just the premium Ayurvedic soap</p>
                     <div class="scrub-price" id="soapOnlyPrice">₹0</div>
                 </div>
@@ -466,6 +436,7 @@
             </div>
         </div>
     </div>
+    
     <div class="email-modal" id="emailModal">
         <div class="email-modal-content">
             <div class="email-modal-header">
@@ -491,6 +462,7 @@
             </div>
         </div>
     </div>
+    
     <footer id="contact" itemscope itemtype="https://schema.org/LocalBusiness">
         <div class="footer-container">
             <div class="footer-column">
@@ -551,13 +523,12 @@
     
     <script>
         // Use the product data from the common file (products-data.js)
-        const PRODUCT_ID = 'product-6'; // CORRECT ID FOR COFFEE SOAP
-        const productData = allProducts.find(p => p.id === PRODUCT_ID);
-
+        const PRODUCT_ID = 'product-6';
+        let productData = allProducts.find(p => p.id === PRODUCT_ID);
+        
         // Fallback for robust initialization
         if (!productData) {
             console.error("Product data not found for ID:", PRODUCT_ID);
-            // Define fallback product data if not found in the array
             const FALLBACK_PRODUCT = {
                 id: PRODUCT_ID,
                 name: "Coffee",
@@ -569,7 +540,7 @@
                 image: "images/coffee_soap_2.jpg",
                 alt: "Aura Coffee Handmade Soap - Exfoliating Soap with Coffee Grounds"
             };
-            Object.assign(productData, FALLBACK_PRODUCT);
+            productData = FALLBACK_PRODUCT;
         }
         
         // Product Configuration
@@ -622,7 +593,7 @@
         let cart = [];
         const MIN_ORDER_ITEMS = 3;
         
-        // --- Product-Specific Logic (Slideshow, Qty, Add to Cart) ---
+        // --- Product-Specific Logic (Slideshow and Quantity) ---
         
         // Premium Slideshow Variables
         let currentSlide = 0;
@@ -641,30 +612,25 @@
             document.getElementById('slideshowPrev').addEventListener('click', () => {
                 navigateSlideshow(-1);
             });
-            
             document.getElementById('slideshowNext').addEventListener('click', () => {
                 navigateSlideshow(1);
             });
-            
             dots.forEach(dot => {
                 dot.addEventListener('click', function() {
                     const index = parseInt(this.dataset.index);
                     goToSlide(index);
                 });
             });
-            
             document.querySelectorAll('.thumbnail').forEach(thumb => {
                 thumb.addEventListener('click', function() {
                     const index = parseInt(this.dataset.imageIndex);
                     goToSlide(index);
                 });
             });
-            
             const slideshowContainer = document.getElementById('slideshowContainer');
             slideshowContainer.addEventListener('mouseenter', () => {
                 clearInterval(slideshowInterval);
             });
-            
             slideshowContainer.addEventListener('mouseleave', () => {
                 startSlideshow();
             });
@@ -697,14 +663,12 @@
                     slide.classList.add('active');
                 }
             });
-            
             dots.forEach((dot, index) => {
                 dot.classList.remove('active');
                 if (index === currentSlide) {
                     dot.classList.add('active');
                 }
             });
-            
             thumbnails.forEach((thumb, index) => {
                 thumb.classList.remove('active');
                 if (index === currentSlide) {
@@ -743,19 +707,16 @@
             document.getElementById('priceSavings').textContent = `Save ₹${savings}`;
         }
         
-        // Add to Cart Functionality - MODIFIED to include Scrub Modal
+        // Add to Cart Functionality
         document.getElementById('addToCart').addEventListener('click', () => {
-            if (quantity <= 0) return;
-            
+            // Check if product has scrub option
             if (hasScrubOption) {
-                // Show scrub modal and let the modal handle adding to cart
                 showScrubModal(productData, quantity);
             } else {
-                // Fallback for non-scrub products (using the renamed function)
                 addToCartWithScrub(productId, quantity, 'soap-only');
             }
         });
-        
+
         // Buy Now Functionality - Direct WhatsApp
         document.getElementById('buyNow').addEventListener('click', () => {
             const totalPrice = productPrice * quantity;
@@ -776,12 +737,10 @@ Please confirm my order and provide delivery details.`;
 
         // Show scrub selection modal
         function showScrubModal(product, qty) {
-            selectedScrubOption = 'soap-only'; // Reset selection to default
+            selectedScrubOption = 'soap-only';
             
-            // Update modal content
             const basePrice = product.price * qty;
-            const scrubPrice = SCRUB_PRICE; // Scrub price is constant (₹20)
-            const scrubPriceTotal = (product.price + scrubPrice) * qty;
+            const scrubPriceTotal = (product.price + SCRUB_PRICE) * qty;
             
             scrubProductName.textContent = `Add ${product.name} to Cart`;
             soapOnlyPrice.textContent = `₹${basePrice}`;
@@ -798,28 +757,30 @@ Please confirm my order and provide delivery details.`;
             // Show modal
             scrubModal.classList.add('open');
             document.body.style.overflow = 'hidden';
+            
+            // Push to history state to handle back button
+            history.pushState({ modal: 'scrub' }, '', '#scrub');
         }
-        
-        // *** RENAME: The old 'addToCart' function becomes 'addToCartWithScrub' ***
-        // Add product to cart with quantity and scrub option
-        function addToCartWithScrub(productId, qty, scrubOption) {
-            if (qty <= 0) return;
 
-            const product = allProducts.find(p => p.id === productId);
+        // --- Common Cart Logic ---
+        function addToCartWithScrub(id, qty, scrubOption) {
+            if (qty <= 0) return; 
+
+            const product = allProducts.find(p => p.id === id); 
             const existingItem = cart.find(item => 
-                item.id === productId && item.scrubOption === scrubOption
+                item.id === id && item.scrubOption === scrubOption 
             );
 
-            // Calculate final price (Logic copied from script.js)
+            // Calculate final price 
             let finalPrice = product.price;
             let finalMrp = product.mrp;
             if (scrubOption === 'with-scrub') {
-                finalPrice += SCRUB_PRICE;
-                finalMrp += SCRUB_PRICE;
+                finalPrice += SCRUB_PRICE; 
+                finalMrp += SCRUB_PRICE; 
             }
             
             if (existingItem) {
-                existingItem.quantity += qty;
+                existingItem.quantity += qty; 
             } else {
                 cart.push({
                     ...product,
@@ -828,24 +789,22 @@ Please confirm my order and provide delivery details.`;
                     quantity: qty,
                     scrubOption: scrubOption,
                     originalPrice: product.price,
-                    originalMrp: product.mrp
+                    originalMrp: product.mrp 
                 });
             }
             
             // Reset product page quantity ONLY if it's the current product being viewed
-            if (productId === PRODUCT_ID) {
-                quantity = 1; // Reset local state
-                updatePriceDisplay(); // Update product page UI
+            if (id === PRODUCT_ID) {
+                quantity = 1; 
+                updatePriceDisplay(); 
             }
 
-            saveCartToStorage();
-            updateCart();
+            saveCartToStorage(); 
+            updateCart(); 
             
-            const scrubText = scrubOption === 'with-scrub' ? ' with herbal scrub' : '';
-            showNotification(`${qty} × ${product.name}${scrubText} added to cart!`);
+            const scrubText = scrubOption === 'with-scrub' ? ' with herbal scrub' : ''; 
+            showNotification(`${qty} × ${product.name}${scrubText} added to cart!`); 
         }
-
-        // --- Common Cart Logic (Copied/Adapted from script.js) ---
 
         function loadCartFromStorage() {
             const savedCart = sessionStorage.getItem('auraCleanseCart');
@@ -871,8 +830,11 @@ Please confirm my order and provide delivery details.`;
             return cart.reduce((total, item) => total + item.quantity, 0);
         }
 
+        // UPDATED: Function Pack counts as minimum order on its own
         function isMinimumOrderMet() {
-            return getTotalItemsInCart() >= MIN_ORDER_ITEMS;
+            // Check if there are at least 3 items OR a Function Pack in the cart
+            const hasFunctionPack = cart.some(item => item.id === 'product-14');
+            return getTotalItemsInCart() >= MIN_ORDER_ITEMS || hasFunctionPack;
         }
 
         function updateCart() {
@@ -907,8 +869,7 @@ Please confirm my order and provide delivery details.`;
                             <div class="cart-item-title">${item.name} ${item.weight ? '(' + item.weight + ')' : ''}${scrubIndicator}</div>
                             <div class="cart-item-price">
                                 ₹${item.price} × ${item.quantity} = ₹${item.price * item.quantity}
-                                <div style="font-size: 0.8rem;
-                                    color: #999; text-decoration: line-through;">MRP: ₹${item.mrp * item.quantity}</div>
+                                <div style="font-size: 0.8rem; color: #999; text-decoration: line-through;">MRP: ₹${item.mrp * item.quantity}</div>
                             </div>
                         </div>
                         <div class="cart-item-actions">
@@ -928,29 +889,31 @@ Please confirm my order and provide delivery details.`;
                     cartItemsContainer.appendChild(cartItem);
                 });
                 
-                // Event listeners for cart item 
-                // buttons
+                // Event listeners for cart item buttons WITH stopPropagation
                 document.querySelectorAll('.decrease-cart').forEach(button => {
-                    button.addEventListener('click', function() {
-                        const productId = this.getAttribute('data-id');
+                    button.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        const id = this.getAttribute('data-id');
                         const scrubOption = this.getAttribute('data-scrub');
-                        updateCartQuantity(productId, scrubOption, -1);
+                        updateCartQuantity(id, scrubOption, -1);
                     });
                 });
                 
                 document.querySelectorAll('.increase-cart').forEach(button => {
-                    button.addEventListener('click', function() {
-                        const productId = this.getAttribute('data-id');
+                    button.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        const id = this.getAttribute('data-id');
                         const scrubOption = this.getAttribute('data-scrub');
-                        updateCartQuantity(productId, scrubOption, 1);
+                        updateCartQuantity(id, scrubOption, 1);
                     });
                 });
                 
                 document.querySelectorAll('.remove-item').forEach(button => {
-                    button.addEventListener('click', function() {
-                        const productId = this.getAttribute('data-id');
+                    button.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        const id = this.getAttribute('data-id');
                         const scrubOption = this.getAttribute('data-scrub');
-                        removeFromCart(productId, scrubOption);
+                        removeFromCart(id, scrubOption);
                     });
                 });
                 
@@ -1012,26 +975,25 @@ Please confirm my order and provide delivery details.`;
                 const itemTotal = item.price * item.quantity;
                 const itemMrp = item.mrp * item.quantity;
                 const sizeInfo = item.weight ? `(${item.weight})` : `(${item.size || '100g'})`;
-                const scrubInfo = item.scrubOption === 'with-scrub' ? ' + Herbal Scrub' : '';
+                const scrubInfo = item.scrubOption === 'with-scrub' ? 
+                    ' + Herbal Scrub' : '';
                 message += `${item.name}${scrubInfo} ${sizeInfo}: ${item.quantity} × ₹${item.price} = ₹${itemTotal}\n`;
                 total += itemTotal;
                 totalMrp += itemMrp;
             });
-            
             const savings = totalMrp - total;
             const discountPercent = Math.round((savings / totalMrp) * 100);
             
             message += `\nTotal: ₹${total}`;
             message += `\nTotal Savings: ₹${savings} (${discountPercent}% OFF)`;
             message += `\n\nPlease confirm my order and provide delivery details.`;
-            
             const whatsappUrl = `https://wa.me/918532853241?text=${encodeURIComponent(message)}`;
             window.open(whatsappUrl, '_blank');
         }
 
+        // MODIFIED checkoutViaEmail function (now shows modal)
         function checkoutViaEmail() {
             const totalItems = getTotalItemsInCart();
-
             if (totalItems === 0) {
                 showNotification('Your cart is empty. Add some items first!');
                 return;
@@ -1040,13 +1002,17 @@ Please confirm my order and provide delivery details.`;
                 showNotification(`Minimum order of ${MIN_ORDER_ITEMS} items not met.`);
                 return;
             }
-
-            // 3. Proceed to Email modal for name input
+            
+            // Proceed to Email modal for name input
             emailModal.classList.add('open');
             document.body.style.overflow = 'hidden';
             customerNameInput.focus();
+            
+            // Push to history state to handle back button
+            history.pushState({ modal: 'email' }, '', '#email');
         }
 
+        // NEW FUNCTION: Complete email order with customer name
         function completeEmailOrder(customerName) {
             if (!customerName || customerName.trim() === '') {
                 showNotification('Please enter your name to proceed with the order.');
@@ -1069,7 +1035,6 @@ Please confirm my order and provide delivery details.`;
                 const scrubInfo = item.scrubOption === 'with-scrub' ? ' + Herbal Scrub' : '';
                 emailBody += `- ${item.name}${scrubInfo} ${sizeInfo}: ${item.quantity} × ₹${item.price} = ₹${itemTotal}\n`;
                 total += itemTotal;
-                
                 totalMrp += itemMrp;
             });
             
@@ -1095,18 +1060,28 @@ Please confirm my order and provide delivery details.`;
             }, 300);
         }
 
+        // UPDATED: Minimum order UI that accounts for Function Pack
         function updateMinimumOrderUI() {
             const totalItems = getTotalItemsInCart();
+            const hasFunctionPack = cart.some(item => item.id === 'product-14');
             const meetsMinimumOrder = isMinimumOrderMet();
             const minOrderProgress = document.getElementById('minOrderProgress');
             const progressBar = document.getElementById('progressBar');
             const progressCount = document.getElementById('progressCount');
             const progressMessage = document.getElementById('progressMessage');
-            const progressPercentage = Math.min((totalItems / MIN_ORDER_ITEMS) * 100, 100);
+            
+            // Calculate progress percentage (max 100%)
+            let progressPercentage;
+            if (hasFunctionPack) {
+                // Function Pack automatically satisfies minimum order
+                progressPercentage = 100;
+            } else {
+                progressPercentage = Math.min((totalItems / MIN_ORDER_ITEMS) * 100, 100);
+            }
 
-            // Hide/show progress bar section (only needed for index.html)
+            // Hide/show progress bar section 
             if (minOrderProgress) {
-                if (totalItems > 0) {
+                if (totalItems > 0 && !meetsMinimumOrder) {
                     minOrderProgress.style.display = 'block';
                 } else {
                     minOrderProgress.style.display = 'none';
@@ -1120,45 +1095,47 @@ Please confirm my order and provide delivery details.`;
                 if (totalItems === 0) {
                     progressMessage.textContent = `Add ${MIN_ORDER_ITEMS} products to place your order`;
                     progressMessage.className = 'progress-message';
-                } else if (totalItems < MIN_ORDER_ITEMS) {
+                } else if (!meetsMinimumOrder) {
                     const itemsNeeded = MIN_ORDER_ITEMS - totalItems;
                     progressMessage.textContent = `Add ${itemsNeeded} more product${itemsNeeded > 1 ? 's' : ''} to place your order`;
                     progressMessage.className = 'progress-message';
                 } else {
-                    progressMessage.textContent = '✓ Minimum order requirement met!';
+                    progressMessage.textContent = hasFunctionPack ? 
+                        '✓ Function Pack satisfies minimum order!' : 
+                        '✓ Minimum order requirement met!';
                     progressMessage.className = 'progress-message progress-complete';
                 }
             }
             
-            // Disable buttons if cart is empty
+            // Disable buttons if cart is empty or minimum order not met
             const checkoutButtons = [whatsappCartBtn, emailCartBtn];
             const isCartEmpty = totalItems === 0;
 
             checkoutButtons.forEach(btn => {
                 if (btn) {
-                    if (isCartEmpty) {
+                    // Remove listeners to prevent duplicate attachment
+                    btn.removeEventListener('click', checkoutViaWhatsApp); 
+                    btn.removeEventListener('click', checkoutViaEmail);
+
+                    if (isCartEmpty || !meetsMinimumOrder) {
                         btn.style.opacity = '0.7';
                         btn.style.cursor = 'not-allowed';
-                        // Remove listeners to prevent triggering the checkout logic 
-                        // when cart is empty, relying on the notification logic inside checkout functions
-                        btn.removeEventListener('click', checkoutViaWhatsApp); 
-                        btn.removeEventListener('click', checkoutViaEmail);
+                        btn.disabled = true;
                     } else {
                         btn.style.opacity = '1';
                         btn.style.cursor = 'pointer';
-                        // Add listeners back if not already present
+                        btn.disabled = false;
+                        
+                        // Add listeners back 
                         if (btn.id === 'whatsappCartBtn') {
-                            btn.removeEventListener('click', checkoutViaWhatsApp); // Prevent duplicate listeners
                             btn.addEventListener('click', checkoutViaWhatsApp);
                         } else if (btn.id === 'emailCartBtn') {
-                            btn.removeEventListener('click', checkoutViaEmail); // Prevent duplicate listeners
                             btn.addEventListener('click', checkoutViaEmail);
                         }
                     }
                 }
             });
         }
-
 
         function showNotification(message) {
             const notification = document.createElement('div');
@@ -1187,7 +1164,6 @@ Please confirm my order and provide delivery details.`;
                 notification.style.transform = 'translateY(0)';
                 notification.style.opacity = '1';
             }, 10);
-            
             setTimeout(() => {
                 notification.style.transform = 'translateY(100px)';
                 notification.style.opacity = '0';
@@ -1229,7 +1205,6 @@ Please confirm my order and provide delivery details.`;
 
         function getRandomProducts(excludeProductId, count = 3) {
             const otherProducts = allProducts.filter(product => product.id !== excludeProductId);
-            
             if (otherProducts.length <= count) {
                 return otherProducts;
             }
@@ -1287,8 +1262,10 @@ Please confirm my order and provide delivery details.`;
             });
         }
         
-        // Header Scroll Effect & Menu Toggle
-        menuToggle.addEventListener('click', () => {
+        // =================== FIXED SECTION ===================
+        // Menu Toggle with stopPropagation
+        menuToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
             navLinks.classList.toggle('active');
             const icon = menuToggle.querySelector('i');
             if (navLinks.classList.contains('active')) {
@@ -1300,6 +1277,7 @@ Please confirm my order and provide delivery details.`;
             }
         });
 
+        // Close mobile menu when clicking a link
         navLinks.querySelectorAll('a').forEach(link => {
             link.addEventListener('click', () => {
                 navLinks.classList.remove('active');
@@ -1308,8 +1286,14 @@ Please confirm my order and provide delivery details.`;
             });
         });
         
-        cartIcon.addEventListener('click', () => {
+        // Cart Icon with stopPropagation and history state
+        cartIcon.addEventListener('click', function(e) {
+            e.stopPropagation();
             cartModal.classList.add('open');
+            
+            // Push to history state to handle back button
+            history.pushState({ modal: 'cart' }, '', '#cart');
+            
             if (window.innerWidth <= 768) {
                 navLinks.classList.remove('active');
                 menuToggle.querySelector('i').classList.remove('fa-times');
@@ -1317,37 +1301,33 @@ Please confirm my order and provide delivery details.`;
             }
         });
         
+        // Close cart with history back
         closeCart.addEventListener('click', () => {
             cartModal.classList.remove('open');
-        });
-
-        function updateHeaderOnScroll() {
-            const header = document.querySelector('header');
-            if (window.scrollY > 50) {
-                header.classList.add('header-scrolled');
-            } else {
-                header.classList.remove('header-scrolled');
+            
+            // Go back in history if we're in cart state
+            if (history.state && history.state.modal === 'cart') {
+                history.back();
             }
-        }
-
-        // Back to Top Button
-        const backToTop = document.getElementById('backToTop');
-        
-        window.addEventListener('scroll', () => {
-            if (window.pageYOffset > 300) {
-                backToTop.classList.add('visible');
-            } else {
-                backToTop.classList.remove('visible');
-            }
-            updateHeaderOnScroll();
         });
         
-        backToTop.addEventListener('click', () => {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
+        // =================== STOP PROPAGATION FOR MODALS ===================
+        // Stop clicks inside cart modal from bubbling up
+        cartModal.addEventListener('click', function(e) {
+            e.stopPropagation();
         });
+
+        // Stop clicks inside scrub modal from bubbling up
+        scrubModal.addEventListener('click', function(e) {
+            e.stopPropagation();
+        });
+
+        // Stop clicks inside email modal from bubbling up
+        emailModal.addEventListener('click', function(e) {
+            e.stopPropagation();
+        });
+        
+        // =================== MODAL EVENT LISTENERS ===================
         
         // Scrub modal event listeners
         scrubOptions.forEach(option => {
@@ -1361,6 +1341,11 @@ Please confirm my order and provide delivery details.`;
         scrubCancelBtn.addEventListener('click', () => {
             scrubModal.classList.remove('open');
             document.body.style.overflow = '';
+            
+            // Go back in history
+            if (history.state && history.state.modal === 'scrub') {
+                history.back();
+            }
         });
 
         scrubAddBtn.addEventListener('click', () => {
@@ -1369,11 +1354,14 @@ Please confirm my order and provide delivery details.`;
             scrubAddBtn.innerHTML = '';
             
             setTimeout(() => {
-                // Use the productData and local `quantity` state
                 addToCartWithScrub(PRODUCT_ID, quantity, selectedScrubOption);
-
                 scrubModal.classList.remove('open');
                 document.body.style.overflow = '';
+                
+                // Go back in history
+                if (history.state && history.state.modal === 'scrub') {
+                    history.back();
+                }
                 
                 // Reset button
                 scrubAddBtn.classList.remove('adding');
@@ -1389,6 +1377,11 @@ Please confirm my order and provide delivery details.`;
         customerNameInput.addEventListener('keypress', function(e) {
             if (e.key === 'Enter' && this.value.trim() !== '') {
                 completeEmailOrder(this.value.trim());
+                
+                // Go back in history
+                if (history.state && history.state.modal === 'email') {
+                    history.back();
+                }
             }
         });
 
@@ -1397,23 +1390,43 @@ Please confirm my order and provide delivery details.`;
             document.body.style.overflow = '';
             customerNameInput.value = '';
             emailProceedBtn.disabled = true;
+            
+            // Go back in history
+            if (history.state && history.state.modal === 'email') {
+                history.back();
+            }
         });
 
         emailProceedBtn.addEventListener('click', () => {
             completeEmailOrder(customerNameInput.value.trim());
+            
+            // Go back in history
+            if (history.state && history.state.modal === 'email') {
+                history.back();
+            }
         });
         
-        // Close cart/modals when clicking outside (MODIFIED to include new modals)
+        // =================== CLOSE MODALS WHEN CLICKING OUTSIDE ===================
         document.addEventListener('click', (e) => {
             // Cart modal
             if (!cartModal.contains(e.target) && !cartIcon.contains(e.target) && cartModal.classList.contains('open')) {
                 cartModal.classList.remove('open');
+                
+                // Go back in history if we're in cart state
+                if (history.state && history.state.modal === 'cart') {
+                    history.back();
+                }
             }
             
             // Scrub modal
             if (scrubModal.classList.contains('open') && e.target === scrubModal) {
                 scrubModal.classList.remove('open');
                 document.body.style.overflow = '';
+                
+                // Go back in history
+                if (history.state && history.state.modal === 'scrub') {
+                    history.back();
+                }
             }
             
             // Email modal
@@ -1422,7 +1435,62 @@ Please confirm my order and provide delivery details.`;
                 document.body.style.overflow = '';
                 customerNameInput.value = '';
                 emailProceedBtn.disabled = true;
+                
+                // Go back in history
+                if (history.state && history.state.modal === 'email') {
+                    history.back();
+                }
             }
+        });
+        
+        // =================== HANDLE BROWSER BACK BUTTON ===================
+        window.addEventListener('popstate', function(event) {
+            // Close cart modal if open
+            if (cartModal.classList.contains('open')) {
+                cartModal.classList.remove('open');
+                document.body.style.overflow = '';
+            }
+            
+            // Close scrub modal if open
+            if (scrubModal.classList.contains('open')) {
+                scrubModal.classList.remove('open');
+                document.body.style.overflow = '';
+            }
+            
+            // Close email modal if open
+            if (emailModal.classList.contains('open')) {
+                emailModal.classList.remove('open');
+                document.body.style.overflow = '';
+                customerNameInput.value = '';
+                emailProceedBtn.disabled = true;
+            }
+        });
+        
+        // =================== EXISTING CODE (UNCHANGED) ===================
+        function updateHeaderOnScroll() {
+            const header = document.querySelector('header');
+            if (window.scrollY > 50) {
+                header.classList.add('header-scrolled');
+            } else {
+                header.classList.remove('header-scrolled');
+            }
+        }
+
+        // Back to Top Button
+        const backToTop = document.getElementById('backToTop');
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+            updateHeaderOnScroll();
+        });
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
         });
         
         // Initialize everything
@@ -1446,6 +1514,3 @@ Please confirm my order and provide delivery details.`;
     </script>
 </body>
 </html>
-
-
-
