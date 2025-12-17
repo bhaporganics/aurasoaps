@@ -1014,40 +1014,77 @@ function updateCartQuantity(productId, scrubOption, change) {
             showNotification('Item removed from cart');
         }
 
-        function checkoutViaWhatsApp() {
-            const totalItems = getTotalItemsInCart();
-            if (totalItems === 0) {
-                showNotification('Your cart is empty. Add some items first!');
-                return;
+function checkoutViaWhatsApp() {
+    const totalItems = getTotalItemsInCart();
+    if (totalItems === 0) {
+        showNotification('Your cart is empty. Add some items first!');
+        return;
+    }
+    if (!isMinimumOrderMet()) {
+        showNotification(`Minimum order of ${MIN_ORDER_ITEMS} items not met.`);
+        return;
+    }
+    
+    // UPDATED WITH CUSTOM SOAP DETAILS
+    let message = "Hello Aura Team,\n\n";
+    message += "I would like to place an order from your website:\n\n";
+    message += "📋 ORDER DETAILS\n";
+    message += "════════════════════════════════════════\n\n";
+    
+    let total = 0;
+    let totalMrp = 0;
+    let itemCount = 0;
+    
+    cart.forEach(item => {
+        const itemTotal = item.price * item.quantity;
+        const itemMrp = item.mrp * item.quantity;
+        itemCount++;
+        
+        if (item.isCustom) {
+            // Custom soap with customization details
+            message += `✨ CUSTOM SOAP #${itemCount} (${item.weight || '100g'})`;
+            if (item.scrubOption === 'with-scrub') {
+                message += ` + Herbal Scrub`;
             }
-            if (!isMinimumOrderMet()) {
-                showNotification(`Minimum order of ${MIN_ORDER_ITEMS} items not met.`);
-                return;
+            message += `\n`;
+            message += `• Quantity: ${item.quantity}\n`;
+            
+            // Check if customData exists and display it
+            if (item.customData) {
+                message += `• Custom Fragrance: ${item.customData.fragrance || 'Not specified'}\n`;
+                if (item.customData.instructions && item.customData.instructions !== 'None') {
+                    message += `• Special Instructions: ${item.customData.instructions}\n`;
+                }
+            } else {
+                // Fallback if customData doesn't exist
+                message += `• Custom Soap (No details provided)\n`;
             }
-            
-            let message = "Hello, I would like to place an order from Aura :\n\n";
-            let total = 0;
-            let totalMrp = 0;
-            
-            cart.forEach(item => {
-                const itemTotal = item.price * item.quantity;
-                const itemMrp = item.mrp * item.quantity;
-                const sizeInfo = item.weight ? `(${item.weight})` : `(${item.size || '100g'})`;
-                const scrubInfo = item.scrubOption === 'with-scrub' ? 
-                    ' + Herbal Scrub' : '';
-                message += `${item.name}${scrubInfo} ${sizeInfo}: ${item.quantity} × ₹${item.price} = ₹${itemTotal}\n`;
-                total += itemTotal;
-                totalMrp += itemMrp;
-            });
-            const savings = totalMrp - total;
-            const discountPercent = Math.round((savings / totalMrp) * 100);
-            
-            message += `\nTotal: ₹${total}`;
-            message += `\nTotal Savings: ₹${savings} (${discountPercent}% OFF)`;
-            message += `\n\nPlease confirm my order and provide delivery details.`;
-            const whatsappUrl = `https://wa.me/918532853241?text=${encodeURIComponent(message)}`;
-            window.open(whatsappUrl, '_blank');
+            message += `• Price: ₹${item.price} × ${item.quantity} = ₹${itemTotal}\n\n`;
+        } else {
+            // Regular product
+            const sizeInfo = item.weight ? `(${item.weight})` : `(${item.size || '100g'})`;
+            const scrubInfo = item.scrubOption === 'with-scrub' ? ' + Herbal Scrub' : '';
+            message += `${item.name}${scrubInfo} ${sizeInfo}: ${item.quantity} × ₹${item.price} = ₹${itemTotal}\n`;
         }
+        
+        total += itemTotal;
+        totalMrp += itemMrp;
+    });
+    
+    const savings = totalMrp - total;
+    const discountPercent = Math.round((savings / totalMrp) * 100);
+    
+    message += `\n════════════════════════════════════════\n`;
+    message += `💰 ORDER SUMMARY\n`;
+    message += `• Subtotal: ₹${total}\n`;
+    message += `• Total Savings: ₹${savings} (${discountPercent}% OFF)\n`;
+    message += `• Grand Total: ₹${total}\n\n`;
+    message += `Please confirm my order and provide delivery details.\n`;
+    message += `Thank you! 🙏`;
+    
+    const whatsappUrl = `https://wa.me/918532853241?text=${encodeURIComponent(message)}`;
+    window.open(whatsappUrl, '_blank');
+}
 
         // MODIFIED checkoutViaEmail function (now shows modal)
         function checkoutViaEmail() {
@@ -1070,53 +1107,89 @@ function updateCartQuantity(productId, scrubOption, change) {
             history.pushState({ modal: 'email' }, '', '#email');
         }
 
-        // NEW FUNCTION: Complete email order with customer name
-        function completeEmailOrder(customerName) {
-            if (!customerName || customerName.trim() === '') {
-                showNotification('Please enter your name to proceed with the order.');
-                return;
+function completeEmailOrder(customerName) {
+    if (!customerName || customerName.trim() === '') {
+        showNotification('Please enter your name to proceed with the order.');
+        return;
+    }
+    
+    // UPDATED WITH CUSTOM SOAP DETAILS
+    let emailBody = `Hello Aura Team,\n\n`;
+    emailBody += `I would like to place an order from your website.\n\n`;
+    emailBody += `CUSTOMER DETAILS:\n`;
+    emailBody += `• Name: ${customerName}\n`;
+    emailBody += `• Order Date: ${new Date().toLocaleDateString('en-IN')}\n\n`;
+    
+    emailBody += `ORDER DETAILS:\n`;
+    emailBody += `════════════════════════════════════════\n\n`;
+    
+    let total = 0;
+    let totalMrp = 0;
+    let itemCount = 0;
+    
+    cart.forEach(item => {
+        const itemTotal = item.price * item.quantity;
+        const itemMrp = item.mrp * item.quantity;
+        itemCount++;
+        
+        if (item.isCustom) {
+            // Custom soap with all customization details
+            emailBody += `CUSTOM SOAP #${itemCount} (${item.weight || '100g'})`;
+            if (item.scrubOption === 'with-scrub') {
+                emailBody += ` + Herbal Scrub`;
             }
+            emailBody += `\n`;
+            emailBody += `  • Quantity: ${item.quantity}\n`;
             
-            // Build the email body
-            let emailBody = `Hello Aura Team,\n\n`;
-            emailBody += `I would like to place an order from your website.\n\n`;
-            emailBody += `Customer Details:\n`;
-            emailBody += `- Name: ${customerName}\n`;
-            
-            emailBody += `\nOrder Details:\n`;
-            let total = 0;
-            let totalMrp = 0;
-            cart.forEach(item => {
-                const itemTotal = item.price * item.quantity;
-                const itemMrp = item.mrp * item.quantity;
-                const sizeInfo = item.weight ? `(${item.weight})` : `(${item.size || '100g'})`;
-                const scrubInfo = item.scrubOption === 'with-scrub' ? ' + Herbal Scrub' : '';
-                emailBody += `- ${item.name}${scrubInfo} ${sizeInfo}: ${item.quantity} × ₹${item.price} = ₹${itemTotal}\n`;
-                total += itemTotal;
-                totalMrp += itemMrp;
-            });
-            
-            const savings = totalMrp - total;
-            emailBody += `\nOrder Total: ₹${total}`;
-            emailBody += `\nTotal Savings: ₹${savings}`;
-            emailBody += `\n\nPlease confirm my order and provide payment/delivery details.`;
-            emailBody += `\n\nThank you,\n${customerName}`;
-            
-            // Create the mailto link 
-            const subject = `Aura-Order - ${new Date().toLocaleDateString()}`;
-            const mailtoLink = `mailto:bhaporganics@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(emailBody)}`;
-            
-            // Close modal and open email client
-            emailModal.classList.remove('open');
-            document.body.style.overflow = '';
-            customerNameInput.value = '';
-            emailProceedBtn.disabled = true;
-            
-            // Open the user's email client
-            setTimeout(() => {
-                window.location.href = mailtoLink;
-            }, 300);
+            // Check if customData exists and display it
+            if (item.customData) {
+                emailBody += `  • Custom Fragrance: ${item.customData.fragrance || 'Not specified'}\n`;
+                if (item.customData.instructions && item.customData.instructions !== 'None') {
+                    emailBody += `  • Special Instructions: ${item.customData.instructions}\n`;
+                }
+            } else {
+                // Fallback if customData doesn't exist
+                emailBody += `  • Custom Soap (No details provided)\n`;
+            }
+            emailBody += `  • Price: ₹${item.price} × ${item.quantity} = ₹${itemTotal}\n\n`;
+        } else {
+            // Regular product
+            const sizeInfo = item.weight ? `(${item.weight})` : `(${item.size || '100g'})`;
+            const scrubInfo = item.scrubOption === 'with-scrub' ? ' + Herbal Scrub' : '';
+            emailBody += `• ${item.name}${scrubInfo} ${sizeInfo}: ${item.quantity} × ₹${item.price} = ₹${itemTotal}\n`;
         }
+        
+        total += itemTotal;
+        totalMrp += itemMrp;
+    });
+    
+    const savings = totalMrp - total;
+    
+    emailBody += `════════════════════════════════════════\n`;
+    emailBody += `ORDER SUMMARY:\n`;
+    emailBody += `• Subtotal: ₹${total}\n`;
+    emailBody += `• Total Savings: ₹${savings}\n`;
+    emailBody += `• Grand Total: ₹${total}\n\n`;
+    emailBody += `Please confirm my order and provide payment/delivery details.\n\n`;
+    emailBody += `Thank you,\n${customerName}`;
+    
+    // Create the mailto link 
+    const subject = `AURA Custom Soap Order - ${new Date().toLocaleDateString('en-IN')}`;
+    const mailtoLink = `mailto:bhaporganics@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(emailBody)}`;
+    
+    // Close modal and open email client
+    emailModal.classList.remove('open');
+    document.body.style.overflow = '';
+    
+    // Clear the input
+    customerNameInput.value = '';
+    emailProceedBtn.disabled = true;
+    
+    // Open the user's email client
+    setTimeout(() => {
+        window.location.href = mailtoLink;
+    }, 300);
+}
 
         // UPDATED: Minimum order UI that accounts for Function Pack
         function updateMinimumOrderUI() {
