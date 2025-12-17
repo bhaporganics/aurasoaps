@@ -536,24 +536,41 @@ function showMinimumOrderModal() {
 }
 
 // Update product quantity on product card
-function updateProductQuantity(productId, change) {
-    const newQuantity = productQuantities[productId] + change;
+// Update item quantity in cart (with scrub option)
+function updateCartQuantity(productId, scrubOption, change) {
+    const item = cart.find(item => 
+        item.id === productId && item.scrubOption === scrubOption
+    );
     
-    // Ensure quantity is between 0 and 10
-    if (newQuantity >= 0 && newQuantity <= 10) {
-        productQuantities[productId] = newQuantity;
-        
-        // Update display
-        const quantityDisplay = document.getElementById(`quantity-${productId}`);
-        if (quantityDisplay) {
-            quantityDisplay.textContent = newQuantity;
+    if (item) {
+        // 🔥 CRITICAL FIX: Check if item has fixed quantity
+        if (item.isFixedQuantity) {
+            // Don't allow decreasing below minimum quantity
+            if (change < 0 && item.quantity <= (item.minQuantity || 1)) {
+                showNotification('Cannot reduce quantity of custom soaps below minimum requirement');
+                return;
+            }
+            
+            // For custom soaps, always ensure minimum quantity
+            if (item.quantity + change < (item.minQuantity || 1)) {
+                showNotification(`Minimum ${item.minQuantity} custom soaps required`);
+                return;
+            }
         }
         
-        // Update button states
-        updateProductButtonState(productId);
+        item.quantity += change;
+        
+        if (item.quantity <= 0) {
+            cart = cart.filter(item => 
+                !(item.id === productId && item.scrubOption === scrubOption)
+            );
+        }
+        
+        updateCart();
+        saveCartToStorage();
+        updateMinimumOrderUI();
     }
 }
-
 // Update product button state
 function updateProductButtonState(productId) {
     const quantity = productQuantities[productId];
@@ -785,25 +802,52 @@ function updateCart() {
             const scrubIndicator = item.scrubOption === 'with-scrub' ? 
                 '<span class="scrub-indicator">+ Scrub</span>' : '';
             
+            // Check if this is a fixed quantity item
+            const isFixedQuantity = item.isFixedQuantity || false;
+            const fixedQuantityBadge = isFixedQuantity ? 
+                '<span class="fixed-quantity-badge">Fixed Qty</span>' : '';
+            
+            // For custom soaps, show customization details
+            let customDetails = '';
+            if (item.isCustom && item.customData) {
+                customDetails = `
+                    <div style="font-size: 0.8rem; color: #666; margin-top: 5px; background: #f9f9f9; padding: 8px; border-radius: 4px;">
+                        <div><strong>Fragrance:</strong> ${item.customData.fragrance}</div>
+                        ${item.customData.instructions && item.customData.instructions !== 'None' ? `<div><strong>Instructions:</strong> ${item.customData.instructions}</div>` : ''}
+                    </div>
+                `;
+            }
+            
             cartItem.innerHTML = `
                 <div class="cart-item-image">
                     <img src="${item.image}" alt="${item.alt}" loading="lazy">
                 </div>
                 <div class="cart-item-details">
-                    <div class="cart-item-title">${item.name} ${item.weight ? '(' + item.weight + ')' : ''}${scrubIndicator}</div>
+                    <div class="cart-item-title">${item.name} ${item.weight ? '(' + item.weight + ')' : ''}
+                        ${isFixedQuantity && item.isCustom ? '<span class="custom-badge">Custom</span>' : ''}
+                        ${fixedQuantityBadge}
+                        ${scrubIndicator}
+                    </div>
+                    ${customDetails}
                     <div class="cart-item-price">
                         ₹${item.price} × ${item.quantity} = ₹${item.price * item.quantity}
                         <div style="font-size: 0.8rem; color: #999; text-decoration: line-through;">MRP: ₹${item.mrp * item.quantity}</div>
                     </div>
                 </div>
                 <div class="cart-item-actions">
-                    <button class="cart-quantity-btn decrease-cart" data-id="${item.id}" data-scrub="${item.scrubOption || 'soap-only'}">
-                        <i class="fas fa-minus"></i>
-                    </button>
-                    <span class="cart-item-quantity">${item.quantity}</span>
-                    <button class="cart-quantity-btn increase-cart" data-id="${item.id}" data-scrub="${item.scrubOption || 'soap-only'}">
-                        <i class="fas fa-plus"></i>
-                    </button>
+                    ${!isFixedQuantity ? `
+                        <button class="cart-quantity-btn decrease-cart" data-id="${item.id}" data-scrub="${item.scrubOption || 'soap-only'}">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                        <span class="cart-item-quantity">${item.quantity}</span>
+                        <button class="cart-quantity-btn increase-cart" data-id="${item.id}" data-scrub="${item.scrubOption || 'soap-only'}">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    ` : `
+                        <div style="display: flex; align-items: center; gap: 10px; padding: 0 5px;">
+                            <span style="font-size: 0.9rem; color: #666; font-weight: 500;">Qty: ${item.quantity}</span>
+                        </div>
+                    `}
                     <button class="remove-item" data-id="${item.id}" data-scrub="${item.scrubOption || 'soap-only'}">
                         <i class="fas fa-trash"></i>
                     </button>
@@ -853,6 +897,7 @@ function updateCart() {
     
     updateMinimumOrderUI();
 }
+
 
 // Update item quantity in cart (with scrub option)
 function updateCartQuantity(productId, scrubOption, change) {
@@ -1504,126 +1549,4 @@ document.addEventListener('DOMContentLoaded', () => {
 });   
 
 
-// Update cart UI
-function updateCart() {
-    // Update cart count
-    const totalItems = getTotalItemsInCart();
-    cartCountElement.textContent = totalItems;
-    
-    // Update cart items
-    cartItemsContainer.innerHTML = '';
-    
-    if (cart.length === 0) {
-        emptyCartMessage.style.display = 'block';
-        cartItemsContainer.appendChild(emptyCartMessage);
-    } else {
-        emptyCartMessage.style.display = 'none';
-        
-        let totalPrice = 0;
-        let totalMrp = 0;
-        
-        cart.forEach(item => {
-            totalPrice += item.price * item.quantity;
-            totalMrp += item.mrp * item.quantity;
-            
-            const cartItem = document.createElement('div');
-            cartItem.className = 'cart-item';
-            
-            const scrubIndicator = item.scrubOption === 'with-scrub' ? 
-                '<span class="scrub-indicator">+ Scrub</span>' : '';
-            
-            // Check if this is a fixed quantity item
-            const isFixedQuantity = item.isFixedQuantity || false;
-            const fixedQuantityBadge = isFixedQuantity ? 
-                '<span class="fixed-quantity-badge">Fixed Qty</span>' : '';
-            
-            // For custom soaps, show customization details
-            let customDetails = '';
-            if (item.isCustom && item.customData) {
-                customDetails = `
-                    <div style="font-size: 0.8rem; color: #666; margin-top: 5px; background: #f9f9f9; padding: 8px; border-radius: 4px;">
-                        <div><strong>Fragrance:</strong> ${item.customData.fragrance}</div>
-                        ${item.customData.instructions && item.customData.instructions !== 'None' ? `<div><strong>Instructions:</strong> ${item.customData.instructions}</div>` : ''}
-                    </div>
-                `;
-            }
-            
-            cartItem.innerHTML = `
-                <div class="cart-item-image">
-                    <img src="${item.image}" alt="${item.alt}" loading="lazy">
-                </div>
-                <div class="cart-item-details">
-                    <div class="cart-item-title">${item.name} ${item.weight ? '(' + item.weight + ')' : ''}
-                        ${isFixedQuantity && item.isCustom ? '<span class="custom-badge">Custom</span>' : ''}
-                        ${fixedQuantityBadge}
-                        ${scrubIndicator}
-                    </div>
-                    ${customDetails}
-                    <div class="cart-item-price">
-                        ₹${item.price} × ${item.quantity} = ₹${item.price * item.quantity}
-                        <div style="font-size: 0.8rem; color: #999; text-decoration: line-through;">MRP: ₹${item.mrp * item.quantity}</div>
-                    </div>
-                </div>
-                <div class="cart-item-actions">
-                    ${!isFixedQuantity ? `
-                        <button class="cart-quantity-btn decrease-cart" data-id="${item.id}" data-scrub="${item.scrubOption || 'soap-only'}">
-                            <i class="fas fa-minus"></i>
-                        </button>
-                        <span class="cart-item-quantity">${item.quantity}</span>
-                        <button class="cart-quantity-btn increase-cart" data-id="${item.id}" data-scrub="${item.scrubOption || 'soap-only'}">
-                            <i class="fas fa-plus"></i>
-                        </button>
-                    ` : `
-                        <div style="display: flex; align-items: center; gap: 10px; padding: 0 5px;">
-                            <span style="font-size: 0.9rem; color: #666; font-weight: 500;">Qty: ${item.quantity}</span>
-                        </div>
-                    `}
-                    <button class="remove-item" data-id="${item.id}" data-scrub="${item.scrubOption || 'soap-only'}">
-                        <i class="fas fa-trash"></i>
-                    </button>
-                </div>
-            `;
-            
-            cartItemsContainer.appendChild(cartItem);
-        });
-        
-        // Add event listeners to cart item buttons WITH stopPropagation
-        document.querySelectorAll('.decrease-cart').forEach(button => {
-            button.addEventListener('click', function(e) {
-                e.stopPropagation();
-                const productId = this.getAttribute('data-id');
-                const scrubOption = this.getAttribute('data-scrub');
-                updateCartQuantity(productId, scrubOption, -1);
-            });
-        });
-        
-        document.querySelectorAll('.increase-cart').forEach(button => {
-            button.addEventListener('click', function(e) {
-                e.stopPropagation();
-                const productId = this.getAttribute('data-id');
-                const scrubOption = this.getAttribute('data-scrub');
-                updateCartQuantity(productId, scrubOption, 1);
-            });
-        });
-        
-        document.querySelectorAll('.remove-item').forEach(button => {
-            button.addEventListener('click', function(e) {
-                e.stopPropagation();
-                const productId = this.getAttribute('data-id');
-                const scrubOption = this.getAttribute('data-scrub');
-                removeFromCart(productId, scrubOption);
-            });
-        });
-        
-        // Update total with savings
-        const totalSavings = totalMrp - totalPrice;
-        cartTotalElement.innerHTML = `
-            <div>Total: ₹${totalPrice}</div>
-            <div style="font-size: 0.9rem; color: #27ae60; font-weight: normal;">
-                You save: ₹${totalSavings}
-            </div>
-        `;
-    }
-    
-    updateMinimumOrderUI();
-}
+
