@@ -82,7 +82,7 @@
                     <button class="slideshow-arrow next" id="slideshowNext">
                         <i class="fas fa-chevron-right"></i>
                     </button>
-                    
+               
                     <div class="slideshow-nav" id="slideshowDots">
                         <div class="slideshow-dot active" data-index="0"></div>
                         <div class="slideshow-dot" data-index="1"></div>
@@ -709,7 +709,7 @@
             document.getElementById('priceSavings').textContent = `Save ₹${savings}`;
         }
         
-        // Add to Cart Functionality
+        // Add to Cart Functionality - MODIFIED to include Scrub Modal
         document.getElementById('addToCart').addEventListener('click', () => {
             if (hasScrubOption) {
                 showScrubModal(productData, quantity);
