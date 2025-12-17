@@ -119,7 +119,7 @@
                         <span itemprop="ratingValue">4.7</span>/5
                     </div>
                 </div>
-         
+                
                 <p class="product-description" itemprop="description">
                     Immerse yourself in the rich, woody aroma of authentic red sandalwood.
                     Our Red Sandal Soap is crafted with pure red sandalwood powder and nourishing oils to gently cleanse, soothe irritation, and promote clear, healthy-looking skin while preserving its natural moisture balance.
@@ -400,7 +400,7 @@
             </div>
         </div>
     </div>
-
+    
     <div class="scrub-modal" id="scrubModal">
         <div class="scrub-modal-content">
             <div class="scrub-modal-header">
@@ -527,8 +527,8 @@
     <script>
         // Use the product data from the common file (products-data.js)
         const PRODUCT_ID = 'product-2';
-        let productData = allProducts.find(p => p.id === PRODUCT_ID);
-        
+        const productData = allProducts.find(p => p.id === PRODUCT_ID);
+
         // Fallback for robust initialization
         if (!productData) {
             console.error("Product data not found for ID:", PRODUCT_ID);
@@ -543,7 +543,7 @@
                 image: "images/redsandal_soap_2.jpg",
                 alt: "Aura Red Sandalwood Soap - Ayurvedic Soothing Soap for Skin Inflammation"
             };
-            productData = FALLBACK_PRODUCT;
+            Object.assign(productData, FALLBACK_PRODUCT);
         }
         
         // Product Configuration
@@ -560,23 +560,23 @@
 
         // --- New Scrub & Email Modal Variables ---
         const SCRUB_PRICE = 20;
-        const hasScrubOption = true;
+        const hasScrubOption = true; // Red Sandal has scrub option
 
         // Scrub Modal Elements
-        const scrubModal = document.getElementById('scrubModal'); 
-        const scrubProductName = document.getElementById('scrubProductName'); 
-        const soapOnlyPrice = document.getElementById('soapOnlyPrice'); 
-        const withScrubPrice = document.getElementById('withScrubPrice'); 
-        const scrubCancelBtn = document.getElementById('scrubCancelBtn'); 
-        const scrubAddBtn = document.getElementById('scrubAddBtn'); 
-        const scrubOptions = document.querySelectorAll('.scrub-option'); 
-        let selectedScrubOption = 'soap-only'; 
+        const scrubModal = document.getElementById('scrubModal');
+        const scrubProductName = document.getElementById('scrubProductName');
+        const soapOnlyPrice = document.getElementById('soapOnlyPrice');
+        const withScrubPrice = document.getElementById('withScrubPrice');
+        const scrubCancelBtn = document.getElementById('scrubCancelBtn');
+        const scrubAddBtn = document.getElementById('scrubAddBtn');
+        const scrubOptions = document.querySelectorAll('.scrub-option');
+        let selectedScrubOption = 'soap-only';
 
         // Email Modal Elements
-        const emailModal = document.getElementById('emailModal'); 
-        const customerNameInput = document.getElementById('customerName'); 
-        const emailCancelBtn = document.getElementById('emailCancelBtn'); 
-        const emailProceedBtn = document.getElementById('emailProceedBtn'); 
+        const emailModal = document.getElementById('emailModal');
+        const customerNameInput = document.getElementById('customerName');
+        const emailCancelBtn = document.getElementById('emailCancelBtn');
+        const emailProceedBtn = document.getElementById('emailProceedBtn');
 
         // DOM Elements
         const cartModal = document.getElementById('cartModal');
@@ -596,7 +596,7 @@
         let cart = [];
         const MIN_ORDER_ITEMS = 3;
         
-        // --- Product-Specific Logic (Slideshow and Quantity) ---
+        // --- Product-Specific Logic (Slideshow, Qty, Add to Cart) ---
         
         // Premium Slideshow Variables
         let currentSlide = 0;
@@ -709,22 +709,24 @@
             document.getElementById('priceSavings').textContent = `Save ₹${savings}`;
         }
         
-        // Add to Cart Functionality - MODIFIED to include Scrub Modal
+        // Add to Cart Functionality
         document.getElementById('addToCart').addEventListener('click', () => {
+            if (quantity <= 0) return;
+            
             if (hasScrubOption) {
                 showScrubModal(productData, quantity);
             } else {
                 addToCartWithScrub(productId, quantity, 'soap-only');
             }
         });
-
+        
         // Buy Now Functionality - Direct WhatsApp
         document.getElementById('buyNow').addEventListener('click', () => {
             const totalPrice = productPrice * quantity;
             const totalMrp = productMrp * quantity;
             const savings = totalMrp - totalPrice;
             const discountPercent = Math.round((savings / totalMrp) * 100);
-            
+           
             const message = `Hello, I would like to buy ${quantity} × ${productName} Soap (${productWeight}) for ₹${totalPrice}. 
 Original Price: ₹${totalMrp}
 Discount: ${discountPercent}% OFF
@@ -736,52 +738,49 @@ Please confirm my order and provide delivery details.`;
             window.open(whatsappUrl, '_blank');
         });
 
-        // --- New Function: Show Scrub Modal ---
+        // Show scrub selection modal
         function showScrubModal(product, qty) {
-            selectedScrubOption = 'soap-only'; 
+            selectedScrubOption = 'soap-only';
             
             const basePrice = product.price * qty;
             const scrubPriceTotal = (product.price + SCRUB_PRICE) * qty;
             
-            scrubProductName.textContent = `Add ${product.name} to Cart`; 
-            soapOnlyPrice.textContent = `₹${basePrice}`; 
-            withScrubPrice.textContent = `₹${scrubPriceTotal}`; 
+            scrubProductName.textContent = `Add ${product.name} to Cart`;
+            soapOnlyPrice.textContent = `₹${basePrice}`;
+            withScrubPrice.textContent = `₹${scrubPriceTotal}`;
             
-            // Reset selection appearance
             scrubOptions.forEach(option => {
-                option.classList.remove('selected'); 
+                option.classList.remove('selected');
                 if (option.dataset.option === 'soap-only') {
-                    option.classList.add('selected'); 
+                    option.classList.add('selected');
                 }
             });
             
-            // Show modal
-            scrubModal.classList.add('open'); 
-            document.body.style.overflow = 'hidden'; 
+            scrubModal.classList.add('open');
+            document.body.style.overflow = 'hidden';
             
             // Push to history state to handle back button
             history.pushState({ modal: 'scrub' }, '', '#scrub');
         }
+        
+        // Add product to cart with quantity and scrub option
+        function addToCartWithScrub(productId, qty, scrubOption) {
+            if (qty <= 0) return;
 
-        // --- Common Cart Logic ---
-        function addToCartWithScrub(id, qty, scrubOption) {
-            if (qty <= 0) return; 
-
-            const product = allProducts.find(p => p.id === id); 
+            const product = allProducts.find(p => p.id === productId);
             const existingItem = cart.find(item => 
-                item.id === id && item.scrubOption === scrubOption 
+                item.id === productId && item.scrubOption === scrubOption
             );
 
-            // Calculate final price 
             let finalPrice = product.price;
             let finalMrp = product.mrp;
             if (scrubOption === 'with-scrub') {
-                finalPrice += SCRUB_PRICE; 
-                finalMrp += SCRUB_PRICE; 
+                finalPrice += SCRUB_PRICE;
+                finalMrp += SCRUB_PRICE;
             }
             
             if (existingItem) {
-                existingItem.quantity += qty; 
+                existingItem.quantity += qty;
             } else {
                 cart.push({
                     ...product,
@@ -790,22 +789,23 @@ Please confirm my order and provide delivery details.`;
                     quantity: qty,
                     scrubOption: scrubOption,
                     originalPrice: product.price,
-                    originalMrp = product.mrp 
+                    originalMrp: product.mrp
                 });
             }
             
-            // Reset product page quantity ONLY if it's the current product being viewed
-            if (id === PRODUCT_ID) {
-                quantity = 1; 
-                updatePriceDisplay(); 
+            if (productId === PRODUCT_ID) {
+                quantity = 1;
+                updatePriceDisplay();
             }
 
-            saveCartToStorage(); 
-            updateCart(); 
+            saveCartToStorage();
+            updateCart();
             
-            const scrubText = scrubOption === 'with-scrub' ? ' with herbal scrub' : ''; 
-            showNotification(`${qty} × ${product.name}${scrubText} added to cart!`); 
+            const scrubText = scrubOption === 'with-scrub' ? ' with herbal scrub' : '';
+            showNotification(`${qty} × ${product.name}${scrubText} added to cart!`);
         }
+
+        // --- Common Cart Logic ---
 
         function loadCartFromStorage() {
             const savedCart = sessionStorage.getItem('auraCleanseCart');
@@ -831,7 +831,7 @@ Please confirm my order and provide delivery details.`;
             return cart.reduce((total, item) => total + item.quantity, 0);
         }
 
-        // UPDATED: Function Pack counts as minimum order on its own
+        // UPDATED: Minimum order logic - 3 items OR 1 Function Pack
         function isMinimumOrderMet() {
             // Check if there are at least 3 items OR a Function Pack in the cart
             const hasFunctionPack = cart.some(item => item.id === 'product-14');
@@ -894,27 +894,27 @@ Please confirm my order and provide delivery details.`;
                 document.querySelectorAll('.decrease-cart').forEach(button => {
                     button.addEventListener('click', function(e) {
                         e.stopPropagation();
-                        const id = this.getAttribute('data-id');
+                        const productId = this.getAttribute('data-id');
                         const scrubOption = this.getAttribute('data-scrub');
-                        updateCartQuantity(id, scrubOption, -1);
+                        updateCartQuantity(productId, scrubOption, -1);
                     });
                 });
                 
                 document.querySelectorAll('.increase-cart').forEach(button => {
                     button.addEventListener('click', function(e) {
                         e.stopPropagation();
-                        const id = this.getAttribute('data-id');
+                        const productId = this.getAttribute('data-id');
                         const scrubOption = this.getAttribute('data-scrub');
-                        updateCartQuantity(id, scrubOption, 1);
+                        updateCartQuantity(productId, scrubOption, 1);
                     });
                 });
                 
                 document.querySelectorAll('.remove-item').forEach(button => {
                     button.addEventListener('click', function(e) {
                         e.stopPropagation();
-                        const id = this.getAttribute('data-id');
+                        const productId = this.getAttribute('data-id');
                         const scrubOption = this.getAttribute('data-scrub');
-                        removeFromCart(id, scrubOption);
+                        removeFromCart(productId, scrubOption);
                     });
                 });
                 
@@ -992,7 +992,7 @@ Please confirm my order and provide delivery details.`;
             window.open(whatsappUrl, '_blank');
         }
 
-        // MODIFIED checkoutViaEmail function (now shows modal)
+        // MODIFIED checkoutViaEmail function
         function checkoutViaEmail() {
             const totalItems = getTotalItemsInCart();
             if (totalItems === 0) {
@@ -1013,7 +1013,7 @@ Please confirm my order and provide delivery details.`;
             history.pushState({ modal: 'email' }, '', '#email');
         }
 
-        // NEW FUNCTION: Complete email order with customer name
+        // Complete email order with customer name
         function completeEmailOrder(customerName) {
             if (!customerName || customerName.trim() === '') {
                 showNotification('Please enter your name to proceed with the order.');
@@ -1108,7 +1108,7 @@ Please confirm my order and provide delivery details.`;
                 }
             }
             
-            // Disable buttons if cart is empty or minimum order not met
+            // Disable buttons if cart is empty
             const checkoutButtons = [whatsappCartBtn, emailCartBtn];
             const isCartEmpty = totalItems === 0;
 
