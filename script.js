@@ -302,7 +302,7 @@ function initTestimonialsCarousel() {
                 },
                 navigation: {
                     nextEl: '#testimonialsCarousel .swiper-button-next',
-                    prevEl: '#testimonialsCarousel .swiper-button-prev',
+                    prevEl: '#testimonialsCarousel .swiper-button-next',
                 },
                 breakpoints: {
                     480: {
@@ -536,41 +536,24 @@ function showMinimumOrderModal() {
 }
 
 // Update product quantity on product card
-// Update item quantity in cart (with scrub option)
-function updateCartQuantity(productId, scrubOption, change) {
-    const item = cart.find(item => 
-        item.id === productId && item.scrubOption === scrubOption
-    );
+function updateProductQuantity(productId, change) {
+    const newQuantity = productQuantities[productId] + change;
     
-    if (item) {
-        // 🔥 CRITICAL FIX: Check if item has fixed quantity
-        if (item.isFixedQuantity) {
-            // Don't allow decreasing below minimum quantity
-            if (change < 0 && item.quantity <= (item.minQuantity || 1)) {
-                showNotification('Cannot reduce quantity of custom soaps below minimum requirement');
-                return;
-            }
-            
-            // For custom soaps, always ensure minimum quantity
-            if (item.quantity + change < (item.minQuantity || 1)) {
-                showNotification(`Minimum ${item.minQuantity} custom soaps required`);
-                return;
-            }
+    // Ensure quantity is between 0 and 10
+    if (newQuantity >= 0 && newQuantity <= 10) {
+        productQuantities[productId] = newQuantity;
+        
+        // Update display
+        const quantityDisplay = document.getElementById(`quantity-${productId}`);
+        if (quantityDisplay) {
+            quantityDisplay.textContent = newQuantity;
         }
         
-        item.quantity += change;
-        
-        if (item.quantity <= 0) {
-            cart = cart.filter(item => 
-                !(item.id === productId && item.scrubOption === scrubOption)
-            );
-        }
-        
-        updateCart();
-        saveCartToStorage();
-        updateMinimumOrderUI();
+        // Update button states
+        updateProductButtonState(productId);
     }
 }
+
 // Update product button state
 function updateProductButtonState(productId) {
     const quantity = productQuantities[productId];
@@ -774,7 +757,7 @@ function addToCart(productId, quantity, scrubOption) {
     }
 }
 
-// Update cart UI
+// Update cart UI - UPDATED WITH FIXED QUANTITY HANDLING
 function updateCart() {
     // Update cart count
     const totalItems = getTotalItemsInCart();
@@ -802,7 +785,7 @@ function updateCart() {
             const scrubIndicator = item.scrubOption === 'with-scrub' ? 
                 '<span class="scrub-indicator">+ Scrub</span>' : '';
             
-            // Check if this is a fixed quantity item
+            // Check if this is a fixed quantity item (from customize-soap.html)
             const isFixedQuantity = item.isFixedQuantity || false;
             const fixedQuantityBadge = isFixedQuantity ? 
                 '<span class="fixed-quantity-badge">Fixed Qty</span>' : '';
@@ -823,8 +806,9 @@ function updateCart() {
                     <img src="${item.image}" alt="${item.alt}" loading="lazy">
                 </div>
                 <div class="cart-item-details">
-                    <div class="cart-item-title">${item.name} ${item.weight ? '(' + item.weight + ')' : ''}
-                        ${isFixedQuantity && item.isCustom ? '<span class="custom-badge">Custom</span>' : ''}
+                    <div class="cart-item-title">
+                        ${item.name} ${item.weight ? '(' + item.weight + ')' : ''}
+                        ${item.isCustom ? '<span class="custom-badge">Custom</span>' : ''}
                         ${fixedQuantityBadge}
                         ${scrubIndicator}
                     </div>
@@ -898,14 +882,29 @@ function updateCart() {
     updateMinimumOrderUI();
 }
 
-
-// Update item quantity in cart (with scrub option)
+// Update item quantity in cart (with scrub option) - FIXED VERSION
 function updateCartQuantity(productId, scrubOption, change) {
     const item = cart.find(item => 
         item.id === productId && item.scrubOption === scrubOption
     );
     
     if (item) {
+        // 🔥 FIX: Handle fixed quantity items (from customize-soap.html)
+        if (item.isFixedQuantity) {
+            // Don't allow decreasing below minimum quantity
+            if (change < 0 && item.quantity <= (item.minQuantity || 1)) {
+                showNotification('Cannot reduce quantity of custom soaps below minimum requirement');
+                return;
+            }
+            
+            // For custom soaps, always ensure minimum quantity
+            if (item.quantity + change < (item.minQuantity || 1)) {
+                showNotification(`Minimum ${item.minQuantity} custom soaps required`);
+                return;
+            }
+        }
+        
+        // For regular products, allow normal quantity changes
         item.quantity += change;
         
         if (item.quantity <= 0) {
@@ -1520,7 +1519,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     const script = document.createElement('script');
     script.type = 'application/ld+json';
-    script.textContent = JSON.stringify(structuredData);
+    script.textContent = JSON.stringify(structructuredData);
     document.head.appendChild(script);
     
     // Add product structured data
@@ -1546,7 +1545,4 @@ document.addEventListener('DOMContentLoaded', () => {
     productScript.type = 'application/ld+json';
     productScript.textContent = JSON.stringify(productStructuredData);
     document.head.appendChild(productScript);
-});   
-
-
-
+});
