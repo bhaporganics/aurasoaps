@@ -204,8 +204,8 @@ const products = [
         name: "Customize Your Soap",
         subtitle: "Create Your Unique Blend",
         description: "Design your own personalized soap! Choose the flavours you wish to bath just by creating a soap that's uniquely made for you.",
-        price: 250,
-        mrp: 300,
+        price: 200,
+        mrp: 250,
         discount: "16.67% OFF",
         image: "images/custom_soap.jpeg",
         alt: "Aura - Custom Soap - Create Your Own Personalized Ayurvedic Soap Blend",
@@ -1615,3 +1615,4 @@ document.addEventListener('DOMContentLoaded', () => {
     productScript.textContent = JSON.stringify(productStructuredData);
     document.head.appendChild(productScript);
 });
+
