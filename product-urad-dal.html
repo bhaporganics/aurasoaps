@@ -805,15 +805,28 @@ Please confirm my order and provide delivery details.`;
             showNotification(`${qty} × ${product.name}${scrubText} added to cart!`); 
         }
 
-        function loadCartFromStorage() {
-            const savedCart = sessionStorage.getItem('auraCleanseCart');
-            if (savedCart) {
-                cart = JSON.parse(savedCart);
-            } else {
-                cart = [];
-            }
-            updateCart();
+function loadCartFromStorage() {
+    const savedCart = sessionStorage.getItem('auraCleanseCart');
+    if (savedCart) {
+        try {
+            cart = JSON.parse(savedCart);
+            
+            // Ensure custom soaps have the fixed quantity properties
+            cart.forEach(item => {
+                if (item.isCustom && !item.hasOwnProperty('isFixedQuantity')) {
+                    item.isFixedQuantity = true;
+                    item.minQuantity = 3; // Minimum 3 for custom soaps
+                }
+            });
+        } catch (e) {
+            console.error("Error parsing cart from storage:", e);
+            cart = [];
         }
+    } else {
+        cart = [];
+    }
+    updateCart();
+}
 
         function saveCartToStorage() {
             sessionStorage.setItem('auraCleanseCart', JSON.stringify(cart));
@@ -836,114 +849,159 @@ Please confirm my order and provide delivery details.`;
             return getTotalItemsInCart() >= MIN_ORDER_ITEMS || hasFunctionPack;
         }
 
-        function updateCart() {
-            const totalItems = getTotalItemsInCart();
-            cartCountElement.textContent = totalItems;
+       function updateCart() {
+    const totalItems = getTotalItemsInCart();
+    cartCountElement.textContent = totalItems;
+    
+    cartItemsContainer.innerHTML = '';
+    
+    if (cart.length === 0) {
+        emptyCartMessage.style.display = 'block';
+        cartItemsContainer.appendChild(emptyCartMessage);
+    } else {
+        emptyCartMessage.style.display = 'none';
+        let totalPrice = 0;
+        let totalMrp = 0;
+        
+        cart.forEach(item => {
+            totalPrice += item.price * item.quantity;
+            totalMrp += item.mrp * item.quantity;
             
-            cartItemsContainer.innerHTML = '';
+            const cartItem = document.createElement('div');
+            cartItem.className = 'cart-item';
             
-            if (cart.length === 0) {
-                emptyCartMessage.style.display = 'block';
-                cartItemsContainer.appendChild(emptyCartMessage);
-            } else {
-                emptyCartMessage.style.display = 'none';
-                let totalPrice = 0;
-                let totalMrp = 0;
-                
-                cart.forEach(item => {
-                    totalPrice += item.price * item.quantity;
-                    totalMrp += item.mrp * item.quantity;
-                    
-                    const cartItem = document.createElement('div');
-                    cartItem.className = 'cart-item';
-                    
-                    const scrubIndicator = item.scrubOption === 'with-scrub' ? 
-                        '<span class="scrub-indicator">+ Scrub</span>' : '';
-
-                    cartItem.innerHTML = `
-                        <div class="cart-item-image">
-                            <img src="${item.image || 'soap.jpg'}" alt="${item.alt || item.name}" loading="lazy">
-                        </div>
-                        <div class="cart-item-details">
-                            <div class="cart-item-title">${item.name} ${item.weight ? '(' + item.weight + ')' : ''}${scrubIndicator}</div>
-                            <div class="cart-item-price">
-                                ₹${item.price} × ${item.quantity} = ₹${item.price * item.quantity}
-                                <div style="font-size: 0.8rem; color: #999; text-decoration: line-through;">MRP: ₹${item.mrp * item.quantity}</div>
-                            </div>
-                        </div>
-                        <div class="cart-item-actions">
-                            <button class="cart-quantity-btn decrease-cart" data-id="${item.id}" data-scrub="${item.scrubOption || 'soap-only'}">
-                                <i class="fas fa-minus"></i>
-                            </button>
-                            <span class="cart-item-quantity">${item.quantity}</span>
-                            <button class="cart-quantity-btn increase-cart" data-id="${item.id}" data-scrub="${item.scrubOption || 'soap-only'}">
-                                <i class="fas fa-plus"></i>
-                            </button>
-                            <button class="remove-item" data-id="${item.id}" data-scrub="${item.scrubOption || 'soap-only'}">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </div>
-                    `;
-                    
-                    cartItemsContainer.appendChild(cartItem);
-                });
-                
-                // Event listeners for cart item buttons WITH stopPropagation
-                document.querySelectorAll('.decrease-cart').forEach(button => {
-                    button.addEventListener('click', function(e) {
-                        e.stopPropagation();
-                        const id = this.getAttribute('data-id');
-                        const scrubOption = this.getAttribute('data-scrub');
-                        updateCartQuantity(id, scrubOption, -1);
-                    });
-                });
-                
-                document.querySelectorAll('.increase-cart').forEach(button => {
-                    button.addEventListener('click', function(e) {
-                        e.stopPropagation();
-                        const id = this.getAttribute('data-id');
-                        const scrubOption = this.getAttribute('data-scrub');
-                        updateCartQuantity(id, scrubOption, 1);
-                    });
-                });
-                
-                document.querySelectorAll('.remove-item').forEach(button => {
-                    button.addEventListener('click', function(e) {
-                        e.stopPropagation();
-                        const id = this.getAttribute('data-id');
-                        const scrubOption = this.getAttribute('data-scrub');
-                        removeFromCart(id, scrubOption);
-                    });
-                });
-                
-                const totalSavings = totalMrp - totalPrice;
-                cartTotalElement.innerHTML = `
-                    <div>Total: ₹${totalPrice}</div>
-                    <div style="font-size: 0.9rem; color: #27ae60; font-weight: normal;">
-                        You save: ₹${totalSavings}
+            const scrubIndicator = item.scrubOption === 'with-scrub' ? 
+                '<span class="scrub-indicator">+ Scrub</span>' : '';
+            
+            // Check if this is a fixed quantity item
+            const isFixedQuantity = item.isFixedQuantity || false;
+            const fixedQuantityBadge = isFixedQuantity ? 
+                '<span class="fixed-quantity-badge">Fixed Qty</span>' : '';
+            
+            // For custom soaps, show customization details
+            let customDetails = '';
+            if (item.isCustom && item.customData) {
+                customDetails = `
+                    <div style="font-size: 0.8rem; color: #666; margin-top: 5px; background: #f9f9f9; padding: 8px; border-radius: 4px;">
+                        <div><strong>Fragrance:</strong> ${item.customData.fragrance}</div>
+                        ${item.customData.instructions && item.customData.instructions !== 'None' ? `<div><strong>Instructions:</strong> ${item.customData.instructions}</div>` : ''}
                     </div>
                 `;
             }
+            
+            cartItem.innerHTML = `
+                <div class="cart-item-image">
+                    <img src="${item.image || 'soap.jpg'}" alt="${item.alt || item.name}" loading="lazy">
+                </div>
+                <div class="cart-item-details">
+                    <div class="cart-item-title">${item.name} ${item.weight ? '(' + item.weight + ')' : ''}
+                        ${isFixedQuantity && item.isCustom ? '<span class="custom-badge">Custom</span>' : ''}
+                        ${fixedQuantityBadge}
+                        ${scrubIndicator}
+                    </div>
+                    ${customDetails}
+                    <div class="cart-item-price">
+                        ₹${item.price} × ${item.quantity} = ₹${item.price * item.quantity}
+                        <div style="font-size: 0.8rem; color: #999; text-decoration: line-through;">MRP: ₹${item.mrp * item.quantity}</div>
+                    </div>
+                </div>
+                <div class="cart-item-actions">
+                    ${!isFixedQuantity ? `
+                        <button class="cart-quantity-btn decrease-cart" data-id="${item.id}" data-scrub="${item.scrubOption || 'soap-only'}">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                        <span class="cart-item-quantity">${item.quantity}</span>
+                        <button class="cart-quantity-btn increase-cart" data-id="${item.id}" data-scrub="${item.scrubOption || 'soap-only'}">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    ` : `
+                        <div style="display: flex; align-items: center; gap: 10px; padding: 0 5px;">
+                            <span style="font-size: 0.9rem; color: #666; font-weight: 500;">Qty: ${item.quantity}</span>
+                        </div>
+                    `}
+                    <button class="remove-item" data-id="${item.id}" data-scrub="${item.scrubOption || 'soap-only'}">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            `;
+            
+            cartItemsContainer.appendChild(cartItem);
+        });
+        
+        // Add event listeners to cart item buttons WITH stopPropagation
+        document.querySelectorAll('.decrease-cart').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const id = this.getAttribute('data-id');
+                const scrubOption = this.getAttribute('data-scrub');
+                updateCartQuantity(id, scrubOption, -1);
+            });
+        });
+        
+        document.querySelectorAll('.increase-cart').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const id = this.getAttribute('data-id');
+                const scrubOption = this.getAttribute('data-scrub');
+                updateCartQuantity(id, scrubOption, 1);
+            });
+        });
+        
+        document.querySelectorAll('.remove-item').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const id = this.getAttribute('data-id');
+                const scrubOption = this.getAttribute('data-scrub');
+                removeFromCart(id, scrubOption);
+            });
+        });
+        
+        const totalSavings = totalMrp - totalPrice;
+        cartTotalElement.innerHTML = `
+            <div>Total: ₹${totalPrice}</div>
+            <div style="font-size: 0.9rem; color: #27ae60; font-weight: normal;">
+                You save: ₹${totalSavings}
+            </div>
+        `;
+    }
 
-            updateMinimumOrderUI();
-        }
+    updateMinimumOrderUI();
+}
 
-        function updateCartQuantity(productId, scrubOption, change) {
-            const item = cart.find(item => 
-                item.id === productId && item.scrubOption === scrubOption
-            );
-            if (item) {
-                item.quantity += change;
-                if (item.quantity <= 0) {
-                    cart = cart.filter(item => 
-                        !(item.id === productId && item.scrubOption === scrubOption)
-                    );
-                }
-                updateCart();
-                saveCartToStorage();
-                updateMinimumOrderUI();
+function updateCartQuantity(productId, scrubOption, change) {
+    const item = cart.find(item => 
+        item.id === productId && item.scrubOption === scrubOption
+    );
+    
+    if (item) {
+        // 🔥 CRITICAL FIX: Check if item has fixed quantity
+        if (item.isFixedQuantity) {
+            // Don't allow decreasing below minimum quantity
+            if (change < 0 && item.quantity <= (item.minQuantity || 1)) {
+                showNotification('Cannot reduce quantity of custom soaps below minimum requirement');
+                return;
+            }
+            
+            // For custom soaps, always ensure minimum quantity
+            if (item.quantity + change < (item.minQuantity || 1)) {
+                showNotification(`Minimum ${item.minQuantity} custom soaps required`);
+                return;
             }
         }
+        
+        item.quantity += change;
+        
+        if (item.quantity <= 0) {
+            cart = cart.filter(item => 
+                !(item.id === productId && item.scrubOption === scrubOption)
+            );
+        }
+        
+        updateCart();
+        saveCartToStorage();
+        updateMinimumOrderUI();
+    }
+}
 
         function removeFromCart(productId, scrubOption) {
             cart = cart.filter(item => 
@@ -956,40 +1014,76 @@ Please confirm my order and provide delivery details.`;
         }
 
         function checkoutViaWhatsApp() {
-            const totalItems = getTotalItemsInCart();
-            if (totalItems === 0) {
-                showNotification('Your cart is empty. Add some items first!');
-                return;
+    const totalItems = getTotalItemsInCart();
+    if (totalItems === 0) {
+        showNotification('Your cart is empty. Add some items first!');
+        return;
+    }
+    if (!isMinimumOrderMet()) {
+        showNotification(`Minimum order of ${MIN_ORDER_ITEMS} items not met.`);
+        return;
+    }
+    
+    // UPDATED WITH CUSTOM SOAP DETAILS
+    let message = "Hello Aura Team,\n\n";
+    message += "I would like to place an order from your website:\n\n";
+    message += "📋 ORDER DETAILS\n";
+    message += "════════════════════════════════════════\n\n";
+    
+    let total = 0;
+    let totalMrp = 0;
+    let itemCount = 0;
+    
+    cart.forEach(item => {
+        const itemTotal = item.price * item.quantity;
+        const itemMrp = item.mrp * item.quantity;
+        itemCount++;
+        
+        if (item.isCustom) {
+            // Custom soap with customization details
+            message += `✨ CUSTOM SOAP #${itemCount} (${item.weight || '100g'})`;
+            if (item.scrubOption === 'with-scrub') {
+                message += ` + Herbal Scrub`;
             }
-            if (!isMinimumOrderMet()) {
-                showNotification(`Minimum order of ${MIN_ORDER_ITEMS} items not met.`);
-                return;
+            message += `\n`;
+            message += `• Quantity: ${item.quantity}\n`;
+            
+            // Check if customData exists and display it
+            if (item.customData) {
+                message += `• Custom Fragrance: ${item.customData.fragrance || 'Not specified'}\n`;
+                if (item.customData.instructions && item.customData.instructions !== 'None') {
+                    message += `• Special Instructions: ${item.customData.instructions}\n`;
+                }
+            } else {
+                // Fallback if customData doesn't exist
+                message += `• Custom Soap (No details provided)\n`;
             }
-            
-            let message = "Hello, I would like to place an order from Aura :\n\n";
-            let total = 0;
-            let totalMrp = 0;
-            
-            cart.forEach(item => {
-                const itemTotal = item.price * item.quantity;
-                const itemMrp = item.mrp * item.quantity;
-                const sizeInfo = item.weight ? `(${item.weight})` : `(${item.size || '100g'})`;
-                const scrubInfo = item.scrubOption === 'with-scrub' ? 
-                    ' + Herbal Scrub' : '';
-                message += `${item.name}${scrubInfo} ${sizeInfo}: ${item.quantity} × ₹${item.price} = ₹${itemTotal}\n`;
-                total += itemTotal;
-                totalMrp += itemMrp;
-            });
-            const savings = totalMrp - total;
-            const discountPercent = Math.round((savings / totalMrp) * 100);
-            
-            message += `\nTotal: ₹${total}`;
-            message += `\nTotal Savings: ₹${savings} (${discountPercent}% OFF)`;
-            message += `\n\nPlease confirm my order and provide delivery details.`;
-            const whatsappUrl = `https://wa.me/918532853241?text=${encodeURIComponent(message)}`;
-            window.open(whatsappUrl, '_blank');
+            message += `• Price: ₹${item.price} × ${item.quantity} = ₹${itemTotal}\n\n`;
+        } else {
+            // Regular product
+            const sizeInfo = item.weight ? `(${item.weight})` : `(${item.size || '100g'})`;
+            const scrubInfo = item.scrubOption === 'with-scrub' ? ' + Herbal Scrub' : '';
+            message += `${item.name}${scrubInfo} ${sizeInfo}: ${item.quantity} × ₹${item.price} = ₹${itemTotal}\n`;
         }
-
+        
+        total += itemTotal;
+        totalMrp += itemMrp;
+    });
+    
+    const savings = totalMrp - total;
+    const discountPercent = Math.round((savings / totalMrp) * 100);
+    
+    message += `\n════════════════════════════════════════\n`;
+    message += `💰 ORDER SUMMARY\n`;
+    message += `• Subtotal: ₹${total}\n`;
+    message += `• Total Savings: ₹${savings} (${discountPercent}% OFF)\n`;
+    message += `• Grand Total: ₹${total}\n\n`;
+    message += `Please confirm my order and provide delivery details.\n`;
+    message += `Thank you! 🙏`;
+    
+    const whatsappUrl = `https://wa.me/918532853241?text=${encodeURIComponent(message)}`;
+    window.open(whatsappUrl, '_blank');
+}
         // MODIFIED checkoutViaEmail function (now shows modal)
         function checkoutViaEmail() {
             const totalItems = getTotalItemsInCart();
@@ -1013,51 +1107,88 @@ Please confirm my order and provide delivery details.`;
 
         // NEW FUNCTION: Complete email order with customer name
         function completeEmailOrder(customerName) {
-            if (!customerName || customerName.trim() === '') {
-                showNotification('Please enter your name to proceed with the order.');
-                return;
+    if (!customerName || customerName.trim() === '') {
+        showNotification('Please enter your name to proceed with the order.');
+        return;
+    }
+    
+    // UPDATED WITH CUSTOM SOAP DETAILS
+    let emailBody = `Hello Aura Team,\n\n`;
+    emailBody += `I would like to place an order from your website.\n\n`;
+    emailBody += `CUSTOMER DETAILS:\n`;
+    emailBody += `• Name: ${customerName}\n`;
+    emailBody += `• Order Date: ${new Date().toLocaleDateString('en-IN')}\n\n`;
+    
+    emailBody += `ORDER DETAILS:\n`;
+    emailBody += `════════════════════════════════════════\n\n`;
+    
+    let total = 0;
+    let totalMrp = 0;
+    let itemCount = 0;
+    
+    cart.forEach(item => {
+        const itemTotal = item.price * item.quantity;
+        const itemMrp = item.mrp * item.quantity;
+        itemCount++;
+        
+        if (item.isCustom) {
+            // Custom soap with all customization details
+            emailBody += `CUSTOM SOAP #${itemCount} (${item.weight || '100g'})`;
+            if (item.scrubOption === 'with-scrub') {
+                emailBody += ` + Herbal Scrub`;
             }
+            emailBody += `\n`;
+            emailBody += `  • Quantity: ${item.quantity}\n`;
             
-            // Build the email body
-            let emailBody = `Hello Aura Team,\n\n`;
-            emailBody += `I would like to place an order from your website.\n\n`;
-            emailBody += `Customer Details:\n`;
-            emailBody += `- Name: ${customerName}\n`;
-            
-            emailBody += `\nOrder Details:\n`;
-            let total = 0;
-            let totalMrp = 0;
-            cart.forEach(item => {
-                const itemTotal = item.price * item.quantity;
-                const itemMrp = item.mrp * item.quantity;
-                const sizeInfo = item.weight ? `(${item.weight})` : `(${item.size || '100g'})`;
-                const scrubInfo = item.scrubOption === 'with-scrub' ? ' + Herbal Scrub' : '';
-                emailBody += `- ${item.name}${scrubInfo} ${sizeInfo}: ${item.quantity} × ₹${item.price} = ₹${itemTotal}\n`;
-                total += itemTotal;
-                totalMrp += itemMrp;
-            });
-            
-            const savings = totalMrp - total;
-            emailBody += `\nOrder Total: ₹${total}`;
-            emailBody += `\nTotal Savings: ₹${savings}`;
-            emailBody += `\n\nPlease confirm my order and provide payment/delivery details.`;
-            emailBody += `\n\nThank you,\n${customerName}`;
-            
-            // Create the mailto link 
-            const subject = `Aura-Order - ${new Date().toLocaleDateString()}`;
-            const mailtoLink = `mailto:bhaporganics@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(emailBody)}`;
-            
-            // Close modal and open email client
-            emailModal.classList.remove('open');
-            document.body.style.overflow = '';
-            customerNameInput.value = '';
-            emailProceedBtn.disabled = true;
-            
-            // Open the user's email client
-            setTimeout(() => {
-                window.location.href = mailtoLink;
-            }, 300);
+            // Check if customData exists and display it
+            if (item.customData) {
+                emailBody += `  • Custom Fragrance: ${item.customData.fragrance || 'Not specified'}\n`;
+                if (item.customData.instructions && item.customData.instructions !== 'None') {
+                    emailBody += `  • Special Instructions: ${item.customData.instructions}\n`;
+                }
+            } else {
+                // Fallback if customData doesn't exist
+                emailBody += `  • Custom Soap (No details provided)\n`;
+            }
+            emailBody += `  • Price: ₹${item.price} × ${item.quantity} = ₹${itemTotal}\n\n`;
+        } else {
+            // Regular product
+            const sizeInfo = item.weight ? `(${item.weight})` : `(${item.size || '100g'})`;
+            const scrubInfo = item.scrubOption === 'with-scrub' ? ' + Herbal Scrub' : '';
+            emailBody += `• ${item.name}${scrubInfo} ${sizeInfo}: ${item.quantity} × ₹${item.price} = ₹${itemTotal}\n`;
         }
+        
+        total += itemTotal;
+        totalMrp += itemMrp;
+    });
+    
+    const savings = totalMrp - total;
+    
+    emailBody += `════════════════════════════════════════\n`;
+    emailBody += `ORDER SUMMARY:\n`;
+    emailBody += `• Subtotal: ₹${total}\n`;
+    emailBody += `• Total Savings: ₹${savings}\n`;
+    emailBody += `• Grand Total: ₹${total}\n\n`;
+    emailBody += `Please confirm my order and provide payment/delivery details.\n\n`;
+    emailBody += `Thank you,\n${customerName}`;
+    
+    // Create the mailto link 
+    const subject = `AURA Custom Soap Order - ${new Date().toLocaleDateString('en-IN')}`;
+    const mailtoLink = `mailto:bhaporganics@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(emailBody)}`;
+    
+    // Close modal and open email client
+    emailModal.classList.remove('open');
+    document.body.style.overflow = '';
+    
+    // Clear the input
+    customerNameInput.value = '';
+    emailProceedBtn.disabled = true;
+    
+    // Open the user's email client
+    setTimeout(() => {
+        window.location.href = mailtoLink;
+    }, 300);
+}
 
         // UPDATED: Minimum order UI that accounts for Function Pack
         function updateMinimumOrderUI() {
@@ -1540,8 +1671,45 @@ Please confirm my order and provide delivery details.`;
 .email-input-group input {
     text-align: center;
 }
+/* Fixed quantity badge */
+.fixed-quantity-badge {
+    display: inline-block;
+    background: #f0f0f0;
+    color: #666;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    font-weight: 500;
+    margin-left: 0.5rem;
+    border: 1px solid #ddd;
+}
+
+/* Custom soap badge */
+.custom-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #b76e79, #e8d9c5);
+    color: white;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    margin-left: 0.5rem;
+    vertical-align: middle;
+}
+
+/* Scrub indicator (existing but ensure it's there) */
+.scrub-indicator {
+    display: inline-block;
+    background: rgba(183, 110, 121, 0.1);
+    color: #b76e79;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    font-weight: 500;
+    margin-left: 0.5rem;
+    border: 1px solid rgba(183, 110, 121, 0.3);
+}
 </style>
 
 </body>
 </html>
-
