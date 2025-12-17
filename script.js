@@ -302,7 +302,7 @@ function initTestimonialsCarousel() {
                 },
                 navigation: {
                     nextEl: '#testimonialsCarousel .swiper-button-next',
-                    prevEl: '#testimonialsCarousel .swiper-button-next',
+                    prevEl: '#testimonialsCarousel .swiper-button-prev',
                 },
                 breakpoints: {
                     480: {
@@ -971,7 +971,7 @@ function showNotification(message) {
     }, 3000);
 }
 
-// WhatsApp Checkout function - MODIFIED
+// WhatsApp Checkout function - UPDATED WITH CUSTOM SOAP DETAILS
 function checkoutViaWhatsApp() {
     const totalItems = getTotalItemsInCart();
     
@@ -988,16 +988,47 @@ function checkoutViaWhatsApp() {
     }
     
     // 3. Proceed to WhatsApp
-    let message = "Hello, I would like to place an order from Aura :\n\n";
+    let message = "Hello Aura Team,\n\n";
+    message += "I would like to place an order from your website:\n\n";
+    message += "📋 ORDER DETAILS\n";
+    message += "════════════════════════════════════════\n\n";
+    
     let total = 0;
     let totalMrp = 0;
+    let itemCount = 0;
     
     cart.forEach(item => {
         const itemTotal = item.price * item.quantity;
         const itemMrp = item.mrp * item.quantity;
-        const sizeInfo = item.weight ? `(${item.weight})` : `(${item.size || '100g'})`;
-        const scrubInfo = item.scrubOption === 'with-scrub' ? ' + Herbal Scrub' : '';
-        message += `${item.name}${scrubInfo} ${sizeInfo}: ${item.quantity} × ₹${item.price} = ₹${itemTotal}\n`;
+        itemCount++;
+        
+        if (item.isCustom) {
+            // Custom soap with customization details
+            message += `✨ CUSTOM SOAP #${itemCount} (${item.weight || '100g'})`;
+            if (item.scrubOption === 'with-scrub') {
+                message += ` + Herbal Scrub`;
+            }
+            message += `\n`;
+            message += `• Quantity: ${item.quantity}\n`;
+            
+            // Check if customData exists and display it
+            if (item.customData) {
+                message += `• Custom Fragrance: ${item.customData.fragrance || 'Not specified'}\n`;
+                if (item.customData.instructions && item.customData.instructions !== 'None') {
+                    message += `• Special Instructions: ${item.customData.instructions}\n`;
+                }
+            } else {
+                // Fallback if customData doesn't exist
+                message += `• Custom Soap (No details provided)\n`;
+            }
+            message += `• Price: ₹${item.price} × ${item.quantity} = ₹${itemTotal}\n\n`;
+        } else {
+            // Regular product
+            const sizeInfo = item.weight ? `(${item.weight})` : `(${item.size || '100g'})`;
+            const scrubInfo = item.scrubOption === 'with-scrub' ? ' + Herbal Scrub' : '';
+            message += `${item.name}${scrubInfo} ${sizeInfo}: ${item.quantity} × ₹${item.price} = ₹${itemTotal}\n`;
+        }
+        
         total += itemTotal;
         totalMrp += itemMrp;
     });
@@ -1005,9 +1036,13 @@ function checkoutViaWhatsApp() {
     const savings = totalMrp - total;
     const discountPercent = Math.round((savings / totalMrp) * 100);
     
-    message += `\nTotal: ₹${total}`;
-    message += `\nTotal Savings: ₹${savings} (${discountPercent}% OFF)`;
-    message += `\n\nPlease confirm my order and provide delivery details.`;
+    message += `\n════════════════════════════════════════\n`;
+    message += `💰 ORDER SUMMARY\n`;
+    message += `• Subtotal: ₹${total}\n`;
+    message += `• Total Savings: ₹${savings} (${discountPercent}% OFF)\n`;
+    message += `• Grand Total: ₹${total}\n\n`;
+    message += `Please confirm my order and provide delivery details.\n`;
+    message += `Thank you! 🙏`;
     
     const whatsappUrl = `https://wa.me/918532853241?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, '_blank');
@@ -1038,41 +1073,75 @@ function checkoutViaEmail() {
     history.pushState({ modal: 'email' }, '', '#email');
 }
 
-// Complete email order with customer name
+// Complete email order with customer name - UPDATED WITH CUSTOM SOAP DETAILS
 function completeEmailOrder(customerName) {
     if (!customerName || customerName.trim() === '') {
         showNotification('Please enter your name to proceed with the order.');
         return;
     }
     
-    // Build the email body
+    // Build the email body with customization details
     let emailBody = `Hello Aura Team,\n\n`;
     emailBody += `I would like to place an order from your website.\n\n`;
-    emailBody += `Customer Details:\n`;
-    emailBody += `- Name: ${customerName}\n`;
+    emailBody += `CUSTOMER DETAILS:\n`;
+    emailBody += `• Name: ${customerName}\n`;
+    emailBody += `• Order Date: ${new Date().toLocaleDateString('en-IN')}\n\n`;
     
-    emailBody += `\nOrder Details:\n`;
+    emailBody += `ORDER DETAILS:\n`;
+    emailBody += `════════════════════════════════════════\n\n`;
+    
     let total = 0;
     let totalMrp = 0;
+    let itemCount = 0;
     
     cart.forEach(item => {
         const itemTotal = item.price * item.quantity;
         const itemMrp = item.mrp * item.quantity;
-        const sizeInfo = item.weight ? `(${item.weight})` : `(${item.size || '100g'})`;
-        const scrubInfo = item.scrubOption === 'with-scrub' ? ' + Herbal Scrub' : '';
-        emailBody += `- ${item.name}${scrubInfo} ${sizeInfo}: ${item.quantity} × ₹${item.price} = ₹${itemTotal}\n`;
+        itemCount++;
+        
+        if (item.isCustom) {
+            // Custom soap with all customization details
+            emailBody += `CUSTOM SOAP #${itemCount} (${item.weight || '100g'})`;
+            if (item.scrubOption === 'with-scrub') {
+                emailBody += ` + Herbal Scrub`;
+            }
+            emailBody += `\n`;
+            emailBody += `  • Quantity: ${item.quantity}\n`;
+            
+            // Check if customData exists and display it
+            if (item.customData) {
+                emailBody += `  • Custom Fragrance: ${item.customData.fragrance || 'Not specified'}\n`;
+                if (item.customData.instructions && item.customData.instructions !== 'None') {
+                    emailBody += `  • Special Instructions: ${item.customData.instructions}\n`;
+                }
+            } else {
+                // Fallback if customData doesn't exist
+                emailBody += `  • Custom Soap (No details provided)\n`;
+            }
+            emailBody += `  • Price: ₹${item.price} × ${item.quantity} = ₹${itemTotal}\n\n`;
+        } else {
+            // Regular product
+            const sizeInfo = item.weight ? `(${item.weight})` : `(${item.size || '100g'})`;
+            const scrubInfo = item.scrubOption === 'with-scrub' ? ' + Herbal Scrub' : '';
+            emailBody += `• ${item.name}${scrubInfo} ${sizeInfo}: ${item.quantity} × ₹${item.price} = ₹${itemTotal}\n`;
+        }
+        
         total += itemTotal;
         totalMrp += itemMrp;
     });
     
     const savings = totalMrp - total;
-    emailBody += `\nOrder Total: ₹${total}`;
-    emailBody += `\nTotal Savings: ₹${savings}`;
-    emailBody += `\n\nPlease confirm my order and provide payment/delivery details.`;
-    emailBody += `\n\nThank you,\n${customerName}`;
+    
+    emailBody += `════════════════════════════════════════\n`;
+    emailBody += `ORDER SUMMARY:\n`;
+    emailBody += `• Subtotal: ₹${total}\n`;
+    emailBody += `• Total Savings: ₹${savings}\n`;
+    emailBody += `• Grand Total: ₹${total}\n\n`;
+    emailBody += `Please confirm my order and provide payment/delivery details.\n\n`;
+    emailBody += `Thank you,\n${customerName}`;
     
     // Create the mailto link 
-    const subject = `Aura-Order - ${new Date().toLocaleDateString()}`;
+    const subject = `AURA Custom Soap Order - ${new Date().toLocaleDateString('en-IN')}`;
     const mailtoLink = `mailto:bhaporganics@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(emailBody)}`;
     
     // Close modal and open email client
@@ -1519,7 +1588,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     const script = document.createElement('script');
     script.type = 'application/ld+json';
-    script.textContent = JSON.stringify(structructuredData);
+    script.textContent = JSON.stringify(structuredData);
     document.head.appendChild(script);
     
     // Add product structured data
