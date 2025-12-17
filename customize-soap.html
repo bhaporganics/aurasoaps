@@ -327,6 +327,22 @@
             margin-left: 5px;
         }
         
+        /* Custom soap quantity lock styling */
+        .custom-soap-locked {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 5px 10px;
+            background: rgba(183, 110, 121, 0.1);
+            border-radius: 4px;
+            font-size: 0.85rem;
+            color: var(--accent);
+        }
+        
+        .custom-soap-locked i {
+            font-size: 0.8rem;
+        }
+        
         /* Mobile Responsive Styles */
         @media (max-width: 768px) {
             .customize-section {
@@ -1003,7 +1019,7 @@
             // Create a unique ID for this customization
             const customId = `${CUSTOM_SOAP_ID}-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
             
-            // Create custom soap item
+            // Create custom soap item - IMPORTANT: Add the FIXED_QUANTITY flag
             const customSoapItem = {
                 id: customId,
                 name: 'Custom Soap',
@@ -1018,7 +1034,8 @@
                 quantity: currentCustomizationData.quantity,
                 scrubOption: scrubOption,
                 isCustom: true,
-                isCustomizationSoap: true, // Add flag to identify as custom soap from customization page
+                isCustomizationSoap: true, // Flag to identify as custom soap from customization page
+                isFixedQuantity: true, // CRITICAL: This flag will be checked in ALL pages
                 minQuantity: MIN_CUSTOM_SOAPS, // Store minimum quantity
                 customData: {
                     fragrance: currentCustomizationData.fragrance,
@@ -1051,6 +1068,11 @@
             // Close modal without pushing to history
             scrubModal.classList.remove('open');
             document.body.style.overflow = '';
+            
+            // Go back in history
+            if (history.state && history.state.modal === 'scrub') {
+                history.back();
+            }
         }
         
         // --- SHARED CART FUNCTIONS ---
@@ -1061,10 +1083,11 @@
                 try {
                     cart = JSON.parse(savedCart);
                     
-                    // Ensure custom soaps have the isCustomizationSoap flag
+                    // Ensure custom soaps have the correct flags
                     cart.forEach(item => {
                         if (item.isCustom && !item.hasOwnProperty('isCustomizationSoap')) {
                             item.isCustomizationSoap = true;
+                            item.isFixedQuantity = true; // Add this flag for all custom soaps
                             item.minQuantity = MIN_CUSTOM_SOAPS;
                         }
                     });
@@ -1135,8 +1158,8 @@
                         `;
                     }
                     
-                    // Check if this is a custom soap from customization page
-                    const isCustomizationSoap = item.isCustomizationSoap;
+                    // Check if this is a fixed quantity custom soap
+                    const isFixedQuantity = item.isFixedQuantity || item.isCustomizationSoap;
                     
                     cartItem.innerHTML = `
                         <div class="cart-item-image">
@@ -1147,7 +1170,7 @@
                                 ${item.name} ${item.weight ? '(' + item.weight + ')' : ''}
                                 ${customBadge}
                                 ${scrubIndicator}
-                                ${isCustomizationSoap ? '<span class="static-quantity">Qty: ' + item.quantity + '</span>' : ''}
+                                ${isFixedQuantity ? '<span class="static-quantity">Qty: ' + item.quantity + '</span>' : ''}
                             </div>
                             ${customDetails}
                             <div class="cart-item-price">
@@ -1156,7 +1179,7 @@
                             </div>
                         </div>
                         <div class="cart-item-actions">
-                            ${!isCustomizationSoap ? `
+                            ${!isFixedQuantity ? `
                                 <button class="cart-quantity-btn decrease-cart" data-index="${index}">
                                     <i class="fas fa-minus"></i>
                                 </button>
@@ -1165,8 +1188,9 @@
                                     <i class="fas fa-plus"></i>
                                 </button>
                             ` : `
-                                <div style="display: flex; align-items: center; gap: 10px; padding: 0 5px;">
-                                    <span style="font-size: 0.9rem; color: #666;">Fixed Quantity</span>
+                                <div class="custom-soap-locked">
+                                    <i class="fas fa-lock"></i>
+                                    <span>Fixed Quantity</span>
                                 </div>
                             `}
                             <button class="remove-item" data-index="${index}">
@@ -1220,8 +1244,8 @@
             
             const item = cart[index];
             
-            // Don't allow quantity changes for custom soaps from customization page
-            if (item.isCustomizationSoap) {
+            // Don't allow quantity changes for fixed quantity custom soaps
+            if (item.isFixedQuantity || item.isCustomizationSoap) {
                 showNotification('Cannot modify quantity of custom soaps. Please remove and re-add with correct quantity.');
                 return;
             }
@@ -1707,7 +1731,6 @@
             scrubModal.classList.remove('open');
             emailModal.classList.remove('open');
             document.body.style.overflow = '';
-            document.body.style.position = '';
             
             // Re-open modal based on hash
             if (hash === '#cart') {
