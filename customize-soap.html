@@ -52,13 +52,79 @@
             align-items: center;
         }
         
-        /* FIX: Mobile header alignment */
-        @media (max-width: 768px) {
-            .customize-section {
-                margin-top: 65px;
-                padding: 100px 0 40px;
-            }
-        }
+        /* Optimized Mobile Responsive Styles */
+@media (max-width: 768px) {
+    .customize-section {
+        /* Ensure the section starts after the fixed header */
+        padding: 80px 0 40px; 
+        margin-top: 0; 
+        display: block; /* Change from flex to block for better scrolling */
+    }
+    
+    .container {
+        padding: 0 15px; /* Consistent side gutters */
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .customize-container {
+        margin: 0 auto; /* Center the box */
+        border-radius: 12px;
+        width: 100%;
+        max-width: 100%;
+    }
+    
+    .customize-header {
+        padding: 25px 20px;
+    }
+    
+    .customize-header h1 {
+        font-size: 1.6rem;
+    }
+    
+    .customize-form {
+        padding: 20px;
+    }
+    
+    .fragrance-examples {
+        justify-content: flex-start; /* Align tags to the left */
+        gap: 6px;
+    }
+
+    .fragrance-tag {
+        font-size: 0.8rem;
+        padding: 6px 12px;
+        flex-grow: 1; /* Allows tags to fill row nicely */
+        text-align: center;
+    }
+
+    .quantity-selector {
+        flex-direction: row; /* Keep qty and total on same line if possible */
+        justify-content: space-between;
+        align-items: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .customize-header h1 {
+        font-size: 1.4rem;
+    }
+    
+    .price-row.total {
+        font-size: 1.1rem;
+    }
+    
+    /* Stack buttons on very small screens */
+    .customize-actions {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .btn-primary, .btn-secondary {
+        width: 100%;
+        padding: 14px; /* Larger touch target */
+    }
+}
         
         .customize-container {
             max-width: 700px;
