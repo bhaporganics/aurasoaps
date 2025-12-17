@@ -316,6 +316,17 @@
             vertical-align: middle;
         }
         
+        /* Static quantity indicator for custom soaps */
+        .static-quantity {
+            display: inline-block;
+            background: #f0f0f0;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            color: #666;
+            margin-left: 5px;
+        }
+        
         /* Mobile Responsive Styles */
         @media (max-width: 768px) {
             .customize-section {
@@ -437,37 +448,68 @@
             }
         }
         /* ===== MOBILE ALIGNMENT FIX ===== */
-@media (max-width: 768px) {
+        @media (max-width: 768px) {
+            /* Prevent double padding */
+            .customize-section {
+                padding-left: 0;
+                padding-right: 0;
+            }
 
-    /* Prevent double padding */
-    .customize-section {
-        padding-left: 0;
-        padding-right: 0;
-    }
+            .customize-section .container {
+                padding-left: 0;
+                padding-right: 0;
+                max-width: 100%;
+            }
 
-    .customize-section .container {
-        padding-left: 0;
-        padding-right: 0;
-        max-width: 100%;
-    }
+            .customize-container {
+                margin: 0 12px;
+                width: auto;
+            }
+        }
+        
+        .mobile-fab {
+            display: none !important;
+        }
+        
+        @media (max-width: 768px) {
+            .fragrance-examples {
+                justify-content: flex-start;
+            }
 
-    .customize-container {
-        margin: 0 12px;
-        width: auto;
-    }
-}
-.mobile-fab {
-    display: none !important;
-}
-@media (max-width: 768px) {
-    .fragrance-examples {
-        justify-content: flex-start;
-    }
+            .fragrance-tag {
+                line-height: 1.4;
+            }
+        }
 
-    .fragrance-tag {
-        line-height: 1.4;
-    }
-}
+        /* Back to Top Button */
+        .back-to-top {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            width: 45px;
+            height: 45px;
+            background: var(--secondary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 100;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .back-to-top.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .back-to-top:hover {
+            background: #3a5152;
+        }
 
     </style>
 </head>
@@ -818,6 +860,9 @@
         let cart = [];
         const MIN_ORDER_ITEMS = 3;
         
+        // Track if modal is open via history state
+        let modalOpenViaHistory = false;
+        
         // Initialize Price Display
         function updatePriceDisplay() {
             const total = PRICE_PER_SOAP * quantity;
@@ -878,10 +923,6 @@
                 previewSection.classList.remove('active');
             }
         }
-        
-        // Form Input Listeners
-        customFragrance.addEventListener('input', updatePreview);
-        specialInstructions.addEventListener('input', updatePreview);
         
         // Reset Form
         resetFormBtn.addEventListener('click', () => {
@@ -945,8 +986,11 @@
             // Show modal
             scrubModal.classList.add('open');
             document.body.style.overflow = 'hidden';
-            document.body.style.position = 'fixed';
-            document.body.style.width = '100%';
+            
+            // Push to history state
+            if (!modalOpenViaHistory) {
+                history.pushState({ modal: 'scrub', page: 'customize-soap' }, '', '#scrub');
+            }
         }
         
         // Add Custom Soap to Cart
@@ -974,6 +1018,8 @@
                 quantity: currentCustomizationData.quantity,
                 scrubOption: scrubOption,
                 isCustom: true,
+                isCustomizationSoap: true, // Add flag to identify as custom soap from customization page
+                minQuantity: MIN_CUSTOM_SOAPS, // Store minimum quantity
                 customData: {
                     fragrance: currentCustomizationData.fragrance,
                     instructions: currentCustomizationData.instructions,
@@ -1001,6 +1047,10 @@
             // Save and update cart
             saveCartToStorage();
             updateCart();
+            
+            // Close modal without pushing to history
+            scrubModal.classList.remove('open');
+            document.body.style.overflow = '';
         }
         
         // --- SHARED CART FUNCTIONS ---
@@ -1010,6 +1060,14 @@
             if (savedCart) {
                 try {
                     cart = JSON.parse(savedCart);
+                    
+                    // Ensure custom soaps have the isCustomizationSoap flag
+                    cart.forEach(item => {
+                        if (item.isCustom && !item.hasOwnProperty('isCustomizationSoap')) {
+                            item.isCustomizationSoap = true;
+                            item.minQuantity = MIN_CUSTOM_SOAPS;
+                        }
+                    });
                 } catch (e) {
                     console.error("Error parsing cart from storage:", e);
                     cart = [];
@@ -1077,6 +1135,9 @@
                         `;
                     }
                     
+                    // Check if this is a custom soap from customization page
+                    const isCustomizationSoap = item.isCustomizationSoap;
+                    
                     cartItem.innerHTML = `
                         <div class="cart-item-image">
                             <img src="${item.image || 'images/soap.jpg'}" alt="${item.alt || item.name}" loading="lazy">
@@ -1086,6 +1147,7 @@
                                 ${item.name} ${item.weight ? '(' + item.weight + ')' : ''}
                                 ${customBadge}
                                 ${scrubIndicator}
+                                ${isCustomizationSoap ? '<span class="static-quantity">Qty: ' + item.quantity + '</span>' : ''}
                             </div>
                             ${customDetails}
                             <div class="cart-item-price">
@@ -1094,13 +1156,19 @@
                             </div>
                         </div>
                         <div class="cart-item-actions">
-                            <button class="cart-quantity-btn decrease-cart" data-index="${index}" ${item.isCustom ? 'disabled style="opacity:0.5; cursor:not-allowed;"' : ''}>
-                                <i class="fas fa-minus"></i>
-                            </button>
-                            <span class="cart-item-quantity">${item.quantity}</span>
-                            <button class="cart-quantity-btn increase-cart" data-index="${index}" ${item.isCustom ? 'disabled style="opacity:0.5; cursor:not-allowed;"' : ''}>
-                                <i class="fas fa-plus"></i>
-                            </button>
+                            ${!isCustomizationSoap ? `
+                                <button class="cart-quantity-btn decrease-cart" data-index="${index}">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                                <span class="cart-item-quantity">${item.quantity}</span>
+                                <button class="cart-quantity-btn increase-cart" data-index="${index}">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            ` : `
+                                <div style="display: flex; align-items: center; gap: 10px; padding: 0 5px;">
+                                    <span style="font-size: 0.9rem; color: #666;">Fixed Quantity</span>
+                                </div>
+                            `}
                             <button class="remove-item" data-index="${index}">
                                 <i class="fas fa-trash"></i>
                             </button>
@@ -1111,22 +1179,25 @@
                 });
                 
                 // Event listeners for cart item buttons
-                document.querySelectorAll('.decrease-cart:not([disabled])').forEach(button => {
-                    button.addEventListener('click', function() {
+                document.querySelectorAll('.decrease-cart').forEach(button => {
+                    button.addEventListener('click', function(e) {
+                        e.stopPropagation();
                         const index = parseInt(this.getAttribute('data-index'));
                         updateCartQuantity(index, -1);
                     });
                 });
                 
-                document.querySelectorAll('.increase-cart:not([disabled])').forEach(button => {
-                    button.addEventListener('click', function() {
+                document.querySelectorAll('.increase-cart').forEach(button => {
+                    button.addEventListener('click', function(e) {
+                        e.stopPropagation();
                         const index = parseInt(this.getAttribute('data-index'));
                         updateCartQuantity(index, 1);
                     });
                 });
                 
                 document.querySelectorAll('.remove-item').forEach(button => {
-                    button.addEventListener('click', function() {
+                    button.addEventListener('click', function(e) {
+                        e.stopPropagation();
                         const index = parseInt(this.getAttribute('data-index'));
                         removeFromCart(index);
                     });
@@ -1149,8 +1220,8 @@
             
             const item = cart[index];
             
-            // Don't allow quantity changes for custom soaps
-            if (item.isCustom) {
+            // Don't allow quantity changes for custom soaps from customization page
+            if (item.isCustomizationSoap) {
                 showNotification('Cannot modify quantity of custom soaps. Please remove and re-add with correct quantity.');
                 return;
             }
@@ -1175,7 +1246,7 @@
             showNotification(`${itemName} removed from cart`);
         }
         
-        // WhatsApp Order Function - FIXED
+        // WhatsApp Order Function
         function checkoutViaWhatsApp() {
             const totalItems = getTotalItemsInCart();
             if (totalItems === 0) {
@@ -1242,7 +1313,7 @@
             window.open(whatsappUrl, '_blank');
         }
         
-        // Email Order Function - FIXED
+        // Email Order Function
         function checkoutViaEmail() {
             const totalItems = getTotalItemsInCart();
             if (totalItems === 0) {
@@ -1257,9 +1328,12 @@
             // Proceed to Email modal for name input
             emailModal.classList.add('open');
             document.body.style.overflow = 'hidden';
-            document.body.style.position = 'fixed';
-            document.body.style.width = '100%';
             customerNameInput.focus();
+            
+            // Push to history state
+            if (!modalOpenViaHistory) {
+                history.pushState({ modal: 'email', page: 'customize-soap' }, '', '#email');
+            }
         }
         
         function completeEmailOrder(customerName) {
@@ -1330,10 +1404,13 @@
             // Close modal
             emailModal.classList.remove('open');
             document.body.style.overflow = '';
-            document.body.style.position = '';
-            document.body.style.width = '';
             customerNameInput.value = '';
             emailProceedBtn.disabled = true;
+            
+            // Go back in history
+            if (history.state && history.state.modal === 'email') {
+                history.back();
+            }
             
             // Open the user's email client
             setTimeout(() => {
@@ -1383,22 +1460,12 @@
                 whatsappCartBtn.disabled = isCartEmpty || !meetsMinimum;
                 whatsappCartBtn.style.opacity = (isCartEmpty || !meetsMinimum) ? '0.7' : '1';
                 whatsappCartBtn.style.cursor = (isCartEmpty || !meetsMinimum) ? 'not-allowed' : 'pointer';
-                
-                // Remove existing event listener and add new one
-                whatsappCartBtn.replaceWith(whatsappCartBtn.cloneNode(true));
-                const newWhatsappBtn = document.getElementById('whatsappCartBtn');
-                newWhatsappBtn.addEventListener('click', checkoutViaWhatsApp);
             }
             
             if (emailCartBtn) {
                 emailCartBtn.disabled = isCartEmpty || !meetsMinimum;
                 emailCartBtn.style.opacity = (isCartEmpty || !meetsMinimum) ? '0.7' : '1';
                 emailCartBtn.style.cursor = (isCartEmpty || !meetsMinimum) ? 'not-allowed' : 'pointer';
-                
-                // Remove existing event listener and add new one
-                emailCartBtn.replaceWith(emailCartBtn.cloneNode(true));
-                const newEmailBtn = document.getElementById('emailCartBtn');
-                newEmailBtn.addEventListener('click', checkoutViaEmail);
             }
         }
         
@@ -1477,11 +1544,15 @@
             });
         });
         
+        // Cart icon click handler
         cartIcon.addEventListener('click', () => {
             cartModal.classList.add('open');
             document.body.style.overflow = 'hidden';
-            document.body.style.position = 'fixed';
-            document.body.style.width = '100%';
+            
+            // Push to history state
+            if (!modalOpenViaHistory) {
+                history.pushState({ modal: 'cart', page: 'customize-soap' }, '', '#cart');
+            }
             
             if (window.innerWidth <= 768) {
                 navLinks.classList.remove('active');
@@ -1493,8 +1564,11 @@
         closeCart.addEventListener('click', () => {
             cartModal.classList.remove('open');
             document.body.style.overflow = '';
-            document.body.style.position = '';
-            document.body.style.width = '';
+            
+            // Go back in history
+            if (history.state && history.state.modal === 'cart') {
+                history.back();
+            }
         });
         
         function updateHeaderOnScroll() {
@@ -1523,32 +1597,41 @@
             });
         });
         
-        // Close cart/modals when clicking outside
+        // Close cart/modals when clicking outside (WITHOUT auto-closing on quantity change)
         document.addEventListener('click', (e) => {
-            // Cart modal
-            if (!cartModal.contains(e.target) && !cartIcon.contains(e.target) && cartModal.classList.contains('open')) {
+            // Cart modal - only close if clicking on overlay (not inside cart)
+            if (cartModal.classList.contains('open') && e.target === cartModal) {
                 cartModal.classList.remove('open');
                 document.body.style.overflow = '';
-                document.body.style.position = '';
-                document.body.style.width = '';
+                
+                // Go back in history
+                if (history.state && history.state.modal === 'cart') {
+                    history.back();
+                }
             }
             
             // Scrub modal
             if (scrubModal.classList.contains('open') && e.target === scrubModal) {
                 scrubModal.classList.remove('open');
                 document.body.style.overflow = '';
-                document.body.style.position = '';
-                document.body.style.width = '';
+                
+                // Go back in history
+                if (history.state && history.state.modal === 'scrub') {
+                    history.back();
+                }
             }
             
             // Email modal
             if (emailModal.classList.contains('open') && e.target === emailModal) {
                 emailModal.classList.remove('open');
                 document.body.style.overflow = '';
-                document.body.style.position = '';
-                document.body.style.width = '';
                 customerNameInput.value = '';
                 emailProceedBtn.disabled = true;
+                
+                // Go back in history
+                if (history.state && history.state.modal === 'email') {
+                    history.back();
+                }
             }
         });
         
@@ -1564,8 +1647,11 @@
         scrubCancelBtn.addEventListener('click', () => {
             scrubModal.classList.remove('open');
             document.body.style.overflow = '';
-            document.body.style.position = '';
-            document.body.style.width = '';
+            
+            // Go back in history
+            if (history.state && history.state.modal === 'scrub') {
+                history.back();
+            }
         });
         
         scrubAddBtn.addEventListener('click', () => {
@@ -1575,11 +1661,6 @@
             
             setTimeout(() => {
                 addCustomSoapToCart(selectedScrubOption);
-                
-                scrubModal.classList.remove('open');
-                document.body.style.overflow = '';
-                document.body.style.position = '';
-                document.body.style.width = '';
                 
                 // Reset button
                 scrubAddBtn.classList.remove('adding');
@@ -1601,14 +1682,52 @@
         emailCancelBtn.addEventListener('click', () => {
             emailModal.classList.remove('open');
             document.body.style.overflow = '';
-            document.body.style.position = '';
-            document.body.style.width = '';
             customerNameInput.value = '';
             emailProceedBtn.disabled = true;
+            
+            // Go back in history
+            if (history.state && history.state.modal === 'email') {
+                history.back();
+            }
         });
         
         emailProceedBtn.addEventListener('click', () => {
             completeEmailOrder(customerNameInput.value.trim());
+        });
+        
+        // Handle browser back/forward buttons
+        window.addEventListener('popstate', function(event) {
+            modalOpenViaHistory = true;
+            
+            // Check current URL hash
+            const hash = window.location.hash;
+            
+            // Close all modals first
+            cartModal.classList.remove('open');
+            scrubModal.classList.remove('open');
+            emailModal.classList.remove('open');
+            document.body.style.overflow = '';
+            document.body.style.position = '';
+            
+            // Re-open modal based on hash
+            if (hash === '#cart') {
+                cartModal.classList.add('open');
+                document.body.style.overflow = 'hidden';
+            } else if (hash === '#scrub') {
+                scrubModal.classList.add('open');
+                document.body.style.overflow = 'hidden';
+            } else if (hash === '#email') {
+                emailModal.classList.add('open');
+                document.body.style.overflow = 'hidden';
+                customerNameInput.focus();
+            } else if (hash === '' || hash === '#') {
+                // Back to main page
+                modalOpenViaHistory = false;
+            }
+            
+            setTimeout(() => {
+                modalOpenViaHistory = false;
+            }, 100);
         });
         
         // Close modal with Escape key
@@ -1617,22 +1736,31 @@
                 if (cartModal.classList.contains('open')) {
                     cartModal.classList.remove('open');
                     document.body.style.overflow = '';
-                    document.body.style.position = '';
-                    document.body.style.width = '';
+                    
+                    // Go back in history
+                    if (history.state && history.state.modal === 'cart') {
+                        history.back();
+                    }
                 }
                 if (scrubModal.classList.contains('open')) {
                     scrubModal.classList.remove('open');
                     document.body.style.overflow = '';
-                    document.body.style.position = '';
-                    document.body.style.width = '';
+                    
+                    // Go back in history
+                    if (history.state && history.state.modal === 'scrub') {
+                        history.back();
+                    }
                 }
                 if (emailModal.classList.contains('open')) {
                     emailModal.classList.remove('open');
                     document.body.style.overflow = '';
-                    document.body.style.position = '';
-                    document.body.style.width = '';
                     customerNameInput.value = '';
                     emailProceedBtn.disabled = true;
+                    
+                    // Go back in history
+                    if (history.state && history.state.modal === 'email') {
+                        history.back();
+                    }
                 }
             }
         });
@@ -1642,6 +1770,18 @@
             loadCartFromStorage();
             updatePriceDisplay();
             updatePreview();
+            
+            // Initialize checkout buttons
+            updateMinimumOrderUI();
+            
+            // Add event listeners for checkout buttons
+            if (whatsappCartBtn) {
+                whatsappCartBtn.addEventListener('click', checkoutViaWhatsApp);
+            }
+            
+            if (emailCartBtn) {
+                emailCartBtn.addEventListener('click', checkoutViaEmail);
+            }
             
             // Listen for cart updates from other pages
             window.addEventListener('storage', function(e) {
@@ -1655,9 +1795,6 @@
             document.body.style.overflowX = 'hidden';
             
             updateHeaderOnScroll();
-            
-            // Initialize checkout buttons
-            updateMinimumOrderUI();
             
             // Mobile responsive adjustments
             function handleResize() {
