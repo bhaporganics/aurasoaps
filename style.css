@@ -2382,8 +2382,6 @@ html {
     content: none !important;
     display: none !important;
 }
-<style>
-/* ===== TEXT ALIGNMENT ONLY – NO LAYOUT CHANGE ===== */
 
 /* Scrub modal text */
 .scrub-modal-header h3,
@@ -2411,4 +2409,40 @@ html {
 .email-input-group input {
     text-align: center;
 }
-</style>
+/* Fixed quantity badge */
+.fixed-quantity-badge {
+    display: inline-block;
+    background: #f0f0f0;
+    color: #666;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    font-weight: 500;
+    margin-left: 0.5rem;
+    border: 1px solid #ddd;
+}
+
+/* Custom soap badge */
+.custom-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #b76e79, #e8d9c5);
+    color: white;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    margin-left: 0.5rem;
+    vertical-align: middle;
+}
+
+/* Disabled button styling */
+.cart-quantity-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.cart-quantity-btn:disabled:hover {
+    background: none;
+    color: inherit;
+}
+
