@@ -23,6 +23,25 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="product-detail.css">
     <style>
+        /* Add this to your existing <style> section */
+.fa-spinner {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.scrub-modal-actions button:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.customize-actions button:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
         /* Customization Form Styles */
         .customize-section {
             padding: 100px 0 60px;
@@ -892,31 +911,53 @@
         });
         
         // Add to Cart with Validation
-        addToCartBtn.addEventListener('click', () => {
-            const fragrance = customFragrance.value.trim();
-            
-            if (!fragrance) {
-                showNotification('Please enter your custom fragrance preference');
-                customFragrance.focus();
-                return;
-            }
-            
-            if (quantity < MIN_CUSTOM_SOAPS) {
-                showNotification(`Minimum ${MIN_CUSTOM_SOAPS} custom soaps required`);
-                return;
-            }
-            
-            // Store customization data
-            currentCustomizationData = {
-                fragrance: fragrance,
-                instructions: specialInstructions.value.trim() || 'None',
-                quantity: quantity,
-                timestamp: Date.now()
-            };
-            
-            // Show scrub modal
+// Add to Cart with Validation
+addToCartBtn.addEventListener('click', () => {
+    // Prevent multiple clicks
+    if (addToCartBtn.classList.contains('adding')) return;
+    
+    const fragrance = customFragrance.value.trim();
+    
+    if (!fragrance) {
+        showNotification('Please enter your custom fragrance preference');
+        customFragrance.focus();
+        return;
+    }
+    
+    if (quantity < MIN_CUSTOM_SOAPS) {
+        showNotification(`Minimum ${MIN_CUSTOM_SOAPS} custom soaps required`);
+        return;
+    }
+    
+    // Store customization data
+    currentCustomizationData = {
+        fragrance: fragrance,
+        instructions: specialInstructions.value.trim() || 'None',
+        quantity: quantity,
+        timestamp: Date.now()
+    };
+    
+    // Show loading state
+    const originalContent = addToCartBtn.innerHTML;
+    addToCartBtn.classList.add('adding');
+    addToCartBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+    addToCartBtn.disabled = true;
+    
+    // Small delay to show loading state, then show modal
+    setTimeout(() => {
+        try {
             showScrubModal();
-        });
+        } catch (error) {
+            console.error('Error:', error);
+            showNotification('There was an error. Please try again.');
+        } finally {
+            // Reset the button
+            addToCartBtn.classList.remove('adding');
+            addToCartBtn.innerHTML = originalContent;
+            addToCartBtn.disabled = false;
+        }
+    }, 300);
+});
         
         // =================== NEW: BACK BUTTON HANDLING ===================
         // Show Scrub Modal with History State
@@ -1565,27 +1606,38 @@
             }
         });
         
-        scrubAddBtn.addEventListener('click', () => {
-            // Show loading state
-            scrubAddBtn.classList.add('adding');
-            scrubAddBtn.innerHTML = '';
+scrubAddBtn.addEventListener('click', () => {
+    // Prevent multiple clicks
+    if (scrubAddBtn.classList.contains('adding')) return;
+    
+    // Show loading state
+    const originalContent = scrubAddBtn.innerHTML;
+    scrubAddBtn.classList.add('adding');
+    scrubAddBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Adding...';
+    scrubAddBtn.disabled = true;
+    
+    setTimeout(() => {
+        try {
+            addCustomSoapToCart(selectedScrubOption);
             
-            setTimeout(() => {
-                addCustomSoapToCart(selectedScrubOption);
-                
-                scrubModal.classList.remove('open');
-                document.body.classList.remove('modal-open');
-                
-                // Go back in history
-                if (history.state && history.state.modal === 'scrub') {
-                    history.back();
-                }
-                
-                // Reset button
-                scrubAddBtn.classList.remove('adding');
-                scrubAddBtn.innerHTML = '<i class="fas fa-shopping-bag"></i> Add to Cart';
-            }, 800);
-        });
+            scrubModal.classList.remove('open');
+            document.body.classList.remove('modal-open');
+            
+            // Go back in history
+            if (history.state && history.state.modal === 'scrub') {
+                history.back();
+            }
+        } catch (error) {
+            console.error('Error adding to cart:', error);
+            showNotification('There was an error adding the item to cart. Please try again.');
+        } finally {
+            // Always reset the button regardless of success or error
+            scrubAddBtn.classList.remove('adding');
+            scrubAddBtn.innerHTML = originalContent;
+            scrubAddBtn.disabled = false;
+        }
+    }, 800);
+});
         
         // Email modal event listeners
         customerNameInput.addEventListener('input', function() {
