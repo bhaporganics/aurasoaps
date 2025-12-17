@@ -316,45 +316,17 @@
             vertical-align: middle;
         }
         
-        /* Static quantity indicator for custom soaps */
-        .static-quantity {
+        /* Fixed quantity badge */
+        .fixed-quantity-badge {
             display: inline-block;
             background: #f0f0f0;
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-size: 0.9rem;
             color: #666;
-            margin-left: 5px;
-        }
-        
-        /* Custom soap quantity lock styling */
-        .custom-soap-locked {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 5px 10px;
-            background: rgba(183, 110, 121, 0.1);
+            padding: 0.2rem 0.5rem;
             border-radius: 4px;
-            font-size: 0.85rem;
-            color: var(--accent);
-        }
-        
-        .custom-soap-locked i {
-            font-size: 0.8rem;
-        }
-        
-        /* Fix for cart quantity controls on ALL pages */
-        .cart-item-actions .locked-quantity {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 0 5px;
-            color: #666;
-            font-size: 0.9rem;
-        }
-        
-        .locked-quantity i {
-            color: var(--accent);
+            font-size: 0.7rem;
+            font-weight: 500;
+            margin-left: 0.5rem;
+            border: 1px solid #ddd;
         }
         
         /* Mobile Responsive Styles */
@@ -477,6 +449,7 @@
                 padding: 10px 12px;
             }
         }
+        
         /* ===== MOBILE ALIGNMENT FIX ===== */
         @media (max-width: 768px) {
             /* Prevent double padding */
@@ -841,9 +814,6 @@
         const SCRUB_PRICE = 20;
         const MIN_CUSTOM_SOAPS = 3;
         
-        // UNIQUE IDENTIFIER for custom soaps from THIS page
-        const CUSTOM_SOAP_SIGNATURE = 'aura-customization-soap-v1';
-        
         let quantity = 3; // Start with minimum required
         let selectedScrubOption = 'soap-only';
         let currentCustomizationData = null;
@@ -895,64 +865,6 @@
         
         // Track if modal is open via history state
         let modalOpenViaHistory = false;
-        
-        // =============================================
-        // SOLUTION: CART VALIDATION & FIXING SYSTEM
-        // This runs whenever cart is loaded from storage
-        // =============================================
-        
-        function validateAndFixCart() {
-            let cartWasFixed = false;
-            let fixedItems = [];
-            
-            cart.forEach((item, index) => {
-                // Check if this is a custom soap from our customization page
-                if (item.customSignature === CUSTOM_SOAP_SIGNATURE || 
-                    (item.isCustom && item.customData && item.customData.fragrance)) {
-                    
-                    // Ensure quantity is at least MIN_CUSTOM_SOAPS
-                    if (item.quantity < MIN_CUSTOM_SOAPS) {
-                        console.log(`Fixing custom soap quantity from ${item.quantity} to ${MIN_CUSTOM_SOAPS}`);
-                        item.quantity = MIN_CUSTOM_SOAPS;
-                        cartWasFixed = true;
-                        fixedItems.push(item.name);
-                    }
-                    
-                    // Add the signature if not present
-                    if (!item.customSignature) {
-                        item.customSignature = CUSTOM_SOAP_SIGNATURE;
-                        cartWasFixed = true;
-                    }
-                    
-                    // Add fixed quantity flag
-                    if (!item.isFixedQuantity) {
-                        item.isFixedQuantity = true;
-                        cartWasFixed = true;
-                    }
-                }
-            });
-            
-            if (cartWasFixed) {
-                console.log('Cart was fixed for custom soaps:', fixedItems);
-                saveCartToStorage();
-                
-                // Notify other pages
-                localStorage.setItem('cartFixed', Date.now().toString());
-                
-                // Show notification if we're on this page
-                if (fixedItems.length > 0) {
-                    setTimeout(() => {
-                        showNotification(`Custom soap quantities fixed to minimum ${MIN_CUSTOM_SOAPS}`);
-                    }, 500);
-                }
-            }
-            
-            return cartWasFixed;
-        }
-        
-        // =============================================
-        // END OF CART VALIDATION SYSTEM
-        // =============================================
         
         // Initialize Price Display
         function updatePriceDisplay() {
@@ -1084,7 +996,7 @@
             }
         }
         
-        // Add Custom Soap to Cart
+        // Add Custom Soap to Cart - UPDATED WITH FIXED QUANTITY PROPERTIES
         function addCustomSoapToCart(scrubOption) {
             if (!currentCustomizationData) return;
             
@@ -1094,7 +1006,7 @@
             // Create a unique ID for this customization
             const customId = `${CUSTOM_SOAP_ID}-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
             
-            // Create custom soap item with SPECIAL SIGNATURE
+            // Create custom soap item WITH FIXED QUANTITY PROPERTIES
             const customSoapItem = {
                 id: customId,
                 name: 'Custom Soap',
@@ -1106,17 +1018,15 @@
                 image: 'images/custom_soap.jpg',
                 alt: 'Custom Handmade Soap',
                 description: `Custom fragrance: ${currentCustomizationData.fragrance}`,
-                quantity: currentCustomizationData.quantity,
+                quantity: currentCustomizationData.quantity, // This should be at least 3
                 scrubOption: scrubOption,
                 isCustom: true,
-                isFixedQuantity: true, // This prevents quantity changes
-                minQuantity: MIN_CUSTOM_SOAPS,
-                customSignature: CUSTOM_SOAP_SIGNATURE, // UNIQUE SIGNATURE
+                isFixedQuantity: true,           // 🔥 CRITICAL: Mark as fixed quantity
+                minQuantity: MIN_CUSTOM_SOAPS,   // 🔥 CRITICAL: Store minimum quantity
                 customData: {
                     fragrance: currentCustomizationData.fragrance,
                     instructions: currentCustomizationData.instructions,
-                    timestamp: currentCustomizationData.timestamp,
-                    originalQuantity: currentCustomizationData.quantity // Store original quantity
+                    timestamp: currentCustomizationData.timestamp
                 },
                 originalPrice: PRICE_PER_SOAP,
                 originalMrp: mrpPerUnit
@@ -1144,11 +1054,6 @@
             // Close modal without pushing to history
             scrubModal.classList.remove('open');
             document.body.style.overflow = '';
-            
-            // Go back in history
-            if (history.state && history.state.modal === 'scrub') {
-                history.back();
-            }
         }
         
         // --- SHARED CART FUNCTIONS ---
@@ -1159,12 +1064,13 @@
                 try {
                     cart = JSON.parse(savedCart);
                     
-                    // =============================================
-                    // CRITICAL: Run validation/fixing BEFORE anything else
-                    // This ensures quantities are always correct
-                    // =============================================
-                    validateAndFixCart();
-                    
+                    // Ensure custom soaps have the fixed quantity properties
+                    cart.forEach(item => {
+                        if (item.isCustom && !item.hasOwnProperty('isFixedQuantity')) {
+                            item.isFixedQuantity = true;
+                            item.minQuantity = MIN_CUSTOM_SOAPS;
+                        }
+                    });
                 } catch (e) {
                     console.error("Error parsing cart from storage:", e);
                     cart = [];
@@ -1177,11 +1083,6 @@
         
         function saveCartToStorage() {
             try {
-                // =============================================
-                // CRITICAL: Validate before saving
-                // =============================================
-                validateAndFixCart();
-                
                 sessionStorage.setItem('auraCleanseCart', JSON.stringify(cart));
                 sessionStorage.setItem('auraCleanseCartTimestamp', Date.now());
                 localStorage.setItem('cartUpdated', Date.now().toString());
@@ -1226,6 +1127,11 @@
                     const customBadge = item.isCustom ? 
                         '<span class="custom-badge">Custom</span>' : '';
                     
+                    // Check if this is a fixed quantity item
+                    const isFixedQuantity = item.isFixedQuantity || false;
+                    const fixedQuantityBadge = isFixedQuantity ? 
+                        '<span class="fixed-quantity-badge">Fixed Qty</span>' : '';
+                    
                     // For custom soaps, show customization details
                     let customDetails = '';
                     if (item.isCustom && item.customData) {
@@ -1233,13 +1139,9 @@
                             <div style="font-size: 0.8rem; color: #666; margin-top: 5px; background: #f9f9f9; padding: 8px; border-radius: 4px;">
                                 <div><strong>Fragrance:</strong> ${item.customData.fragrance}</div>
                                 ${item.customData.instructions !== 'None' ? `<div><strong>Instructions:</strong> ${item.customData.instructions}</div>` : ''}
-                                ${item.customData.originalQuantity ? `<div><em>Original quantity: ${item.customData.originalQuantity}</em></div>` : ''}
                             </div>
                         `;
                     }
-                    
-                    // Check if this is a fixed quantity custom soap
-                    const isFixedQuantity = item.isFixedQuantity || item.customSignature === CUSTOM_SOAP_SIGNATURE;
                     
                     cartItem.innerHTML = `
                         <div class="cart-item-image">
@@ -1249,8 +1151,8 @@
                             <div class="cart-item-title">
                                 ${item.name} ${item.weight ? '(' + item.weight + ')' : ''}
                                 ${customBadge}
+                                ${fixedQuantityBadge}
                                 ${scrubIndicator}
-                                ${isFixedQuantity ? '<span class="static-quantity">Qty: ' + item.quantity + '</span>' : ''}
                             </div>
                             ${customDetails}
                             <div class="cart-item-price">
@@ -1268,9 +1170,8 @@
                                     <i class="fas fa-plus"></i>
                                 </button>
                             ` : `
-                                <div class="custom-soap-locked">
-                                    <i class="fas fa-lock"></i>
-                                    <span>Fixed Quantity (min ${item.minQuantity || MIN_CUSTOM_SOAPS})</span>
+                                <div style="display: flex; align-items: center; gap: 10px; padding: 0 5px;">
+                                    <span style="font-size: 0.9rem; color: #666; font-weight: 500;">Qty: ${item.quantity}</span>
                                 </div>
                             `}
                             <button class="remove-item" data-index="${index}">
@@ -1324,8 +1225,8 @@
             
             const item = cart[index];
             
-            // Don't allow quantity changes for fixed quantity custom soaps
-            if (item.isFixedQuantity || item.customSignature === CUSTOM_SOAP_SIGNATURE) {
+            // 🔥 CRITICAL FIX: Don't allow quantity changes for fixed quantity items
+            if (item.isFixedQuantity) {
                 showNotification('Cannot modify quantity of custom soaps. Please remove and re-add with correct quantity.');
                 return;
             }
@@ -1868,47 +1769,11 @@
             }
         });
         
-        // =============================================
-        // INTERVAL CHECKER: Runs every few seconds to 
-        // validate cart even if user is on other pages
-        // =============================================
-        function startCartValidationInterval() {
-            setInterval(() => {
-                // Reload cart from storage
-                const savedCart = sessionStorage.getItem('auraCleanseCart');
-                if (savedCart) {
-                    try {
-                        const currentCart = JSON.parse(savedCart);
-                        let needsFix = false;
-                        
-                        // Check if any custom soap has wrong quantity
-                        currentCart.forEach(item => {
-                            if ((item.customSignature === CUSTOM_SOAP_SIGNATURE || 
-                                 (item.isCustom && item.customData)) && 
-                                item.quantity < MIN_CUSTOM_SOAPS) {
-                                needsFix = true;
-                            }
-                        });
-                        
-                        if (needsFix) {
-                            console.log('Interval checker: Cart needs fixing');
-                            loadCartFromStorage(); // This will fix it
-                        }
-                    } catch (e) {
-                        console.error('Interval checker error:', e);
-                    }
-                }
-            }, 5000); // Check every 5 seconds
-        }
-        
         // Initialize everything
         document.addEventListener('DOMContentLoaded', () => {
             loadCartFromStorage();
             updatePriceDisplay();
             updatePreview();
-            
-            // Start the interval checker
-            startCartValidationInterval();
             
             // Initialize checkout buttons
             updateMinimumOrderUI();
@@ -1924,7 +1789,7 @@
             
             // Listen for cart updates from other pages
             window.addEventListener('storage', function(e) {
-                if (e.key === 'cartUpdated' || e.key === 'cartFixed') {
+                if (e.key === 'cartUpdated') {
                     loadCartFromStorage();
                 }
             });
