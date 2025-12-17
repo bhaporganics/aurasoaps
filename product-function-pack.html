@@ -266,7 +266,7 @@
                     <h3>Theme-Based Mould Designs</h3>
                     <p>Each soap is poured into custom moulds based on the function, enhancing visual appeal and cultural relevance.</p>
        
-                  </div>
+                      </div>
                 
                 <div class="ingredient-card">
                     <div class="ingredient-icon">
@@ -463,7 +463,7 @@
                                             <i class="fas fa-star"></i>
                                             <i class="fas fa-star"></i>
                  
-           
+                 
                                             <i class="fas fa-star"></i>
                                         </div>
                          
@@ -474,15 +474,14 @@
                                  </div>
                      
                                 <p class="review-text" style="font-size:0.9rem;">
-                             
+                                   
                                     "The packaging alone is beautiful! But the product inside is even better. My skin has never felt this soft. I've gifted this to all my friends - they're all converts now!"
                                 </p>
                                 <div style="font-size:0.8rem;color:#888;margin-top:12px;">
-                 
                        
                                     <i class="far fa-clock"></i> 3 weeks ago
                                 </div>
-                    
+                     
                          </div>
                        
                         </div>
@@ -777,7 +776,7 @@
         const navLinks = document.getElementById('navLinks');
         // Shared Cart System
         let cart = [];
-        const MIN_ORDER_ITEMS = 3; // Used for progress bar and standard soap count
+        const MIN_ORDER_ITEMS = 3; // Used for progress bar and standard soap count equivalence
 
         // --- Product-Specific Logic (Slideshow and Quantity) ---
         
@@ -1238,61 +1237,87 @@ Please confirm my order and provide delivery details.`;
             }, 300);
         }
 
-
+        // --- MODIFIED updateMinimumOrderUI FUNCTION ---
         function updateMinimumOrderUI() {
-            const totalItems = getTotalItemsInCart();
-            const meetsMinimumOrder = isMinimumOrderMet(); // Uses the new logic
+            // 1. Calculate equivalent count for progress bar UI
+            let equivalentOrderCount = 0;
+            cart.forEach(item => {
+                if (item.id === 'product-14') {
+                    // Treat 1 Function Pack as 3 items for minimum order tracking
+                    equivalentOrderCount += item.quantity * MIN_ORDER_ITEMS;
+                } else {
+                    // Standard soap count
+                    equivalentOrderCount += item.quantity;
+                }
+            });
+
+            // We keep getTotalItemsInCart() for the cart count bubble, but use the equivalent for progress UI
+            const totalItemsInCartBubble = getTotalItemsInCart(); 
+            const meetsMinimumOrder = isMinimumOrderMet();
             const minOrderProgress = document.getElementById('minOrderProgress');
             const progressBar = document.getElementById('progressBar');
             const progressCount = document.getElementById('progressCount');
             const progressMessage = document.getElementById('progressMessage');
             
-            // Note: Progress bar logic is based on MIN_ORDER_ITEMS (3), which is fine for visual progress.
-            const progressPercentage = Math.min((totalItems / MIN_ORDER_ITEMS) * 100, 100);
+            // Use the equivalent count for progress UI
+            const progressBaseCount = Math.min(equivalentOrderCount, MIN_ORDER_ITEMS); // Cap the count displayed to 3
+            const progressPercentage = Math.min((equivalentOrderCount / MIN_ORDER_ITEMS) * 100, 100);
 
             // Hide/show progress bar section 
             if (minOrderProgress) {
-                if (totalItems > 0) {
+                if (totalItemsInCartBubble > 0) {
                     minOrderProgress.style.display = 'block';
                 } else {
                     minOrderProgress.style.display = 'none';
                 }
             }
 
+            // Update progress bar and count display
             if (progressBar) progressBar.style.width = `${progressPercentage}%`;
-            if (progressCount) progressCount.textContent = `${totalItems}/${MIN_ORDER_ITEMS}`;
+            if (progressCount) progressCount.textContent = `${progressBaseCount}/${MIN_ORDER_ITEMS}`; 
             
             if (progressMessage) {
-                if (meetsMinimumOrder) { // Use new condition for message
+                if (meetsMinimumOrder) { 
                      progressMessage.textContent = '✓ Minimum order requirement met!';
                      progressMessage.className = 'progress-message progress-complete';
-                } else if (totalItems === 0) {
-                    progressMessage.textContent = `Add 3 products (or 1 Functional Pack) to place your order`;
+                } else if (progressBaseCount === 0) {
+                    progressMessage.textContent = `Add ${MIN_ORDER_ITEMS} products (or 1 Functional Pack) to place your order`;
                     progressMessage.className = 'progress-message';
                 } else {
-                    // This message is only shown when only standard soaps are present, and not enough for 3
-                    const itemsNeeded = MIN_ORDER_ITEMS - totalItems;
+                    const itemsNeeded = MIN_ORDER_ITEMS - progressBaseCount;
                     progressMessage.textContent = `Add ${itemsNeeded} more product${itemsNeeded > 1 ? 's' : ''} (or 1 Functional Pack) to place your order`;
                     progressMessage.className = 'progress-message';
                 }
             }
             
-            // R1: Disable buttons if minimum order is not met
+            // 2. Fix button enabling/disabling and event listeners
             const checkoutButtons = [whatsappCartBtn, emailCartBtn];
             const isCartReady = meetsMinimumOrder;
 
             checkoutButtons.forEach(btn => {
                 if (btn) {
+                    // Always remove old listeners to prevent duplicates
+                    btn.removeEventListener('click', checkoutViaWhatsApp); 
+                    btn.removeEventListener('click', checkoutViaEmail);
+                    
                     if (!isCartReady) {
                         btn.style.opacity = '0.7';
                         btn.style.cursor = 'not-allowed';
                     } else {
                         btn.style.opacity = '1';
                         btn.style.cursor = 'pointer';
+                        
+                        // Add listeners ONLY if the order is ready
+                        if (btn.id === 'whatsappCartBtn') {
+                            btn.addEventListener('click', checkoutViaWhatsApp);
+                        } else if (btn.id === 'emailCartBtn') {
+                            btn.addEventListener('click', checkoutViaEmail);
+                        }
                     }
                 }
             });
         }
+        // --- END MODIFIED updateMinimumOrderUI FUNCTION ---
 
 
         function showNotification(message) {
@@ -1512,7 +1537,7 @@ Please confirm my order and provide delivery details.`;
             
             // 3. Re-wire existing open/close listeners to use new functions and manage history cleanup
 
-            // A. Cart Icon Open (Source 1824 logic kept)
+            // A. Cart Icon Open
             cartIcon.addEventListener('click', () => {
                 cartModal.classList.add('open');
                 if (window.innerWidth <= 768) {
@@ -1522,21 +1547,21 @@ Please confirm my order and provide delivery details.`;
                 }
             });
             
-            // B. Close Cart Button (Replaces Source 1825 logic)
+            // B. Close Cart Button
             closeCart.removeEventListener('click', (e) => { /* original anonymous function */ }); // Remove old listener if it existed
             closeCart.addEventListener('click', () => {
                  closeModal(cartModal);
                  cleanupHash(cartModal.id);
             });
 
-            // C. Scrub Cancel Button (Replaces Source 1837 logic)
+            // C. Scrub Cancel Button
             scrubCancelBtn.removeEventListener('click', (e) => { /* original anonymous function */ });
             scrubCancelBtn.addEventListener('click', () => {
                 closeModal(scrubModal);
                 cleanupHash(scrubModal.id);
             });
 
-            // D. Scrub Add Button (Modify existing logic)
+            // D. Scrub Add Button 
             // R2: Adds cleanupHash on successful close
             scrubAddBtn.addEventListener('click', () => {
                 // Show loading state
@@ -1557,14 +1582,14 @@ Please confirm my order and provide delivery details.`;
             });
 
 
-            // E. Email Cancel Button (Replaces Source 1843 logic)
+            // E. Email Cancel Button
             emailCancelBtn.removeEventListener('click', (e) => { /* original anonymous function */ });
             emailCancelBtn.addEventListener('click', () => {
                 closeModal(emailModal);
                 cleanupHash(emailModal.id);
             });
             
-            // F. Close on outside click (Replaces Source 1832-1835 logic)
+            // F. Close on outside click
             document.addEventListener('click', (e) => {
                 // Cart modal
                 if (cartModal.classList.contains('open') && !cartModal.contains(e.target) && !cartIcon.contains(e.target)) {
