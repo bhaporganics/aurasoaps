@@ -373,19 +373,18 @@ function renderProducts() {
                 </button>
             </div>`;
         
-        productCard.innerHTML = `
+productCard.innerHTML = `
             <div class="product-link-content" data-product-id="${product.id}" data-product-url="${productUrlName}">
                 <div class="product-image">
-                    <img src="${product.image}" alt="${product.alt}" loading="lazy" itemprop="image">
+                    <img src="${product.image}" alt="${product.alt}" loading="lazy">
                 </div>
                 <div class="product-content">
-                    <h3 class="product-title" itemprop="name">${product.name}</h3>
-                    <div class="product-subtitle" itemprop="description">${product.subtitle}</div>
+                    <h3 class="product-title">${product.name}</h3>
+                    <div class="product-subtitle">${product.subtitle}</div>
                     <p class="product-description">${product.description}</p>
                     <div class="product-price-container">
-                        <div class="product-price" itemprop="offers" itemscope itemtype="https://schema.org/Offer">
-                            <span itemprop="price" content="${product.price}">₹${product.price}</span>
-                            <meta itemprop="priceCurrency" content="INR">
+                        <div class="product-price">
+                            <span>₹${product.price}</span>
                         </div>
                         <div class="product-mrp">₹${product.mrp}</div>
                         <div class="product-discount">${discountPercent}% OFF</div>
@@ -393,7 +392,6 @@ function renderProducts() {
                     <div style="font-size: 0.8rem; color: #666; margin-top: 5px;">Size: ${product.weight}</div>
                 </div>
             </div>
-            
             ${actionButton}
         `;
         
@@ -1592,27 +1590,65 @@ document.addEventListener('DOMContentLoaded', () => {
     document.head.appendChild(script);
     
     // Add product structured data
-    const productStructuredData = products.map(product => ({
-        "@context": "https://schema.org",
-        "@type": "Product",
-        "name": product.name,
-        "description": product.description,
-        "brand": {
-            "@type": "Brand",
-            "name": "Aura"
+    // Add product structured data with ALL required fields
+const productStructuredData = products.map(product => ({
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": product.name,
+    "description": product.description,
+    // FIX: Added your domain so Google can find the image file
+    "image": `https://bhaporganics.github.io/aurasoaps/${product.image}`, 
+    "brand": {
+        "@type": "Brand",
+        "name": "Aura"
+    },
+    "offers": {
+        "@type": "Offer",
+        "price": product.price,
+        "priceCurrency": "INR",
+        // FIX: Updated date to the future (end of 2026)
+        "priceValidUntil": "2026-12-31", 
+        "availability": "https://schema.org/InStock",
+        "itemCondition": "https://schema.org/NewCondition",
+        "url": window.location.href,
+        "shippingDetails": {
+            "@type": "OfferShippingDetails",
+            "shippingRate": {
+                "@type": "MonetaryAmount",
+                "value": 100,
+                "currency": "INR"
+            },
+            "shippingDestination": {
+                "@type": "DefinedRegion",
+                "addressCountry": "IN"
+            },
+            "deliveryTime": {
+                "@type": "ShippingDeliveryTime",
+                "handlingTime": {
+                    "@type": "QuantitativeValue",
+                    "minValue": 1,
+                    "maxValue": 2
+                },
+                "transitTime": {
+                    "@type": "QuantitativeValue",
+                    "minValue": 3,
+                    "maxValue": 7
+                }
+            }
         },
-        "offers": {
-            "@type": "Offer",
-            "price": product.price,
-            "priceCurrency": "INR",
-            "priceValidUntil": "2024-12-31",
-            "availability": "https://schema.org/InStock"
+        "hasMerchantReturnPolicy": {
+            "@type": "MerchantReturnPolicy",
+            "applicableCountry": "IN",
+            "returnPolicyCategory": "https://schema.org/RestrictedReturn",
+            "merchantReturnDays": 7,
+            "returnMethod": "https://schema.org/ReturnByMail",
+            "returnFees": "https://schema.org/ReturnShippingFees"
         }
-    }));
-    
-    const productScript = document.createElement('script');
-    productScript.type = 'application/ld+json';
-    productScript.textContent = JSON.stringify(productStructuredData);
-    document.head.appendChild(productScript);
-});
+    }
+}));
 
+const productScript = document.createElement('script');
+productScript.type = 'application/ld+json';
+productScript.textContent = JSON.stringify(productStructuredData);
+document.head.appendChild(productScript);
+});
