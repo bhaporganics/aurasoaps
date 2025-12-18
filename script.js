@@ -1563,25 +1563,58 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     
     // Add structured data for SEO
+// Replace the old structuredData block at the bottom of script.js with this:
     const structuredData = {
-        "@context": "https://schema.org",
-        "@type": "Organization",
-        "name": "Aura",
-        "url": "https://bhaporganics.github.io/aurasoaps/",
-        "logo": "logo-aura.png",
-        "description": "Natural Ayurvedic handmade soaps crafted with pure ingredients for radiant, healthy skin.",
-        "address": {
-            "@type": "PostalAddress",
-            "addressLocality": "Theni",
-            "addressRegion": "Tamilnadu",
-            "addressCountry": "IN"
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Aura",
+      "url": "https://bhaporganics.github.io/aurasoaps/",
+      "logo": "https://bhaporganics.github.io/aurasoaps/logo-aura.png", // Fixed path
+      "description": "Natural Ayurvedic handmade soaps crafted with pure ingredients for radiant, healthy skin.",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Theni",
+        "addressRegion": "Tamilnadu",
+        "addressCountry": "IN"
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "telephone": "+918532853241",
+        "contactType": "Customer Service",
+        "availableLanguage": ["English", "Hindi", "Tamil"]
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.9",
+        "reviewCount": "85",
+        "bestRating": "5"
+      },
+      "review": [
+        {
+          "@type": "Review",
+          "reviewBody": "The Rose Petal soap transformed my dry skin! It's so gentle and leaves my skin feeling incredibly soft.",
+          "author": { "@type": "Person", "name": "Swetha Anand" },
+          "datePublished": "2024-12-01",
+          "reviewRating": { "@type": "Rating", "ratingValue": "5" },
+          "itemReviewed": {
+            "@type": "Product",
+            "name": "Rose Petal Soap",
+            "brand": { "@type": "Brand", "name": "Aura" }
+          }
         },
-        "contactPoint": {
-            "@type": "ContactPoint",
-            "telephone": "+918532853241",
-            "contactType": "Customer Service",
-            "availableLanguage": ["English", "Hindi"]
+        {
+          "@type": "Review",
+          "reviewBody": "As someone with sensitive skin, I've struggled to find natural soaps that work. Aura's Neem soap has been a game-changer!",
+          "author": { "@type": "Person", "name": "Mirthin Raj" },
+          "datePublished": "2024-11-15",
+          "reviewRating": { "@type": "Rating", "ratingValue": "5" },
+          "itemReviewed": {
+            "@type": "Product",
+            "name": "Neem Soap",
+            "brand": { "@type": "Brand", "name": "Aura" }
+          }
         }
+      ]
     };
     
     const script = document.createElement('script');
