@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://bhaporganics.github.io/aurasoaps/sitemap.xml
