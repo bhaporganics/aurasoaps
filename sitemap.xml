@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset
+  xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+
+  <!-- Homepage -->
+  <url>
+    <loc>https://bhaporganics.github.io/aurasoaps/</loc>
+    <changefreq>quarterly</changefreq>
+    <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://bhaporganics.github.io/aurasoaps/images/aurasoap_cover_1.jpg</image:loc>
+    </image:image>
+  </url>
+
+  <!-- Customize Soap -->
+  <url>
+    <loc>https://bhaporganics.github.io/aurasoaps/customize-soap.html</loc>
+    <changefreq>quarterly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://bhaporganics.github.io/aurasoaps/images/custom_soap.jpeg</image:loc>
+    </image:image>
+  </url>
+
+  <!-- Product Pages -->
+  <!-- Aloe Vera -->
+  <url>
+    <loc>https://bhaporganics.github.io/aurasoaps/product-aloe-vera.html</loc>
+    <changefreq>quarterly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://bhaporganics.github.io/aurasoaps/images/aloevera_soap_1.jpg</image:loc>
+    </image:image>
+  </url>
+
+  <!-- Activated Charcoal -->
+  <url>
+    <loc>https://bhaporganics.github.io/aurasoaps/product-activated-charcoal.html</loc>
+    <changefreq>quarterly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://bhaporganics.github.io/aurasoaps/images/charcoal_soap_2.jpg</image:loc>
+    </image:image>
+  </url>
+
+  <!-- Coffee -->
+  <url>
+    <loc>https://bhaporganics.github.io/aurasoaps/product-coffee.html</loc>
+    <changefreq>quarterly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://bhaporganics.github.io/aurasoaps/images/coffee_soap_2.jpg</image:loc>
+    </image:image>
+  </url>
+
+  <!-- Function Pack -->
+  <url>
+    <loc>https://bhaporganics.github.io/aurasoaps/product-function-pack.html</loc>
+    <changefreq>quarterly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://bhaporganics.github.io/aurasoaps/images/functionpack_soap_2.jpg</image:loc>
+    </image:image>
+  </url>
+
+  <!-- Green Gram -->
+  <url>
+    <loc>https://bhaporganics.github.io/aurasoaps/product-green-gram.html</loc>
+    <changefreq>quarterly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://bhaporganics.github.io/aurasoaps/images/greengram_soap_2.jpg</image:loc>
+    </image:image>
+  </url>
+
+  <!-- Kuppaimeni -->
+  <url>
+    <loc>https://bhaporganics.github.io/aurasoaps/product-kuppaimeni.html</loc>
+    <changefreq>quarterly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://bhaporganics.github.io/aurasoaps/images/kuppameni_soap_2.jpg</image:loc>
+    </image:image>
+  </url>
+
+  <!-- Manjistha -->
+  <url>
+    <loc>https://bhaporganics.github.io/aurasoaps/product-manjistha.html</loc>
+    <changefreq>quarterly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://bhaporganics.github.io/aurasoaps/images/manjistha_soap_2.jpg</image:loc>
+    </image:image>
+  </url>
+
+  <!-- Neem -->
+  <url>
+    <loc>https://bhaporganics.github.io/aurasoaps/product-neem.html</loc>
+    <changefreq>quarterly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://bhaporganics.github.io/aurasoaps/images/neem_soap_2.jpg</image:loc>
+    </image:image>
+  </url>
+
+  <!-- Red Sandal -->
+  <url>
+    <loc>https://bhaporganics.github.io/aurasoaps/product-red-sandal.html</loc>
+    <changefreq>quarterly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://bhaporganics.github.io/aurasoaps/images/redsandal_soap_2.jpg</image:loc>
+    </image:image>
+  </url>
+
+  <!-- Rose Petal -->
+  <url>
+    <loc>https://bhaporganics.github.io/aurasoaps/product-rose-petal.html</loc>
+    <changefreq>quarterly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://bhaporganics.github.io/aurasoaps/images/rosepetal_soap_1.jpg</image:loc>
+    </image:image>
+  </url>
+
+  <!-- Strawberry -->
+  <url>
+    <loc>https://bhaporganics.github.io/aurasoaps/product-straw-berry-.html</loc>
+    <changefreq>quarterly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://bhaporganics.github.io/aurasoaps/images/strawberry_soap_1.jpg</image:loc>
+    </image:image>
+  </url>
+
+  <!-- Urad Dal -->
+  <url>
+    <loc>https://bhaporganics.github.io/aurasoaps/product-urad-dal.html</loc>
+    <changefreq>quarterly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://bhaporganics.github.io/aurasoaps/images/uraddhal_soap_2.jpg</image:loc>
+    </image:image>
+  </url>
+
+  <!-- Vetiver -->
+  <url>
+    <loc>https://bhaporganics.github.io/aurasoaps/product-vetiver.html</loc>
+    <changefreq>quarterly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://bhaporganics.github.io/aurasoaps/images/vettiver_soap_2.jpg</image:loc>
+    </image:image>
+  </url>
+
+  <!-- Wild Turmeric -->
+  <url>
+    <loc>https://bhaporganics.github.io/aurasoaps/product-wild-turmeric.html</loc>
+    <changefreq>quarterly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://bhaporganics.github.io/aurasoaps/images/wildturmeric_soap_2.jpg</image:loc>
+    </image:image>
+  </url>
+
+</urlset>
