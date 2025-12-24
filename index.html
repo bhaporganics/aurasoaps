@@ -133,30 +133,7 @@
         </div>
     </header>
 
-    <div id="delivery-announcement-bar">
-        <div class="announcement-content">
-            <script>
-                // Three distinct messages as requested
-                const messages = [
-                    `<i class="fas fa-truck-fast"></i> A delivery fee of ₹100 will be added to every order`,
-                    `<i class="fas fa-truck-fast"></i> A delivery fee of ₹100 will be added to every order`,
-                    `<i class="fas fa-truck-fast"></i> A delivery fee of ₹100 will be added to every order`
-                ];
-                
-                const contentDiv = document.querySelector('.announcement-content');
-                let repeatedContent = '';
 
-                // Repeat the block of three messages multiple times (e.g., 5 times)
-                for (let j = 0; j < 5; j++) {
-                    messages.forEach(msg => {
-                        repeatedContent += `<span class="announcement-item">${msg}</span>`;
-                    });
-                }
-                
-                contentDiv.innerHTML = repeatedContent;
-            </script>
-        </div>
-    </div>
     <button class="mobile-fab" id="mobileFab">
         <i class="fas fa-shopping-bag"></i>
  
@@ -699,6 +676,30 @@ playsinline class="video-player" poster="images/aurasoap_cover_1.jpg">
                     <i class="fas fa-shopping-bag"></i> Continue Shopping
                 </button>
             </div>
+        </div>
+    </div>
+        <div id="delivery-announcement-bar">
+        <div class="announcement-content">
+            <script>
+                // Three distinct messages as requested
+                const messages = [
+                    `<i class="fas fa-truck-fast"></i> A delivery fee of ₹100 will be added to every order`,
+                    `<i class="fas fa-truck-fast"></i> A delivery fee of ₹100 will be added to every order`,
+                    `<i class="fas fa-truck-fast"></i> A delivery fee of ₹100 will be added to every order`
+                ];
+                
+                const contentDiv = document.querySelector('.announcement-content');
+                let repeatedContent = '';
+
+                // Repeat the block of three messages multiple times (e.g., 5 times)
+                for (let j = 0; j < 5; j++) {
+                    messages.forEach(msg => {
+                        repeatedContent += `<span class="announcement-item">${msg}</span>`;
+                    });
+                }
+                
+                contentDiv.innerHTML = repeatedContent;
+            </script>
         </div>
     </div>
 
