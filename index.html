@@ -36,40 +36,35 @@
             --bar-scroll-speed: 50s; /* Increased duration for smoother, slower scroll of three sentences */
         }
         
-        #delivery-announcement-bar {
-            position: fixed;
-            top: 70px; /* Below the main header */
-            left: 0;
-            width: 100%;
-            height: var(--bar-height);
-            background: linear-gradient(90deg, var(--bar-bg) 0%, #a65a66 100%);
-            color: var(--bar-text-color);
-            z-index: 999; /* Below header (1000) and modals, above content */
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        }
+#delivery-announcement-bar {
+    position: relative; /* Changed from fixed */
+    top: 0;             /* Reset top */
+    left: 0;
+    width: 100%;
+    height: var(--bar-height);
+    background: linear-gradient(90deg, var(--bar-bg) 0%, #a65a66 100%);
+    color: var(--bar-text-color);
+    z-index: 99; 
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1); /* Shadow points upward now */
+}
 
-        /* Adjust hero section and mobile header position to account for the bar */
-        .hero {
-            margin-top: calc(70px + var(--bar-height)); /* 70px (header) + 35px (bar) */
-        }
+/* Remove the margin-top from hero since the bar is no longer at the top */
+.hero {
+    margin-top: 70px; /* Only the header height */
+}
 
-        @media (max-width: 768px) {
-            #delivery-announcement-bar {
-                top: 65px; /* Below the mobile header (65px) */
-            }
-            .hero {
-                margin-top: calc(65px + var(--bar-height)); /* 65px (header) + 35px (bar) */
-            }
-            
-            /* Add some padding to hero to prevent the bar from overlapping the top part of the image */
-            .hero {
-                padding-top: 1.5rem;
-            }
-        }
-
+@media (max-width: 768px) {
+    #delivery-announcement-bar {
+        top: 0; /* Reset for mobile */
+    }
+    .hero {
+        margin-top: 65px; /* Only the mobile header height */
+        padding-top: 0;   /* Reset padding */
+    }
+}
 
         .announcement-content {
             white-space: nowrap;
